@@ -2,7 +2,7 @@ import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 
-val ktorVersion = "2.0.2"
+val ktorVersion = "2.0.3"
 val kotlinVersion = "1.7.0"
 val junitJupiterVersion = "5.8.2"
 val logbackVersion = "1.2.11"
