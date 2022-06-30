@@ -48,7 +48,7 @@ jobs:
           args: --file=Dockerfile --severity-threshold=high
           json: true
       - uses: garethr/snyk-to-sarif@master
-      - uses: actions/upload-artifact@v2
+      - uses: actions/upload-artifact@v3
         with:
           name: SARIF
           path: snyk.sarif
