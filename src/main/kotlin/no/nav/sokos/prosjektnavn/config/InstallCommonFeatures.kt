@@ -16,6 +16,7 @@ import mu.KotlinLogging
 import org.slf4j.event.Level
 
 private val log = KotlinLogging.logger {}
+const val APP_ENDPOINT = "okonomi-ktor-template"
 const val X_CORRELATION_ID = "x-correlation-id"
 
 fun Application.installCommonFeatures() {
@@ -28,7 +29,7 @@ fun Application.installCommonFeatures() {
         logger = log
         level = Level.INFO
         callIdMdc(X_CORRELATION_ID)
-        filter { call -> call.request.path().startsWith("/api/ktor-template-utbetaling") }
+        filter { call -> call.request.path().startsWith("/api/$APP_ENDPOINT") }
         disableDefaultColors()
     }
     install(ContentNegotiation) {

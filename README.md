@@ -1,11 +1,11 @@
-# ktor-template-utbetaling
+# okonomi-ktor-template
 
 
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
 
 ## Tilpass repo-et
-1. Søk etter og erstatt `ktor-template-utbetaling` med det som skal være navnet på den nye appen.
+1. Søk etter og erstatt `okonomi-ktor-template` med det som skal være navnet på den nye appen.
 2. Søk etter og erstatt `prosjektnavn` med det som skal være navnet på den nye appen.
 3. Endre navnet på mappen `src/main/kotlin/no/nav/sokos/prosjektnavn` til noe som passer for den nye appen.
 
@@ -18,7 +18,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 4. [Sårbarhetsskanning av avhengigheter](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
 
 ## Bygge og kjøre prosjekt
-1. Bygg ktor-template-utbetaling ved å kjøre `gradle build`
+1. Bygg okonomi-ktor-template ved å kjøre `gradle build`
 1. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
 1. Appen nås på `URL`
 
@@ -39,9 +39,9 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
 ```
 ---
-[![Bygg, test og deploy](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/build-and-deploy.yaml)
-[![Deploy alarmer](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/alerts.yaml/badge.svg)](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/alerts.yaml)
-[![Sårbarhetsskanning av avhengigheter](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/ktor-template-utbetaling/actions/workflows/snyk.yaml)
+[![Bygg, test og deploy](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-deploy.yaml)
+[![Deploy alarmer](https://github.com/navikt/okonomi-ktor-template/actions/workflows/alerts.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/alerts.yaml)
+[![Sårbarhetsskanning av avhengigheter](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml)
 
 # Prosjektnavn
 Kort beskrivelse om prosjektet, og hav målet til prosjektet er

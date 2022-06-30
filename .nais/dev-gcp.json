@@ -1,12 +1,12 @@
 {
-  "app": "ktor-template-utbetaling",
+  "app": "okonomi-ktor-template",
   "team": "okonomi",
   "namespace": "okonomi",
   "slack-channel": "test-alerts-dev",
-  "slack-notify-type": "<!here> | ktor-template-utbetaling | ",
+  "slack-notify-type": "<!here> | okonomi-ktor-template | ",
   "minReplicas": "1",
   "maXReplicas": "2",
   "ingresses": [
-    "https://ktor-template-utbetaling.dev.nav.no"
+    "https://okonomi-ktor-template.dev.nav.no"
   ]
 }
