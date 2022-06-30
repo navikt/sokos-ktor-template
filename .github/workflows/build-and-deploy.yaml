@@ -9,6 +9,7 @@ on:
       - 'LICENCE'
       - 'CODEOWNERS'
       - '.gitignore'
+      - '.dockerignore'
       - '.github/workflows/alerts.yaml'
       - '.github/workflows/snyk.yaml'
       - '.nais/alerterator.yaml'

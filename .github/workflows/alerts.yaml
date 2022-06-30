@@ -6,11 +6,12 @@ on:
     paths-ignore:
       - '**.md'
       - 'LICENCE'
+      - 'Dockerfile'
       - 'CODEOWNERS'
       - '.gitignore'
+      - '.dockerignore'
       - '.github/workflows/build-and-deploy.yaml'
       - '.github/workflows/snyk.yaml'
-      - '.nais/naiserator.yaml'
 jobs:
   deploy-alerts-dev:
     name: Deploy alerts to dev
