@@ -1,0 +1,41 @@
+name: Deploy alarmer
+on:
+  push:
+    branches:
+      - master
+    paths-ignore:
+      - '**.md'
+      - 'LICENCE'
+      - 'CODEOWNERS'
+      - '.gitignore'
+      - '.github/workflows/build-and-deploy.yaml'
+      - '.github/workflows/snyk.yaml'
+      - '.nais/naiserator.yaml'
+jobs:
+  deploy-alerts-dev:
+    name: Deploy alerts to dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+      - name: Deploy alerts to dev
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/alerterator.yaml
+          VARS: .nais/dev-gcp.json
+
+#  deploy-alerts-prod:
+#    name: Deploy alerts to prod
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Checkout code
+#        uses: actions/checkout@v3
+#      - name: Deploy to prod
+#        uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: prod-gcp
+#          RESOURCE: .nais/alerterator.yaml
+#          VARS: .nais/prod-gcp.json

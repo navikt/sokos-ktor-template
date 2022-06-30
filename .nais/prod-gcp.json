@@ -1,0 +1,12 @@
+{
+  "app": "ktor-template-utbetaling",
+  "team": "okonomi",
+  "namespace": "okonomi",
+  "slack-channel": "okonomi-alerts-prod",
+  "slack-notify-type": "<!here> | ktor-template-utbetaling | ",
+  "minReplicas": "1",
+  "maXReplicas": "2",
+  "ingresses": [
+    "https://ktor-template-utbetaling.prod.nav.no"
+  ]
+}
