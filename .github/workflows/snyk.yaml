@@ -4,6 +4,8 @@ on:
   workflow_run:
     workflows: [ "Bygg, test og deploy" ]
     types: [ completed ]
+  schedule:
+    - cron: '0 3 * * *'
 
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
@@ -46,12 +48,6 @@ jobs:
         with:
           image: ${{ env.IMAGE }}
           args: --file=Dockerfile --severity-threshold=high
-          json: true
-      - uses: garethr/snyk-to-sarif@master
-      - uses: actions/upload-artifact@v2
-        with:
-          name: SARIF
-          path: snyk.sarif
       - name: Upload the SARIF file
         uses: github/codeql-action/upload-sarif@v2
         with:
