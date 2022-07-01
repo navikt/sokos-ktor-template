@@ -20,7 +20,7 @@ jobs:
       - uses: 'docker://ghcr.io/sethvargo/ratchet:0.2.3'
         name: alerts.yaml - checking versions are pinned
         with:
-          args: 'check .github/workflows/alerts.yaml.yaml'
+          args: 'check .github/workflows/alerts.yaml'
 
       # Pinning
       - uses: 'docker://ghcr.io/sethvargo/ratchet:0.2.3'
