@@ -12,6 +12,7 @@ on:
       - '.dockerignore'
       - '.github/workflows/build-and-deploy.yaml'
       - '.github/workflows/snyk.yaml'
+      - '.github/workflows/ratchet.yaml'
 jobs:
   deploy-alerts-dev:
     name: Deploy alerts to dev
