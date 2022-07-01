@@ -12,7 +12,6 @@ on:
       - '.dockerignore'
       - '.github/workflows/alerts.yaml'
       - '.github/workflows/snyk.yaml'
-      - '.github/workflows/ratchet.yaml'
       - '.nais/alerterator.yaml'
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
