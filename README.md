@@ -26,6 +26,16 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
    1. NB! Anbefales å gjøre dette slik med mindre du har behov for å opprette to filer for `naiserator.yaml` og `alerterator.yaml` for å fylle applikasjonens behov
       1. [.nais/alerterator.yaml](.nais/alerterator.yaml) -> Default er lagt inn. Legg inn det applikasjonen har behov for
       2. [.nais/naiserator.yaml](.nais/naiserator.yaml) -> Default er lagt inn. Legg inn det applikasjonen har behov for 
+
+## Plugins
+1. [Detekt](https://detekt.dev/)
+    - `./gradlew detekt`
+        - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
+2. [Ktlint](https://ktlint.github.io/)
+    - `./gradlew ktlintFormat`
+        - Formaterer koden din basert på Kotlin kodestil som f.eks indenting, wildcard imports osv.
+
+
 # NB!! Kommer du på noe lurt vi bør ha med i template som default så opprett gjerne en PR 
   
 ## Henvendelser
@@ -80,15 +90,3 @@ Trenger jeg vite noe mer? Skriv her!
 
 ## Swagger URL
 Hva er url til Lokal, dev og prod?
-
----
-
-## Formatering og kodestil 
-
-- [Detekt](https://detekt.dev/)
-  - `./gradlew detekt` 
-    - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
-- [Ktlint](https://ktlint.github.io/)
-  - `./gradlew ktlintFormat`
-    - Formaterer koden din basert på Kotlin kodestil som f.eks indenting, wildcard imports osv.
-
