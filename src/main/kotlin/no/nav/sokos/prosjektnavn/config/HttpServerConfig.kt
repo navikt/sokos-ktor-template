@@ -10,7 +10,7 @@ import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.util.ApplicationState
 import java.util.concurrent.TimeUnit
 
-private const val GRACEPERIOD = 5L
+private const val GRACE_PERIOD = 5L
 private const val TIMEOUT = 5L
 
 class HttpServerConfig(
@@ -26,5 +26,5 @@ class HttpServerConfig(
     }
 
     fun start() = embeddedServer.start(wait = true)
-    fun stop() = embeddedServer.stop(GRACEPERIOD, TIMEOUT, TimeUnit.SECONDS)
+    fun stop() = embeddedServer.stop(GRACE_PERIOD, TIMEOUT, TimeUnit.SECONDS)
 }

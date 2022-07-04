@@ -13,7 +13,7 @@ import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.path
 import mu.KotlinLogging
 import org.slf4j.event.Level
-import java.util.*
+import java.util.UUID
 
 private val log = KotlinLogging.logger {}
 const val APP_ENDPOINT = "okonomi-ktor-template"

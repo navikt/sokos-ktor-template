@@ -2,7 +2,6 @@
 
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
-
 ## Tilpass repo-et
 1. Søk etter og erstatt `okonomi-ktor-template` med det som skal være navnet på den nye appen.
 2. Søk etter og erstatt `prosjektnavn` med det som skal være navnet på den nye appen.
@@ -81,3 +80,15 @@ Trenger jeg vite noe mer? Skriv her!
 
 ## Swagger URL
 Hva er url til Lokal, dev og prod?
+
+---
+
+## Formatering og kodestil 
+
+- [Detekt](https://detekt.dev/)
+  - `./gradlew detekt` 
+    - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
+- [Ktlint](https://ktlint.github.io/)
+  - `./gradlew ktlintFormat`
+    - Formaterer koden din basert på Kotlin kodestil som f.eks indenting, wildcard imports osv.
+
