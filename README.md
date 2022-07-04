@@ -10,13 +10,13 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 ## Workflows
 
 #### - Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
-1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
-2. [Bygg, test og deploy](.github/workflows/build-and-deploy.yaml) -> For å teste, bygge prosjeket og bygge Docker image. Den vil også pushe [naiserator.yaml](.nais/naiserator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
-3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
-4. [Sårbarhetsskanning av avhengigheter](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
+1. [Deploy alarmer](.github/workflow_files/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
+2. [Bygg, test og deploy](.github/workflow_files/build-and-deploy.yaml) -> For å teste, bygge prosjeket og bygge Docker image. Den vil også pushe [naiserator.yaml](.nais/naiserator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
+3. [Bygg og test PR](.github/workflow_files/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
+4. [Sårbarhetsskanning av avhengigheter](.github/workflow_files/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
 
 ## Bygge og kjøre prosjekt
-1. Bygg okonomi-ktor-template ved å kjøre `gradle build`
+1. Bygg okonomi-ktor-template ved å kjøre `./gradlew build`
 1. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
 1. Appen nås på `URL`
 
