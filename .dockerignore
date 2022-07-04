@@ -1,4 +1,5 @@
-*
-!*.gradle.kts
-!src
-!build/libs
+# Ignore everything
+**
+
+# Except shadow jar
+!build/libs/*.jar

@@ -20,5 +20,4 @@ object Metrics {
         .name("app_state_ready_false")
         .help("app state ready changed to false")
         .register(prometheusRegistry.prometheusRegistry)
-
 }

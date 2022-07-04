@@ -11,9 +11,11 @@ fun main() {
 
     applicationState.ready = true
 
-    Runtime.getRuntime().addShutdownHook(Thread {
-        applicationState.ready = false
-        httpServer.stop()
-    })
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            applicationState.ready = false
+            httpServer.stop()
+        }
+    )
     httpServer.start()
 }

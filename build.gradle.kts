@@ -1,7 +1,7 @@
-import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import io.gitlab.arturbosch.detekt.Detekt
+import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "2.0.3"
 val kotlinVersion = "1.7.0"
@@ -17,6 +17,7 @@ plugins {
     kotlin("plugin.serialization") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
     id("io.gitlab.arturbosch.detekt") version "1.21.0-RC2"
+    id("org.jlleitschuh.gradle.ktlint") version "10.3.0"
 }
 
 group = "no.nav.sokos.prosjektnavn"
@@ -91,5 +92,4 @@ tasks.withType<Test> {
     // For å øke hastigheten på build kan vi benytte disse metodene
     maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
     reports.forEach { report -> report.required.value(false) }
-
 }

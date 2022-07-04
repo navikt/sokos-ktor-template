@@ -1,10 +1,11 @@
 package no.nav.sokos.prosjektnavn.util
 
-import kotlin.properties.Delegates
 import no.nav.sokos.prosjektnavn.metrics.Metrics
+import kotlin.properties.Delegates
 
 class ApplicationState(
-    alive: Boolean = true, ready: Boolean = false
+    alive: Boolean = true,
+    ready: Boolean = false
 ) {
     var alive: Boolean by Delegates.observable(alive) { _, _, newValue ->
         if (!newValue) Metrics.appStateReadyFalse.inc()

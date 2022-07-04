@@ -4,11 +4,11 @@ import installCommonFeatures
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
-import java.util.concurrent.TimeUnit
 import no.nav.sokos.prosjektnavn.api.helloApi
 import no.nav.sokos.prosjektnavn.api.metricsApi
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.util.ApplicationState
+import java.util.concurrent.TimeUnit
 
 private const val GRACEPERIOD = 5L
 private const val TIMEOUT = 5L

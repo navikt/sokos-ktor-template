@@ -11,9 +11,9 @@ import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.server.request.path
-import java.util.*
 import mu.KotlinLogging
 import org.slf4j.event.Level
+import java.util.*
 
 private val log = KotlinLogging.logger {}
 const val APP_ENDPOINT = "okonomi-ktor-template"
