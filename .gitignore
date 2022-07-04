@@ -37,3 +37,7 @@ out/
 
 ### OS ###
 .DS_Store
+
+### Detekt ###
+detekt*.xml
+config

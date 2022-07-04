@@ -1,6 +1,7 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import io.gitlab.arturbosch.detekt.Detekt
 
 val ktorVersion = "2.0.3"
 val kotlinVersion = "1.7.0"
@@ -15,6 +16,7 @@ plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
+    id("io.gitlab.arturbosch.detekt") version "1.21.0-RC2"
 }
 
 group = "no.nav.sokos.prosjektnavn"
@@ -55,6 +57,17 @@ dependencies {
     testImplementation("org.junit.jupiter:junit-jupiter-api:$junitJupiterVersion")
     testImplementation("org.junit.jupiter:junit-jupiter-params:$junitJupiterVersion")
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
+}
+
+detekt {
+    toolVersion = "1.21.0-RC2"
+    source = files("src/main/kotlin", "src/test/kotlin")
+}
+
+tasks.withType<Detekt>().configureEach {
+    reports {
+        html.required.set(true)
+    }
 }
 
 tasks.named<ShadowJar>("shadowJar") {

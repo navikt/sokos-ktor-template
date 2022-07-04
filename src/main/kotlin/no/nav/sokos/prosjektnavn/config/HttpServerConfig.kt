@@ -10,6 +10,9 @@ import no.nav.sokos.prosjektnavn.api.metricsApi
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.util.ApplicationState
 
+private const val GRACEPERIOD = 5L
+private const val TIMEOUT = 5L
+
 class HttpServerConfig(
     applicationState: ApplicationState,
     port: Int = 8080,
@@ -23,5 +26,5 @@ class HttpServerConfig(
     }
 
     fun start() = embeddedServer.start(wait = true)
-    fun stop() = embeddedServer.stop(5, 5, TimeUnit.SECONDS)
+    fun stop() = embeddedServer.stop(GRACEPERIOD, TIMEOUT, TimeUnit.SECONDS)
 }
