@@ -28,7 +28,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
       2. [.nais/naiserator.yaml](.nais/naiserator.yaml) -> Default er lagt inn. Legg inn det applikasjonen har behov for 
 
 ## Plugins
-1. [Detekt](https://detekt.dev/)
+1. [Detekt](https://detekt.dev/) - Kode analyse verktøy
     - `./gradlew detekt`
         - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
 
