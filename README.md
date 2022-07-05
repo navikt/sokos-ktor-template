@@ -31,10 +31,6 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 1. [Detekt](https://detekt.dev/)
     - `./gradlew detekt`
         - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
-2. [Ktlint](https://ktlint.github.io/)
-    - `./gradlew ktlintFormat`
-        - Formaterer koden din basert på Kotlin kodestil som f.eks indenting, wildcard imports osv.
-
 
 # NB!! Kommer du på noe lurt vi bør ha med i template som default så opprett gjerne en PR 
   
