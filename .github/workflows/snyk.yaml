@@ -2,7 +2,7 @@ name: Sikkerhet
 
 on:
   workflow_run:
-    workflows: [ "Deploy til dev og prod" ]
+    workflows: [ "Bygg og test" ]
     types: [ completed ]
   schedule:
     - cron: '0 3 * * *'

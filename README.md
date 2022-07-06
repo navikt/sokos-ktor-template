@@ -10,10 +10,48 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 ## Workflows
 
 #### - Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
-1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
-2. [Bygg, test og deploy](.github/workflows/build-and-test.yaml) -> For å teste, bygge prosjeket og bygge Docker image. Den vil også pushe [naiserator.yaml](.nais/naiserator.yaml) for både prod og dev (Env variabler hentes fra [dev-gcp.json](.nais/dev-gcp.json) og [prod-gcp.json](.nais/prod-gcp.json))
-3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
-4. [Sårbarhetsskanning av avhengigheter](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
+1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) og pushe alarmer for både prod og dev
+   1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator.yaml](.nais/naiserator.yaml)
+2. [Bygg og test](.github/workflows/build-and-test.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
+   1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
+3. [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) -> For å pushe [naiserator.yaml](.nais/naiserator.yaml) og deploye applikasjonen til dev og prod
+   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-and-test.yaml) går gjennom
+4. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
+   1. Denne workflow kjøres kun når det opprettes pull requester
+5. [Sikkerhet](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
+   1. Denne kjøres når [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) har kjørt ferdig
+
+NB! Hvis du ønsker at [Sikkerhet](.github/workflows/snyk.yaml) kjøres først og [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) kjøres NÅR `Sikkerhet` er ferdig så gjør følgende:
+
+i [snyk.yaml](.github/workflows/snyk.yaml) endrer du fra:
+```
+on:
+  workflow_run:
+    workflows: [ "Deploy til dev og prod" ]
+```
+til
+```
+on:
+  workflow_run:
+    workflows: [ "Bygg og test" ]
+```
+
+
+
+i [deploy-dev-prod.yaml](.github/workflows/deploy-dev-prod.yaml) endrer du fra:
+```
+on:
+  workflow_run:
+    workflows: [ "Bygg og test" ]
+```
+til
+```
+on:
+  workflow_run:
+    workflows: [ "Sikkerhet" ]
+```
+
+`
 
 ## Bygge og kjøre prosjekt
 1. Bygg okonomi-ktor-template ved å kjøre `./gradlew build`
