@@ -9,7 +9,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
 ## Workflows
 
-#### - Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
+NB! Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
 1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) og pushe alarmer for både prod og dev
    1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator.yaml](.nais/naiserator.yaml)
 2. [Bygg og test](.github/workflows/build-and-test.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
@@ -51,10 +51,8 @@ on:
     workflows: [ "Sikkerhet" ]
 ```
 
-`
-
 ## Bygge og kjøre prosjekt
-1. Bygg okonomi-ktor-template ved å kjøre `./gradlew build`
+1. Bygg `okonomi-ktor-template` ved å kjøre `./gradlew shadowJar`
 1. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
 1. Appen nås på `URL`
 

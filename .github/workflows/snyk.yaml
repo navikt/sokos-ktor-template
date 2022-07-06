@@ -2,8 +2,10 @@ name: Sikkerhet
 
 on:
   workflow_run:
-    workflows: [ "Bygg og test" ]
-    types: [ completed ]
+    workflows:
+      - Bygg og test
+    types:
+      - completed
   schedule:
     - cron: '0 3 * * *'
 
