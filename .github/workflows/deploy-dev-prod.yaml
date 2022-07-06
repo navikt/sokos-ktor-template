@@ -2,7 +2,7 @@ name: Deploy til dev og prod
 
 on:
   workflow_run:
-    workflows: [Sårbarhetstester]
+    workflows: ["Sårbarhetstester"]
     types:
       - completed
 
