@@ -2,8 +2,7 @@ name: Sårbarhetstester
 
 on:
   workflow_run:
-    workflows:
-      - Bygg og test
+    workflows: [Bygg og test]
     types:
       - completed
   schedule:
