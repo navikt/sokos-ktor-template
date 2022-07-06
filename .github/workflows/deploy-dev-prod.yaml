@@ -8,7 +8,6 @@ on:
 jobs:
   deploy-dev-gcp:
     name: Deploy til dev-gcp
-    needs: build-push-docker-image
     if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
     runs-on: ubuntu-latest
     steps:
@@ -22,7 +21,7 @@ jobs:
 
 #  deploy-prod-gcp:
 #    name: Deploy til prod-gcp
-#    needs: [ docker-build-and-push, deploy-dev-gcp ]
+#    needs: [ deploy-dev-gcp ]
 #    if: github.ref == 'refs/heads/master'
 #    runs-on: ubuntu-latest
 #    steps:
