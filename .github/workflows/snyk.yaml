@@ -2,7 +2,7 @@ name: Sårbarhetstester
 
 on:
   workflow_run:
-    workflows: ["Bygg og test"]
+    workflows: ["Deloy til dev og prod"]
     types:
       - completed
   schedule:
@@ -17,6 +17,7 @@ env:
 jobs:
   app-dependencies-vulnerabilities:
     name: Skanner applikasjon for sårbarheter
+    if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@master

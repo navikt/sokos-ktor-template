@@ -36,9 +36,7 @@ on:
     workflows: [ "Bygg og test" ]
 ```
 
-
-
-i [deploy-dev-prod.yaml](.github/workflows/deploy-dev-prod.yaml) endrer du fra:
+og i [deploy-dev-prod.yaml](.github/workflows/deploy-dev-prod.yaml) endrer du fra:
 ```
 on:
   workflow_run:
@@ -48,8 +46,9 @@ til
 ```
 on:
   workflow_run:
-    workflows: [ "Sikkerhet" ]
+    workflows: [ "Sårbarhetstester" ]
 ```
+
 
 ## Bygge og kjøre prosjekt
 1. Bygg `okonomi-ktor-template` ved å kjøre `./gradlew shadowJar`
