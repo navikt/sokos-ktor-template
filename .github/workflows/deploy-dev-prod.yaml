@@ -5,6 +5,9 @@ on:
     workflows: [ "Bygg og test" ]
     types: [ completed ]
 
+env:
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
+
 jobs:
   deploy-dev-gcp:
     name: Deploy til dev-gcp
