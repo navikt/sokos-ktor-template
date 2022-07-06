@@ -13,7 +13,7 @@ fun Application.helloApi() {
     routing {
         route(BASE_ENDPOINT) {
             get("/hello") {
-                call.respondText { "Hello there! This is from NAIS Cloud! :)" }
+                call.respondText { "Hei! Dette er ny workflow enabled! :)" }
             }
         }
     }

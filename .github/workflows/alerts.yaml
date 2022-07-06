@@ -10,7 +10,7 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.dockerignore'
-      - '.github/workflows/build-and-deploy.yaml'
+      - '.github/workflows/build-and-test.yaml'
       - '.github/workflows/snyk.yaml'
 jobs:
   deploy-alerts-dev:

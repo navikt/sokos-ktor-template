@@ -1,4 +1,4 @@
-name: Bygg, test og deploy
+name: Bygg og test
 
 on:
   push:
@@ -17,7 +17,6 @@ env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 jobs:
   test-build-app:
@@ -61,20 +60,20 @@ jobs:
           push: true
           tags: ${{ env.IMAGE }}
 
-  deploy-dev-gcp:
-    name: Deploy til dev-gcp
-    needs: build-push-docker-image
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v1
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/naiserator.yaml
-          VARS: .nais/dev-gcp.json
-
+#  deploy-dev-gcp:
+#    name: Deploy til dev-gcp
+#    needs: build-push-docker-image
+#    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: dev-gcp
+#          RESOURCE: .nais/naiserator.yaml
+#          VARS: .nais/dev-gcp.json
+#
 #  deploy-prod-gcp:
 #    name: Deploy til prod-gcp
 #    needs: [ docker-build-and-push, deploy-dev-gcp ]

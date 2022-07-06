@@ -1,0 +1,35 @@
+name: Deploy til dev og prod
+
+on:
+  workflow_run:
+    workflows: [ "Bygg og test" ]
+    types: [ completed ]
+
+jobs:
+  deploy-dev-gcp:
+    name: Deploy til dev-gcp
+    needs: build-push-docker-image
+    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/naiserator.yaml
+          VARS: .nais/dev-gcp.json
+
+#  deploy-prod-gcp:
+#    name: Deploy til prod-gcp
+#    needs: [ docker-build-and-push, deploy-dev-gcp ]
+#    if: github.ref == 'refs/heads/master'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v1
+#      - uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: prod-gcp
+#          RESOURCE: .nais/naiserator.yaml
+#          VARS: .nais/prod-gcp.json
