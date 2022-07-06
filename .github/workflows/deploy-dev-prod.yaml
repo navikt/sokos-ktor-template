@@ -1,6 +1,7 @@
 name: Deploy til dev og prod
 
 on:
+  workflow_dispatch:
   workflow_run:
     workflows: ["Sårbarhetstester"]
     types:
@@ -12,7 +13,7 @@ env:
 jobs:
   deploy-dev-gcp:
     name: Deploy til dev-gcp
-    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
+    if: github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v1
