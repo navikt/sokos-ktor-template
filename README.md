@@ -78,9 +78,9 @@ on:
 Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
 ```
 ---
-[![Bygg, test og deploy](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-deploy.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-deploy.yaml)
-[![Deploy alarmer](https://github.com/navikt/okonomi-ktor-template/actions/workflows/alerts.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/alerts.yaml)
-[![Sårbarhetsskanning av avhengigheter](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml)
+[![Bygg og test](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-test.yaml)
+[![Deploy til dev og prod](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml)
+[![Sårbarhetstester](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml)
 
 # Prosjektnavn
 Kort beskrivelse om prosjektet, og hav målet til prosjektet er
