@@ -3,7 +3,7 @@ name: Deploy til dev og prod
 on:
   workflow_dispatch:
   workflow_run:
-    workflows: ["Bygg og test"]
+    workflows: ["Bygg og push Docker image"]
     types:
       - completed
 
@@ -16,7 +16,7 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v1
+      - uses: actions/checkout@v3
       - uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -26,11 +26,11 @@ jobs:
 
 #  deploy-prod-gcp:
 #    name: Deploy til prod-gcp
-#    needs: [ deploy-dev-gcp ]
+#    needs: deploy-dev-gcp
 #    if: github.ref == 'refs/heads/master'
 #    runs-on: ubuntu-latest
 #    steps:
-#      - uses: actions/checkout@v1
+#      - uses: actions/checkout@v3
 #      - uses: nais/deploy/actions/deploy@v1
 #        env:
 #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}

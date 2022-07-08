@@ -8,8 +8,8 @@ jobs:
     name: Bygg og test
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout
-        uses: actions/checkout@v1
+      - name: Sjekker ut repo
+        uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
       - uses: actions/setup-java@v3
@@ -25,7 +25,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Test and build
+      - name: Bygg og test shadowJar
         run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token

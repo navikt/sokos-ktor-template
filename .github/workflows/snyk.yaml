@@ -20,8 +20,8 @@ jobs:
     if: github.event.workflow_run.conclusion == 'success'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
-      - name: Run Snyk to check for vulnerabilities
+      - uses: actions/checkout@v3
+      - name: Kjører Snyk for å sjekke sårbarheter
         uses: snyk/actions/gradle@master
         with:
           command: monitor
@@ -29,20 +29,20 @@ jobs:
           json: true
 
   docker-image-vulnerabilities:
-    name: Skanner Docker image for sårbarheter
+    name: Skanner docker image for sårbarheter
     needs: app-dependencies-vulnerabilities
     runs-on: ubuntu-latest
     steps:
-      - name: Login to DockerHub
+      - name: Logger på Github Container Registry
         uses: docker/login-action@v2
         with:
           registry: ghcr.io
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ env.GITHUB_TOKEN }}
-      - name: Checkout repository
-        uses: actions/checkout@v1
+      - name: Sjekker ut repo
+        uses: actions/checkout@v3
       - run: docker pull ${{ env.IMAGE }}
-      - name: Scan Docker image for vulnerabilities
+      - name: Skanner docker image for sårbarheter
         continue-on-error: false
         uses: snyk/actions/docker@master
         env:

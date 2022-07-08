@@ -12,10 +12,10 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 NB! Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
 1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe opp [alerterator.yaml](.nais/alerterator.yaml) og pushe alarmer for både prod og dev
    1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator.yaml](.nais/naiserator.yaml)
-2. [Bygg og test](.github/workflows/build-and-test.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
+2. [Bygg og push Docker image](.github/workflows/build-and-push-docker-image.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
    1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
 3. [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) -> For å pushe [naiserator.yaml](.nais/naiserator.yaml) og deploye applikasjonen til dev og prod
-   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-and-test.yaml) går gjennom
+   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-and-push-docker-image.yaml) går gjennom
 4. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
    1. Denne workflow kjøres kun når det opprettes pull requester
 5. [Sårbarhetstester](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter. Kjøres hver natt kl 03:00
@@ -33,14 +33,14 @@ til
 ```
 on:
   workflow_run:
-    workflows: [ "Bygg og test" ]
+    workflows: [ "Bygg og push Docker image" ]
 ```
 
 og i [deploy-dev-prod.yaml](.github/workflows/deploy-dev-prod.yaml) endrer du fra:
 ```
 on:
   workflow_run:
-    workflows: [ "Bygg og test" ]
+    workflows: [ "Bygg og push Docker image" ]
 ```
 til
 ```
@@ -61,11 +61,6 @@ on:
    1. NB! Anbefales å gjøre dette slik med mindre du har behov for å opprette to filer for `naiserator.yaml` og `alerterator.yaml` for å fylle applikasjonens behov
       1. [.nais/alerterator.yaml](.nais/alerterator.yaml) -> Default er lagt inn. Legg inn det applikasjonen har behov for
       2. [.nais/naiserator.yaml](.nais/naiserator.yaml) -> Default er lagt inn. Legg inn det applikasjonen har behov for 
-
-## Plugins
-1. [Detekt](https://detekt.dev/) - Kode analyse verktøy
-    - `./gradlew detekt`
-        - Når kommandoen er kjørt kan du åpne rapporten her -> [build/reports/detekt/detekt.html](build/reports/detekt/detekt.html)
 
 # NB!! Kommer du på noe lurt vi bør ha med i template som default så opprett gjerne en PR 
   

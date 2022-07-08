@@ -10,16 +10,16 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.dockerignore'
-      - '.github/workflows/build-and-test.yaml'
+      - '.github/workflows/build-and-push-docker-image.yaml'
       - '.github/workflows/snyk.yaml'
 jobs:
   deploy-alerts-dev:
-    name: Deploy alerts to dev
+    name: Deploy alarmer til dev
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout code
+      - name: Sjekker ut kode
         uses: actions/checkout@v3
-      - name: Deploy alerts to dev
+      - name: Deploy til dev
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
@@ -27,16 +27,17 @@ jobs:
           RESOURCE: .nais/alerterator.yaml
           VARS: .nais/dev-gcp.json
 
-#  deploy-alerts-prod:
-#    name: Deploy alerts to prod
-#    runs-on: ubuntu-latest
-#    steps:
-#      - name: Checkout code
-#        uses: actions/checkout@v3
-#      - name: Deploy to prod
-#        uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: prod-gcp
-#          RESOURCE: .nais/alerterator.yaml
-#          VARS: .nais/prod-gcp.json
+  deploy-alerts-prod:
+    name: Deploy alarmer til prod
+    needs: deploy-alerts-dev
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekker ut kode
+        uses: actions/checkout@v3
+      - name: Deploy til prod
+        uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/alerterator.yaml
+          VARS: .nais/prod-gcp.json
