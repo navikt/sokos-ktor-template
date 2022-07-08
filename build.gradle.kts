@@ -13,7 +13,7 @@ val kotlinLoggingVersion = "2.1.23"
 
 plugins {
     kotlin("jvm") version "1.7.0"
-    kotlin("plugin.serialization") version "1.7.0"
+    kotlin("plugin.serialization") version "1.7.10"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
