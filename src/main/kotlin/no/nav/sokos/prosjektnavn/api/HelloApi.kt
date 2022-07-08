@@ -13,7 +13,7 @@ fun Application.helloApi() {
     routing {
         route(BASE_ENDPOINT) {
             get("/hello") {
-                call.respondText { "Hei! Dette er ny workflow." }
+                call.respondText { "Sjekker først hvor lang tid build tar med docker" }
             }
         }
     }
