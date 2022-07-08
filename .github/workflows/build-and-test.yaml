@@ -59,7 +59,7 @@ jobs:
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygger produksjons image
+      - name: Pushe produksjons image
         uses: docker/build-push-action@v3
         with:
           context: .
@@ -68,31 +68,3 @@ jobs:
           tags: ${{ env.IMAGE }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
-
-#  deploy-dev-gcp:
-#    name: Deploy til dev-gcp
-#    needs: build-push-docker-image
-#    if: github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: dev-gcp
-#          RESOURCE: .nais/naiserator.yaml
-#          VARS: .nais/dev-gcp.json
-#
-#  deploy-prod-gcp:
-#    name: Deploy til prod-gcp
-#    needs: [ docker-build-and-push, deploy-dev-gcp ]
-#    if: github.ref == 'refs/heads/master'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v1
-#      - uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: prod-gcp
-#          RESOURCE: .nais/naiserator.yaml
-#          VARS: .nais/prod-gcp.json
