@@ -60,7 +60,7 @@ jobs:
           password: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Bygger produksjons image
-      - uses: docker/build-push-action@v3
+        uses: docker/build-push-action@v3
         with:
           context: .
           file: Dockerfile
