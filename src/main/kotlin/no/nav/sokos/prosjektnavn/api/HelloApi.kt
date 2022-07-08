@@ -13,7 +13,7 @@ fun Application.helloApi() {
     routing {
         route(BASE_ENDPOINT) {
             get("/hello") {
-                call.respondText { "Trigger docker cache nå?" }
+                call.respondText { "Tester om cache kicker inn nå" }
             }
         }
     }
