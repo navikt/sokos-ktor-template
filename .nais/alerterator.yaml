@@ -1,0 +1,47 @@
+apiVersion: "nais.io/v1"
+kind: "Alert"
+metadata:
+  name: {{app}}-alerts
+  labels:
+    team: {{team}}
+  namespace: {{namespace}}
+spec:
+  receivers:
+    slack:
+      channel: {{slack-channel}}
+      prependText: "{{{slack-notify-type}}}"
+  alerts:
+    - alert: Applikasjon nede
+      severity: danger
+      expr: sum(up{app="{{app}}", job="kubernetes-pods"}) == 0
+      for: 1m
+      description: "App \{{ $labels.app }} er nede i namespace \{{ $labels.kubernetes_namespace }}"
+      action: "`kubectl describe pod \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}` for events, og `kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}` for logger"
+
+    - alert: Høy andel warning i logger
+      severity: warning
+      expr: sum by (log_app) (increase(logd_messages_total{log_app="{{app}}",log_level=~"Warning"}[3m])) > 100
+      for: 1m
+      description: "Høy feilrate på \{{ $labels.app }} i \{{ $labels.kubernetes_namespace }}"
+      action: "Sjekk loggene til app \{{ $labels.log_app }} i namespace \{{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
+
+    - alert: Høy andel error i logger
+      severity: danger
+      expr: sum by (log_app) (increase(logd_messages_total{log_app="{{app}}",log_level=~"Error"}[3m])) > 0
+      for: 1m
+      description: "Høy feilrate på \{{ $labels.app }} i \{{ $labels.kubernetes_namespace }}"
+      action: "Sjekk loggene til app \{{ $labels.log_app }} i namespace \{{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
+
+#    - alert: Høy andel HTTP serverfeil (5xx responser)
+#      severity: danger
+#      expr:
+#      for:
+#      description: "Beskrivelse"
+#      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}`"
+#
+#    - alert: Høy andel HTTP klientfeil (4xx responser)
+#      severity: danger
+#      expr:
+#      for:
+#      description: "Beskrivelse"
+#      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}`"

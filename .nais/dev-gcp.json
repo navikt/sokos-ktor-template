@@ -1,0 +1,12 @@
+{
+  "app": "okonomi-ktor-template",
+  "team": "okonomi",
+  "namespace": "okonomi",
+  "slack-channel": "test-alerts-dev",
+  "slack-notify-type": "<!here> | okonomi-ktor-template | ",
+  "minReplicas": "1",
+  "maXReplicas": "2",
+  "ingresses": [
+    "https://okonomi-ktor-template.dev.nav.no"
+  ]
+}
