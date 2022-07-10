@@ -43,10 +43,10 @@ jobs:
         env:
           SLACK_CHANNEL: po-utbetaling-workflow
           SLACK_COLOR: '#ff0000'
-          SLACK_ICON: https://library.kissclipart.com/20181123/hqe/kissclipart-mail-error-icon-clipart-computer-icons-email-0b0e6595c8731682.jpg
+          SLACK_ICON: https://user-images.githubusercontent.com/29889280/178134303-4556873f-b2d6-46a0-b5af-a587b0fabb96.png
           SLACK_TITLE: ${{ github.repository }}
-          SLACK_MESSAGE: 'Whoops.. Workflow feilet! :ghost:'
+          SLACK_MESSAGE: 'Bygg og test PR feilet! :ghost:'
           SLACK_USERNAME: workflowBot
           MSG_MINIMAL: actions url,commit
-          SLACK_FOOTER: 'po-utbetaling :rocket:'
+          SLACK_FOOTER: 'po-utbetaling'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}

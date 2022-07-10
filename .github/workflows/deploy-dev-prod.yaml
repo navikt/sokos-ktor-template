@@ -24,19 +24,19 @@ jobs:
           RESOURCE: .nais/naiserator.yaml
           VARS: .nais/dev-gcp.json
 
-#  deploy-prod-gcp:
-#    name: Deploy til prod-gcp
-#    needs: deploy-dev-gcp
-#    if: github.ref == 'refs/heads/master'
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v3
-#      - uses: nais/deploy/actions/deploy@v1
-#        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-#          CLUSTER: prod-gcp
-#          RESOURCE: .nais/naiserator.yaml
-#          VARS: .nais/prod-gcp.json
+  deploy-prod-gcp:
+    name: Deploy til prod-gcp
+    needs: deploy-dev-gcp
+    if: github.ref == 'refs/heads/master'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: prod-gcp
+          RESOURCE: .nais/naiserator.yaml
+          VARS: .nais/prod-gcp.json
 
   reportFailure:
     name: Slack notifikasjon bygg feiler
@@ -51,10 +51,10 @@ jobs:
         env:
           SLACK_CHANNEL: po-utbetaling-workflow
           SLACK_COLOR: '#ff0000'
-          SLACK_ICON: https://library.kissclipart.com/20181123/hqe/kissclipart-mail-error-icon-clipart-computer-icons-email-0b0e6595c8731682.jpg
+          SLACK_ICON: https://user-images.githubusercontent.com/29889280/178134303-4556873f-b2d6-46a0-b5af-a587b0fabb96.png
           SLACK_TITLE: ${{ github.repository }}
-          SLACK_MESSAGE: 'Whoops.. Workflow feilet! :ghost:'
+          SLACK_MESSAGE: 'Deploy til dev og prod feilet! :ghost:'
           SLACK_USERNAME: workflowBot
           MSG_MINIMAL: actions url,commit
-          SLACK_FOOTER: 'po-utbetaling :rocket:'
+          SLACK_FOOTER: 'po-utbetaling'
           SLACK_WEBHOOK: ${{ secrets.SLACK_WEBHOOK }}
