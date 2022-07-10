@@ -62,6 +62,7 @@ jobs:
         env:
           SLACK_CHANNEL: po-utbetaling-workflow
           SLACK_COLOR: '#ff0000'
+          SLACK_ICON: ''
           SLACK_TITLE: ${{ github.repository }}
           SLACK_MESSAGE: 'Sårbarhetstester feilet! :ghost:'
           SLACK_USERNAME: workflowBot
