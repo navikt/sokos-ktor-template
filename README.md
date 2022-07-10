@@ -73,7 +73,7 @@ on:
 Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
 ```
 ---
-[![Bygg og test](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-test.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-test.yaml)
+[![Bygg og push Docker image](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-push-docker-image.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-push-docker-image.yaml)
 [![Deploy til dev og prod](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml)
 [![Sårbarhetstester](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml)
 
