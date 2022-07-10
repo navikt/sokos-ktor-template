@@ -75,7 +75,6 @@ jobs:
         env:
           SLACK_CHANNEL: po-utbetaling-workflow
           SLACK_COLOR: '#ff0000'
-          SLACK_ICON: https://user-images.githubusercontent.com/29889280/178134303-4556873f-b2d6-46a0-b5af-a587b0fabb96.png
           SLACK_TITLE: ${{ github.repository }}
           SLACK_MESSAGE: 'Bygg og push Docker image feilet! :ghost:'
           SLACK_USERNAME: workflowBot
