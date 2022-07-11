@@ -13,7 +13,7 @@ fun Application.helloApi() {
     routing {
         route(BASE_ENDPOINT) {
             get("/hello") {
-                call.respondText { "Funker dynamisk navn på workflow og job nå?" }
+                call.respondText { "Dette er et eksempel API :) Slett meg hvis du vil!" }
             }
         }
     }
