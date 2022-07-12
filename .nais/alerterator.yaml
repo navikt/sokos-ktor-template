@@ -13,35 +13,37 @@ spec:
   alerts:
     - alert: Applikasjon nede
       severity: danger
-      expr: sum(up{app="{{app}}", job="kubernetes-pods"}) == 0
-      for: 1m
+      expr: kube_deployment_status_replicas_available{deployment="{{app}}"} == 0
+      for: 2m
       description: "App {{ $labels.app }} er nede i namespace {{ $labels.kubernetes_namespace }}"
-      action: "`kubectl describe pod {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for events, og `kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}` for logger"
+      action: "`kubectl describe pod -l app={{ $labels.app }} -n {{ $labels.namespace }}` for events, og `kubectl logs -l app={{ $labels.app }} -n {{ $labels.namespace }}` for logger"
 
-    - alert: Høy andel warning i logger
+    - alert: Høy warning feilrate i logger
       severity: warning
-      expr: sum by (log_app) (increase(logd_messages_total{log_app="{{app}}",log_level=~"Warning"}[3m])) > 100
-      for: 1m
-      description: "Høy feilrate på {{ $labels.app }} i {{ $labels.kubernetes_namespace }}"
+      expr: (100 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="{{app}}",log_level=~"Warning"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="{{app}}"}[3m]))) > 10
+      for: 3m
       action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
 
-    - alert: Høy andel error i logger
+    - alert: Høy error feilrate i logger
       severity: danger
-      expr: sum by (log_app) (increase(logd_messages_total{log_app="{{app}}",log_level=~"Error"}[3m])) > 0
-      for: 1m
-      description: "Høy feilrate på {{ $labels.app }} i {{ $labels.kubernetes_namespace }}"
+      expr: (100 * sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="{{app}}",log_level=~"Error"}[3m])) / sum by (log_app, log_namespace) (rate(logd_messages_total{log_app="{{app}}"}[3m]))) > 1
+      for: 3m
       action: "Sjekk loggene til app {{ $labels.log_app }} i namespace {{ $labels.log_namespace }}, for å se hvorfor det er så mye feil"
 
-#    - alert: Høy andel HTTP serverfeil (5xx responser)
-#      severity: danger
-#      expr:
-#      for:
-#      description: "Beskrivelse"
-#      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}`"
-#
-#    - alert: Høy andel HTTP klientfeil (4xx responser)
-#      severity: danger
-#      expr:
-#      for:
-#      description: "Beskrivelse"
-#      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }} -c \{{ $labels.app }}`"
+    - alert: Feil i helsesjekk
+      severity: warning
+      expr: health_check_status{app="{{app}}"} > 0
+      for: 1m
+      action: "Sjekk app {{ $labels.app }} i namespace {{ $labels.kubernetes_namespace }} sine selftest for å se hva som er galt"
+
+    - alert: Høy andel HTTP serverfeil (5xx responser)
+      severity: danger
+      expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^5\\d\\d", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 1
+      for: 3m
+      action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
+
+    - alert: Høy andel HTTP klientfeil (401|403 responser)
+      severity: danger
+      expr: (100 * (sum by (backend) (rate(response_total{status_code=~"401|403", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 10
+      for: 3m
+      action: "Sjekk loggene for å se hvorfor {{ $labels.backend }} returnerer HTTP feilresponser"
