@@ -8,6 +8,9 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import io.ktor.server.routing.routing
+import no.nav.sokos.prosjektnavn.util.IkkeFunnetException
+import no.nav.sokos.prosjektnavn.util.IkkeTilgangException
+import no.nav.sokos.prosjektnavn.util.IkkeTilgjengeligException
 
 const val BASE_ENDPOINT = "okonomi-ktor-template"
 
@@ -15,13 +18,14 @@ fun Application.helloApi() {
     routing {
         route(BASE_ENDPOINT) {
             get("/forbidden") {
-                call.respond(HttpStatusCode.Forbidden)
+                println("Kommer du hit?")
+                throw IkkeTilgangException("Ingen tilgang", null)
             }
-            get("/unauthorized") {
-                call.respond(HttpStatusCode.Unauthorized)
+            get("/ikkefunnet") {
+                throw IkkeFunnetException("Ikke funnet", null)
             }
             get("/internalservererror") {
-                call.respond(HttpStatusCode.InternalServerError)
+                throw IkkeTilgjengeligException("App nede!", null)
             }
         }
     }

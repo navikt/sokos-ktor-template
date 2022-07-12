@@ -10,16 +10,21 @@ import io.ktor.server.plugins.callid.CallId
 import io.ktor.server.plugins.callid.callIdMdc
 import io.ktor.server.plugins.callloging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.path
 import mu.KotlinLogging
 import org.slf4j.event.Level
 import java.util.UUID
+import no.nav.sokos.prosjektnavn.util.exceptionhandler
 
 private val log = KotlinLogging.logger {}
 const val APP_ENDPOINT = "okonomi-ktor-template"
 const val X_CORRELATION_ID = "x-correlation-id"
 
 fun Application.installCommonFeatures() {
+    install(StatusPages) {
+        exceptionhandler()
+    }
     install(CallId) {
         header(X_CORRELATION_ID)
         generate { UUID.randomUUID().toString() }
