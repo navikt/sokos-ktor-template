@@ -11,7 +11,7 @@ fun StatusPagesConfig.exceptionhandler() {
     exception<Throwable> { call, cause ->
         when (cause) {
             is IkkeTilgjengeligException -> {
-                logger.warn(cause) { "Uventet feil" }
+                logger.error(cause) { "Uventet feil" }
                 call.respond(HttpStatusCode.InternalServerError)
             }
             is IkkeTilgangException -> {

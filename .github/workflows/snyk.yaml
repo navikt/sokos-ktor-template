@@ -1,4 +1,4 @@
-name: Sårbarhetstester
+name: Sikkerhet
 
 on:
   workflow_run:
