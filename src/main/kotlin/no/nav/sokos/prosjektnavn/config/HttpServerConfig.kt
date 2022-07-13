@@ -1,6 +1,5 @@
 package no.nav.sokos.prosjektnavn.config
 
-import installCommonFeatures
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
