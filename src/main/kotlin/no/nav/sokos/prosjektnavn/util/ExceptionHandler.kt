@@ -11,7 +11,7 @@ fun StatusPagesConfig.exceptionhandler() {
     exception<Throwable> { call, cause ->
         when (cause) {
             is IkkeTilgjengeligException -> {
-                logger.error(cause) { "Uventet feil" }
+                logger.warn(cause) { "Uventet feil" }
                 call.respond(HttpStatusCode.InternalServerError)
             }
             is IkkeTilgangException -> {
@@ -26,11 +26,11 @@ fun StatusPagesConfig.exceptionhandler() {
     }
 }
 
-class IkkeTilgjengeligException(override val message: String?, override val cause: Throwable?) :
+data class IkkeTilgjengeligException(override val message: String?, override val cause: Throwable?) :
     RuntimeException(message, cause)
 
-class IkkeFunnetException(override val message: String?, override val cause: Throwable?) :
+data class IkkeFunnetException(override val message: String?, override val cause: Throwable?) :
     RuntimeException(message, cause)
 
-class IkkeTilgangException(override val message: String?, override val cause: Throwable?) :
+data class IkkeTilgangException(override val message: String?, override val cause: Throwable?) :
     RuntimeException(message, cause)
