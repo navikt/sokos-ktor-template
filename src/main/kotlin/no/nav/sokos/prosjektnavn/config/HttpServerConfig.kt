@@ -3,7 +3,6 @@ package no.nav.sokos.prosjektnavn.config
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
-import no.nav.sokos.prosjektnavn.api.helloApi
 import no.nav.sokos.prosjektnavn.api.metricsApi
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.util.ApplicationState
@@ -21,7 +20,6 @@ class HttpServerConfig(
         installMetrics()
         metricsApi()
         naisApi({ applicationState.alive }, { applicationState.ready })
-        helloApi()
     }
 
     fun start() = embeddedServer.start(wait = true)
