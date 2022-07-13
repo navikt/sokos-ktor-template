@@ -24,23 +24,24 @@ jobs:
           RESOURCE: .nais/naiserator.yaml
           VARS: .nais/dev-gcp.json
 
-  deploy-prod-gcp:
-    name: Deploy til prod-gcp
-    needs: deploy-dev-gcp
-    if: github.ref == 'refs/heads/master'
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: prod-gcp
-          RESOURCE: .nais/naiserator.yaml
-          VARS: .nais/prod-gcp.json
+#  deploy-prod-gcp:
+#    name: Deploy til prod-gcp
+#    needs: deploy-dev-gcp
+#    if: github.ref == 'refs/heads/master'
+#    runs-on: ubuntu-latest
+#    steps:
+#      - uses: actions/checkout@v3
+#      - uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: prod-gcp
+#          RESOURCE: .nais/naiserator.yaml
+#          VARS: .nais/prod-gcp.json
 
   reportFailure:
     name: Slack notifikasjon bygg feiler
-    needs: [ deploy-dev-gcp, deploy-prod-gcp ]
+    needs: [ deploy-dev-gcp ]
+    # needs: [ deploy-dev-gcp, deploy-prod-gcp ]
     if: ${{ failure() }}
     runs-on: ubuntu-latest
     steps:

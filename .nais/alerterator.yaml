@@ -8,8 +8,8 @@ metadata:
 spec:
   receivers:
     slack:
-      channel: "#okonomi-alerts-dev"
-      prependText: "<!here> | {{app}} | "
+      channel: "{{slack-channel}}"
+      prependText: "{{slack-notify-type}}"
   alerts:
     - alert: Applikasjon nede
       severity: danger
