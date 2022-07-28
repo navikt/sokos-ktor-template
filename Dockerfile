@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:17@sha256:e848e1c146aad6f939ae82ee07d4125b633d3f1020ced107e3a9bf0cb2c2cba2
+FROM bellsoft/liberica-openjdk-alpine:17@sha256:a4fc8f6076c4321d40e69e635e24c776fc74edd5dcc4012c4a721a55c7664d62
 EXPOSE 8080:8080
 COPY build/libs/*.jar app.jar
 CMD ["dumb-init", "--"]
