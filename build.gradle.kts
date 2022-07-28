@@ -4,7 +4,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 val ktorVersion = "2.0.3"
 val kotlinVersion = "1.7.0"
-val junitJupiterVersion = "5.8.2"
+val junitJupiterVersion = "5.9.0"
 val logbackVersion = "1.2.11"
 val logstashVersion = "7.2"
 val jacksonVersion = "2.13.3"
