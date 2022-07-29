@@ -3,9 +3,12 @@
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
 ## Tilpass repo-et
-1. Søk etter og erstatt `okonomi-ktor-template` med det som skal være navnet på den nye appen.
-2. Søk etter og erstatt `prosjektnavn` med det som skal være navnet på den nye appen.
-3. Endre navnet på mappen `src/main/kotlin/no/nav/sokos/prosjektnavn` til noe som passer for den nye appen.
+1. Kjør chmod 755 setupTemplate.sh
+2. Kjør: 
+   ```
+   ./setupTemplate.sh
+   ```
+3. Fyll inn prosjektnavn og artifactnavn (no.nav.sokos.xxx)
 
 ## Workflows
 
