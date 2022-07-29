@@ -3,12 +3,12 @@
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
 ## Tilpass repo-et
-1. Kjør chmod 755 setupTemplate.sh
+1. Kjør `chmod 755 setupTemplate.sh`
 2. Kjør: 
    ```
    ./setupTemplate.sh
    ```
-3. Fyll inn prosjektnavn og artifactnavn (no.nav.sokos.xxx)
+3. Fyll inn prosjektnavn og artifaktnavn (no.nav.sokos.xxx)
 
 ## Workflows
 
