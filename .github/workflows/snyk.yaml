@@ -9,7 +9,7 @@ on:
     - cron: '0 6 * * *'
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}/${{ github.sha }}:latest
+  IMAGE_LATEST: ghcr.io/${{ github.repository }}:latest
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
@@ -41,13 +41,13 @@ jobs:
           password: ${{ env.GITHUB_TOKEN }}
       - name: Sjekker ut repo
         uses: actions/checkout@v3
-      - run: docker pull ${{ env.IMAGE }}
+      - run: docker pull ${{ env.IMAGE_LATEST }}
       - name: Skanner docker image for sårbarheter
         uses: snyk/actions/docker@master
         env:
           SNYK_TOKEN: ${{ env.SNYK_TOKEN }}
         with:
-          image: ${{ env.IMAGE }}
+          image: ${{ env.IMAGE_LATEST }}
           args: --file=Dockerfile --severity-threshold=high
 
   reportFailure:
