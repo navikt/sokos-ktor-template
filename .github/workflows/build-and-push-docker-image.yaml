@@ -13,7 +13,6 @@ on:
       - '.github/workflows/snyk.yaml'
       - '.nais/alerterator.yaml'
 env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
   LATEST_IMAGE: ghcr.io/${{ github.repository }}:latest
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -55,16 +54,6 @@ jobs:
           registry: ghcr.io
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push docker image
-        uses: docker/build-push-action@v3
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ env.IMAGE }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
 
       - name: Push docker image LATEST
         uses: docker/build-push-action@v3
