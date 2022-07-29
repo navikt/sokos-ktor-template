@@ -9,7 +9,7 @@ on:
     - cron: '0 6 * * *'
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}:latest
+  IMAGE: ghcr.io/${{ github.repository }}/${{ github.sha }}:latest
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
   SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
