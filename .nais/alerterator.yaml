@@ -15,8 +15,8 @@ spec:
       severity: danger
       expr: kube_deployment_status_replicas_available{deployment="{{app}}"} == 0
       for: 2m
-      description: "App \{{ $labels.app }} er nede i namespace \{{ $labels.kubernetes_namespace }}"
-      action: "`kubectl describe pod \{{ $labels.app }} -n \{{ $labels.namespace }}` for events, og `kubectl logs -l {{ $labels.app }} -n \{{ $labels.namespace }}` for logger"
+      description: "App \{{ $labels.deployment }} er nede i namespace \{{ $labels.namespace }}"
+      action: "`kubectl describe pod \{{ $labels.deployment }} -n \{{ $labels.namespace }}` for events, og `kubectl logs -l \{{ $labels.deployment }} -n \{{ $labels.namespace }}` for logger"
 
     - alert: Høy error feilrate i logger
       severity: danger
