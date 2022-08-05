@@ -36,12 +36,12 @@ spec:
       severity: danger
       expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^5\\d\\d", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 1
       for: 3m
-      description: "Høy andel HTTP serverfeil (5xx responser) på \{{ $labels.log_app }} i \{{ $labels.log_namespace }}"
-      action: "Sjekk loggene til app \{{ $labels.log_app }} i namespace \{{ $labels.log_namespace }}, for å se hvorfor det returneres mye HTTP 5xx feilresponser"
+      description: "Høy andel HTTP serverfeil (5xx responser)"
+      action: "Sjekk loggene til applikasjonen for å se hvorfor det returneres mye HTTP 5xx feilresponser"
 
     - alert: Høy andel HTTP klientfeil (4xx responser)
       severity: warning
       expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^4\\d\\d", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 10
       for: 3m
-      description: "Høy andel HTTP klientfeil (4xx responser) på \{{ $labels.log_app }} i \{{ $labels.log_namespace }}"
-      action: "Sjekk loggene til app \{{ $labels.log_app }} i namespace \{{ $labels.log_namespace }}, for å se hvorfor det for å se hvorfor det returneres mye HTTP 4xx feilresponser"
+      description: "Høy andel HTTP klientfeil (4xx responser)"
+      action: "Sjekk loggene til applikasjonen for å se hvorfor det returneres mye HTTP 4xx feilresponser"
