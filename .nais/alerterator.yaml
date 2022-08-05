@@ -34,14 +34,18 @@ spec:
 
     - alert: Høy andel HTTP serverfeil (5xx responser)
       severity: danger
-      expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^5\\d\\d", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 1
-      for: 3m
-      description: "Høy andel HTTP serverfeil (5xx responser)"
-      action: "Sjekk loggene til applikasjonen for å se hvorfor det returneres mye HTTP 5xx feilresponser"
+      expr: floor(increase(ktor_http_server_requests_seconds_count{result="failure", status=~"5.*", app="{{app}}"}[3m])) > 1
+      for: 1m
+      description: "Følgende request feilet: `Status \{{ $labels.status }} - \{{ $labels.method }} \{{ $labels.route }}`.\n
+                    Grunn:\n ```\{{ $labels.problem_details }}```\n
+                    Sjekk loggene for å se hvorfor dette feiler."
+      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }}`"
 
     - alert: Høy andel HTTP klientfeil (4xx responser)
-      severity: warning
-      expr: (100 * (sum by (backend) (rate(response_total{status_code=~"^4\\d\\d", namespace="{{namespace}}", app="{{app}}"}[3m])) / sum by (backend) (rate(response_total{namespace="{{namespace}}", app="{{app}}"}[3m])))) > 10
-      for: 3m
-      description: "Høy andel HTTP klientfeil (4xx responser)"
-      action: "Sjekk loggene til applikasjonen for å se hvorfor det returneres mye HTTP 4xx feilresponser"
+      severity: danger
+      expr: floor(increase(ktor_http_server_requests_seconds_count{result="failure", status=~"4.*", app="{{app}}"}[3m])) > 0
+      for: 1m
+      description: "Følgende request feilet: `Status \{{ $labels.status }} - \{{ $labels.method }} \{{ $labels.route }}`.\n
+                    Grunn:\n ```\{{ $labels.problem_details }}```\n
+                    Sjekk loggene for å se hvorfor dette feiler"
+      action: "`kubectl logs \{{ $labels.kubernetes_pod_name }} -n \{{ $labels.kubernetes_namespace }}`"
