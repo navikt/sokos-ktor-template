@@ -5,7 +5,7 @@
   "slack-channel": "okonomi-alerts-dev",
   "slack-notify-type": "okonomi-ktor-template | ",
   "minReplicas": "1",
-  "maXReplicas": "2",
+  "maxReplicas": "2",
   "ingresses": [
     "https://okonomi-ktor-template.dev.nav.no"
   ]
