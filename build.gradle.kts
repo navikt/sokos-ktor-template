@@ -8,7 +8,7 @@ val junitJupiterVersion = "5.9.0"
 val logbackVersion = "1.2.11"
 val logstashVersion = "7.2"
 val jacksonVersion = "2.13.3"
-val prometheusVersion = "1.9.2"
+val prometheusVersion = "1.9.3"
 val kotlinLoggingVersion = "2.1.23"
 
 plugins {
