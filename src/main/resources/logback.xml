@@ -6,13 +6,28 @@
 
     <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
         <encoder>
-            <pattern>%green(%d{HH:mm:ss}) %cyan([%-5.5t]) %boldCyan(%0.-5p) %yellow(%-20.20logger{19}) %cyan(:) %m%n</pattern>
+            <pattern>%green(%d{yyyy-MM-dd HH:mm:ss} %X{correlation_id}) %cyan([%-5.5t]) %boldCyan(%0.-5p)
+                %yellow(%-20.20logger{19}) %cyan(:) %m%n
+            </pattern>
         </encoder>
     </appender>
 
-<!--    <logger name="secureLogger" level="INFO">-->
-<!--        <appender-ref ref="CONSOLE"/>-->
-<!--    </logger>-->
+<!--    <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/secure-logs/secure.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>1</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>50MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
+
+    <logger name="secureLogger" level="DEBUG" additivity="false">
+        <appender-ref ref="${LOG_APPENDER:-secureLog}"/>
+    </logger>-->
 
     <root level="INFO">
         <appender-ref ref="${LOG_APPENDER:-stdout_json}"/>
