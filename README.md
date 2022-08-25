@@ -1,4 +1,4 @@
-# okonomi-ktor-template
+# sokos-ktor-template
 
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
@@ -54,7 +54,7 @@ on:
 
 
 ## Bygge og kjøre prosjekt
-1. Bygg `okonomi-ktor-template` ved å kjøre `./gradlew shadowJar`
+1. Bygg `sokos-ktor-template` ved å kjøre `./gradlew shadowJar`
 1. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
 1. Appen nås på `URL`
 
@@ -75,9 +75,9 @@ on:
 Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
 ```
 ---
-[![Bygg og push Docker image](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-push-docker-image.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/build-and-push-docker-image.yaml)
-[![Deploy til dev og prod](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/deploy-dev-prod.yaml)
-[![Sikkerhet](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/okonomi-ktor-template/actions/workflows/snyk.yaml)
+[![Bygg og push Docker image](https://github.com/navikt/sokos-ktor-template/actions/workflows/build-and-push-docker-image.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/build-and-push-docker-image.yaml)
+[![Deploy til dev og prod](https://github.com/navikt/sokos-ktor-template/actions/workflows/deploy-dev-prod.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/deploy-dev-prod.yaml)
+[![Sikkerhet](https://github.com/navikt/sokos-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/snyk.yaml)
 
 # Prosjektnavn
 Kort beskrivelse om prosjektet, og hav målet til prosjektet er

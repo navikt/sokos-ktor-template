@@ -1,1 +1,1 @@
-rootProject.name = "okonomi-ktor-template"
+rootProject.name = "sokos-ktor-template"
