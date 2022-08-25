@@ -1,9 +1,9 @@
 #!/bin/bash
 
-default="okonomi-ktor-template"
+default="sokos-ktor-template"
 defaultArtifactName="prosjektnavn"
 
-echo '**** Setup for ktor-template ****'
+echo '**** Setup for sokos-ktor-template ****'
 echo
 read -p 'Project name (sokos-xxxx): ' projectName
 read -p 'Artifact name (xxxx): ' artifactName

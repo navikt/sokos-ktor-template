@@ -1,12 +1,12 @@
 {
-  "app": "okonomi-ktor-template",
+  "app": "sokos-ktor-template",
   "team": "okonomi",
   "namespace": "okonomi",
   "slack-channel": "okonomi-alerts-prod",
-  "slack-notify-type": "<!here> | okonomi-ktor-template | ",
+  "slack-notify-type": "<!here> | sokos-ktor-template | ",
   "minReplicas": "1",
   "maXReplicas": "2",
   "ingresses": [
-    "https://okonomi-ktor-template.prod.nav.no"
+    "https://sokos-ktor-template.prod.nav.no"
   ]
 }
