@@ -14,6 +14,7 @@ val kotlinLoggingVersion = "2.1.23"
 plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
+    id("org.openapi.generator") version "6.0.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -58,14 +59,41 @@ dependencies {
     testRuntimeOnly("org.junit.jupiter:junit-jupiter-engine:$junitJupiterVersion")
 }
 
+sourceSets {
+    main {
+        java {
+            srcDirs("$buildDir/generated/src/main/kotlin")
+        }
+    }
+}
+
+tasks.openApiGenerate {
+    generatorName.set("kotlin")
+    generateModelDocumentation.set(false)
+    inputSpec.set("$rootDir/specs/pets.json")
+    outputDir.set("$buildDir/generated")
+    globalProperties.set(
+        mapOf(
+            "models" to ""
+        )
+    )
+    configOptions.set(
+        mapOf(
+            "library" to "jvm-ktor",
+            "serializationLibrary" to "jackson"
+        )
+    )
+}
+
 tasks.named<ShadowJar>("shadowJar") {
     archiveFileName.set("app.jar")
     manifest {
-        attributes ["Main-Class"] = "no.nav.sokos.prosjektnavn.BootstrapKt"
+        attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.BootstrapKt"
     }
 }
 
 tasks.withType<KotlinCompile> {
+    dependsOn("openApiGenerate")
     kotlinOptions.jvmTarget = "17"
 }
 
