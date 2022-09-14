@@ -52,6 +52,9 @@ on:
     workflows: [ "Sikkerhet" ]
 ```
 
+## OpenApi Generator
+1. Endre [pets.json](https://github.com/navikt/sokos-ktor-template/blob/master/build.gradle.kts#L73) til hva spec filen skal hete som ligger i [specs](specs) mappa.
+2. Når prosjektet bygges genereres det data klasser i `build` mappa. Disse sjekkes ikke inn i Git pga. datamodellen kan endres ganske mye så slipper du pushe inn hver endring i modellen. Dvs du følger kontrakten, altså api spec
 
 ## Bygge og kjøre prosjekt
 1. Bygg `sokos-ktor-template` ved å kjøre `./gradlew shadowJar`
