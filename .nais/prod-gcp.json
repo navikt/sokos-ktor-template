@@ -2,7 +2,7 @@
   "app": "sokos-ktor-template",
   "team": "okonomi",
   "namespace": "okonomi",
-  "slack-channel": "okonomi-alerts-prod",
+  "slack-channel": "team-mob-alerts-prod",
   "slack-notify-type": "<!here> | sokos-ktor-template | ",
   "minReplicas": "1",
   "maXReplicas": "2",
