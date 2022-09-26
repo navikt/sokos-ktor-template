@@ -14,7 +14,7 @@ val kotlinLoggingVersion = "3.0.0"
 plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
-    id("org.openapi.generator") version "6.1.0"
+    id("org.openapi.generator") version "6.2.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
