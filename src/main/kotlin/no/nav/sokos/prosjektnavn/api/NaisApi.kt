@@ -29,6 +29,15 @@ fun Application.naisApi(alive: () -> Boolean, ready: () -> Boolean) {
                     )
                 }
             }
+            get("test") {
+                when (ready()) {
+                    true -> call.respondText { "Test application" }
+                    else -> call.respondText(
+                        text = "Application is not ready",
+                        status = HttpStatusCode.InternalServerError
+                    )
+                }
+            }
         }
     }
 }
