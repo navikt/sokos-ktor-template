@@ -1,6 +1,7 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
+import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 val ktorVersion = "2.1.1"
 val kotlinVersion = "1.7.0"
@@ -14,7 +15,7 @@ val kotlinLoggingVersion = "3.0.0"
 plugins {
     kotlin("jvm") version "1.7.0"
     kotlin("plugin.serialization") version "1.7.0"
-    id("org.openapi.generator") version "6.1.0"
+    id("org.openapi.generator") version "6.2.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
 
@@ -67,7 +68,7 @@ sourceSets {
     }
 }
 
-tasks.openApiGenerate {
+tasks.named<GenerateTask>("openApiGenerate") {
     generatorName.set("kotlin")
     generateModelDocumentation.set(false)
     inputSpec.set("$rootDir/specs/pets.json")

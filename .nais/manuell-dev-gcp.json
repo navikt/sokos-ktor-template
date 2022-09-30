@@ -1,0 +1,12 @@
+{
+  "app": "sokos-ktor-template-manuell",
+  "team": "okonomi",
+  "namespace": "okonomi",
+  "slack-channel": "team-mob-alerts-dev",
+  "slack-notify-type": "sokos-ktor-template-manuell | ",
+  "minReplicas": "1",
+  "maxReplicas": "1",
+  "ingresses": [
+    "https://sokos-ktor-template-manuell.dev.nav.no"
+  ]
+}
