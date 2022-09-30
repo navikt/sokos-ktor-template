@@ -29,7 +29,7 @@ fun Application.naisApi(alive: () -> Boolean, ready: () -> Boolean) {
                     )
                 }
             }
-            get("test") {
+            get("tester") {
                 when (ready()) {
                     true -> call.respondText { "Test application" }
                     else -> call.respondText(
