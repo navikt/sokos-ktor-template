@@ -1,10 +1,10 @@
 name: Manuell deploy
 
 on:
-  workflow_dispatch:
+  pull_request:
 
 env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}-dev
+  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}-manuell
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
