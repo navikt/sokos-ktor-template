@@ -4,7 +4,6 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 val ktorVersion = "2.1.2"
-val kotlinVersion = "1.7.0"
 val junitJupiterVersion = "5.9.1"
 val logbackVersion = "1.4.4"
 val logstashVersion = "7.2"
@@ -13,8 +12,8 @@ val prometheusVersion = "1.9.5"
 val kotlinLoggingVersion = "3.0.2"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
-    kotlin("plugin.serialization") version "1.7.0"
+    kotlin("jvm") version "1.7.10"
+    kotlin("plugin.serialization") version "1.7.10"
     id("org.openapi.generator") version "6.2.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
 }
