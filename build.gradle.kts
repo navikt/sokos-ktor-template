@@ -13,7 +13,7 @@ val prometheusVersion = "1.9.5"
 val kotlinLoggingVersion = "3.0.2"
 
 plugins {
-    kotlin("jvm") version "1.7.0"
+    kotlin("jvm") version "1.7.20"
     kotlin("plugin.serialization") version "1.7.0"
     id("org.openapi.generator") version "6.2.0"
     id("com.github.johnrengelman.shadow") version "7.1.2"
