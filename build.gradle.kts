@@ -9,7 +9,7 @@ val logbackVersion = "1.4.4"
 val logstashVersion = "7.2"
 val jacksonVersion = "2.13.4"
 val prometheusVersion = "1.9.5"
-val kotlinLoggingVersion = "3.0.2"
+val kotlinLoggingVersion = "3.0.3"
 
 plugins {
     kotlin("jvm") version "1.7.10"
