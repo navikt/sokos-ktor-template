@@ -5,10 +5,10 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 val ktorVersion = "2.1.3"
 val junitJupiterVersion = "5.9.1"
-val logbackVersion = "1.4.5"
+val logbackVersion = "1.4.4"
 val logstashVersion = "7.2"
-val jacksonVersion = "2.14.1"
-val prometheusVersion = "1.10.2"
+val jacksonVersion = "2.14.0"
+val prometheusVersion = "1.10.0"
 val kotlinLoggingVersion = "3.0.4"
 
 plugins {
@@ -90,6 +90,10 @@ tasks.named<ShadowJar>("shadowJar") {
     manifest {
         attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.BootstrapKt"
     }
+}
+
+tasks.named<Jar>("jar") {
+    isEnabled = false
 }
 
 tasks.withType<KotlinCompile> {
