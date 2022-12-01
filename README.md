@@ -23,6 +23,8 @@ NB! Endre navn på mappen `.github/workflow_files` til `.github/workflows` for a
    1. Denne workflow kjøres kun når det opprettes pull requester
 5. [Sikkerhet](.github/workflows/snyk.yaml) -> For å skanne sårbarhet av avhengigheter og docker image. Kjøres hver morgen kl 06:00
    1. Denne kjøres når [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) har kjørt ferdig
+6. [Manuell deploy](./.github/workflows/manual-deploy.yaml) -> For å kjøre manuelle deploys
+   7. Denne workflow er for å kunne gjøre manuelle deploy basert på hvilken branch du velger
 
 NB! Hvis du ønsker at [Sikkerhet](.github/workflows/snyk.yaml) kjøres først og [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) kjøres NÅR `Sikkerhet` er ferdig så gjør følgende:
 
@@ -77,48 +79,78 @@ on:
 ```
 Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
 ```
----
-[![Bygg og push Docker image](https://github.com/navikt/sokos-ktor-template/actions/workflows/build-and-push-docker-image.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/build-and-push-docker-image.yaml)
-[![Deploy til dev og prod](https://github.com/navikt/sokos-ktor-template/actions/workflows/deploy-dev-prod.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/deploy-dev-prod.yaml)
-[![Sikkerhet](https://github.com/navikt/sokos-ktor-template/actions/workflows/snyk.yaml/badge.svg)](https://github.com/navikt/sokos-ktor-template/actions/workflows/snyk.yaml)
 
 # Prosjektnavn
 Kort beskrivelse om prosjektet, og hav målet til prosjektet er
-
 ---
 
-## Oppsett av utviklermaskin
-Hva trenges for å sette opp prosjektet
-
+# Innholdsoversikt
+* [1. Funksjonelle krav](#1-funksjonelle krav)
+* [2. Utviklingsmiljø](#2-utviklingsmiljø)
+* [3. Programvarearkitektur](#3-programvarearkitektur)
+* [4. Deployment](#4-deployment)
+* [5. Autentisering](#5-autentisering)
+* [6. Drift og støtte](#6-drift-og-støtte)
+* [7. Swagger](#7-swagger)
 ---
 
-## Bygging
+# 1. Funksjonelle Krav
+Hva er oppgaven til denne applikasjonen
+
+# 2. Utviklingsmiljø
+## Forutsetninger
+* Java 17
+
+## Bygge prosjekt
 Hvordan bygger jeg prosjektet.
-
----
 
 ## Lokal utvikling
 Hvordan kan jeg kjøre lokalt og hva trenger jeg?
 
----
+# 3. Programvarearkitektur
+Legg ved skissediagram for hvordan arkitekturen er bygget
 
-## Docker
-Hvis det finnes Dockerfile eller docker-compose fil, hva er kommando for å kjøre?
+# 4. Deployment
+Distribusjon av tjenesten er gjort med bruk av Github Actions.
+[sokos-ktor-template CI / CD](https://github.com/navikt/sokos-ktor-template/actions)
 
----
+Push/merge til master branche vil teste, bygge og deploye til produksjonsmiljø og testmiljø.
+Det foreligger også mulighet for manuell deploy.
+
+# 7. Autentisering
+Applikasjonen bruker [TokenX](https://docs.nais.io/security/auth/tokenx/) autentisering
+
+## Hvordan skaffe token i preprod
+
+# 6. Drift og støtte
 
 ## Logging
 Hvor finner jeg logger? Hvordan filtrerer jeg mellom dev og prod logger?
 
 [sikker-utvikling/logging](https://sikkerhet.nav.no/docs/sikker-utvikling/logging) - Anbefales å lese
 
+### Kubectl
+For dev-gcp:
+```shell script
+kubectl config use-context dev-gcp
+kubectl get pods -n okonomi | grep sokos-ktor-template
+kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
+```
+
+For prod-gcp:
+```shell script
+kubectl config use-context prod-gcp
+kubectl get pods -n okonomi | grep sokos-ktor-template
+kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
+```
+
+## Alarmer
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator](nais/alerterator.yaml).
+
+## Grafana
+Url til grafana board
 ---
 
-## Nyttig informasjon
-Trenger jeg vite noe mer? Skriv her!
-
----
-
-## Swagger URL
+# 7. Swagger
 Hva er url til Lokal, dev og prod?
 
