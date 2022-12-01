@@ -22,9 +22,9 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - name: Kjører Snyk for å sjekke sårbarheter
-        uses: snyk/actions/gradle@master
+        uses: snyk/actions/setup@master
         with:
-          command: monitor
+          command: test
           args: --org=team-mob --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
           json: true
 
