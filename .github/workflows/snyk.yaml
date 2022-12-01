@@ -25,7 +25,7 @@ jobs:
         uses: snyk/actions/gradle@master
         with:
           command: monitor
-          args: --org=po-utbetaling --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
+          args: --org=team-mob --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
           json: true
 
   docker-image-vulnerabilities:

@@ -3,8 +3,8 @@
 Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
 
 ## Tilpass repo-et
-1. Kjør `chmod 755 setupTemplate.sh`
-2. Kjør: 
+1. Gi rettighet for å kjøre scriptet `chmod 755 setupTemplate.sh`
+2. Kjør scriptet: 
    ```
    ./setupTemplate.sh
    ```
@@ -81,7 +81,7 @@ Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av u
 ```
 
 # Prosjektnavn
-Kort beskrivelse om prosjektet, og hav målet til prosjektet er
+Kort beskrivelse om prosjektet, og hva målet til prosjektet er
 ---
 
 # Innholdsoversikt
@@ -98,7 +98,7 @@ Kort beskrivelse om prosjektet, og hav målet til prosjektet er
 Hva er oppgaven til denne applikasjonen
 
 # 2. Utviklingsmiljø
-## Forutsetninger
+### Forutsetninger
 * Java 17
 
 ## Bygge prosjekt
@@ -118,7 +118,16 @@ Push/merge til master branche vil teste, bygge og deploye til produksjonsmiljø 
 Det foreligger også mulighet for manuell deploy.
 
 # 7. Autentisering
-Applikasjonen bruker [TokenX](https://docs.nais.io/security/auth/tokenx/) autentisering
+Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering
+
+### Hente token
+1. Installer `vault` kommandolinje verktøy
+2. Gi rettighet for å kjøre scriptet `chmod 755 getToken.sh`
+3. Kjør scriptet:
+   ```
+   ./getToken.sh
+   ```
+4. Fyll inn prosjektnavn og client secret id (id på applikasjonen som skal kalle på denne applikasjonen)
 
 ## Hvordan skaffe token i preprod
 
