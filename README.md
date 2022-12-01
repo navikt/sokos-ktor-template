@@ -85,7 +85,7 @@ Kort beskrivelse om prosjektet, og hav målet til prosjektet er
 ---
 
 # Innholdsoversikt
-* [1. Funksjonelle krav](#1-funksjonelle krav)
+* [1. Funksjonelle krav](#1-funksjonelle-krav)
 * [2. Utviklingsmiljø](#2-utviklingsmiljø)
 * [3. Programvarearkitektur](#3-programvarearkitektur)
 * [4. Deployment](#4-deployment)
