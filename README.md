@@ -81,8 +81,6 @@ Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av u
 ```
 
 # Prosjektnavn
-Kort beskrivelse om prosjektet, og hva målet til prosjektet er
----
 
 # Innholdsoversikt
 * [1. Funksjonelle krav](#1-funksjonelle-krav)
@@ -128,8 +126,6 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
    ./getToken.sh
    ```
 4. Fyll inn prosjektnavn og client secret id (id på applikasjonen som skal kalle på denne applikasjonen)
-
-## Hvordan skaffe token i preprod
 
 # 6. Drift og støtte
 
