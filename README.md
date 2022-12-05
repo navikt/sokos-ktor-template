@@ -99,10 +99,10 @@ Hva er oppgaven til denne applikasjonen
 ### Forutsetninger
 * Java 17
 
-## Bygge prosjekt
+### Bygge prosjekt
 Hvordan bygger jeg prosjektet.
 
-## Lokal utvikling
+### Lokal utvikling
 Hvordan kan jeg kjøre lokalt og hva trenger jeg?
 
 # 3. Programvarearkitektur
@@ -129,7 +129,7 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
 
 # 6. Drift og støtte
 
-## Logging
+### Logging
 Hvor finner jeg logger? Hvordan filtrerer jeg mellom dev og prod logger?
 
 [sikker-utvikling/logging](https://sikkerhet.nav.no/docs/sikker-utvikling/logging) - Anbefales å lese
@@ -149,10 +149,10 @@ kubectl get pods -n okonomi | grep sokos-ktor-template
 kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
 ```
 
-## Alarmer
+### Alarmer
 Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator](nais/alerterator.yaml).
 
-## Grafana
+### Grafana
 Url til grafana board
 ---
 
