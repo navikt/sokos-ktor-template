@@ -90,6 +90,7 @@ Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av u
 * [5. Autentisering](#5-autentisering)
 * [6. Drift og støtte](#6-drift-og-støtte)
 * [7. Swagger](#7-swagger)
+* [8. Henvendelser](#7-henvendelser)
 ---
 
 # 1. Funksjonelle Krav
@@ -125,7 +126,7 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
    ```
    ./getToken.sh
    ```
-4. Fyll inn prosjektnavn og client secret id (id på applikasjonen som skal kalle på denne applikasjonen)
+4. Skriv inn applikasjonsnavn du vil hente `client_id` og `client_secret` for
 
 # 6. Drift og støtte
 
@@ -150,10 +151,10 @@ kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-t
 ```
 
 ### Alarmer
-Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator](nais/alerterator.yaml).
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator.yaml](.nais/alerterator.yaml) filen.
 
 ### Grafana
-Url til grafana board
+- [appavn](url)
 ---
 
 # 7. Swagger
