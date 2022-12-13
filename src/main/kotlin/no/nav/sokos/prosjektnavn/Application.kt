@@ -8,6 +8,7 @@ import no.nav.sokos.prosjektnavn.config.configureMetrics
 import no.nav.sokos.prosjektnavn.config.configureRouting
 import no.nav.sokos.prosjektnavn.config.configureSecurity
 import no.nav.sokos.prosjektnavn.config.configureSerialization
+import no.nav.sokos.prosjektnavn.config.configureStatusPages
 import no.nav.sokos.prosjektnavn.service.DummyService
 import no.nav.sokos.prosjektnavn.util.ApplicationState
 
@@ -21,6 +22,7 @@ fun Application.start() {
     configureSerialization()
     configureCallId()
     configureMetrics()
+    configureStatusPages()
     configureRouting(applicationState, dummyService, configuration.useAuthentication)
 
     applicationState.ready = true
