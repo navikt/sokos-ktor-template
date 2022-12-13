@@ -105,7 +105,7 @@ tasks {
     withType<ShadowJar> {
         archiveFileName.set("app.jar")
         manifest {
-            attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.BootstrapKt"
+            attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
     }
 
@@ -129,4 +129,5 @@ tasks {
         maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
         reports.forEach { report -> report.required.value(false) }
     }
+
 }
