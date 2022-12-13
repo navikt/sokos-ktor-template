@@ -11,7 +11,6 @@ plugins {
 }
 
 group = "no.nav.sokos"
-version = "1.0.0-SNAPSHOT"
 java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
@@ -110,8 +109,8 @@ tasks {
         }
     }
 
-    withType<Jar> {
-        isEnabled = false
+    withType().named("jar") {
+        enabled = false
     }
 
     withType<KotlinCompile> {
