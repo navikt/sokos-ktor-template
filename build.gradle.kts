@@ -130,4 +130,8 @@ tasks {
         reports.forEach { report -> report.required.value(false) }
     }
 
+    withType<Wrapper> {
+        gradleVersion = "7.6"
+    }
+
 }
