@@ -37,3 +37,6 @@ out/
 
 ### OS ###
 .DS_Store
+
+### Custom ###
+defaults.properties
