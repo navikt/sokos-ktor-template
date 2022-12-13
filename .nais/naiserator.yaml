@@ -37,4 +37,9 @@ spec:
   prometheus:
     enabled: true
     path: /internal/metrics
-
+  azure:
+    application:
+      enabled: true
+  env:
+    - name: USE_AUTHENTICATION
+      value: "true"
