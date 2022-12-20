@@ -1,6 +1,6 @@
 # sokos-ktor-template
 
-Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Økonomi.
+Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Beregne.
 
 ## Tilpass repo-et
 1. Gi rettighet for å kjøre scriptet `chmod 755 setupTemplate.sh`
@@ -59,9 +59,10 @@ on:
 2. Når prosjektet bygges genereres det data klasser i `build` mappa. Disse sjekkes ikke inn i Git pga. datamodellen kan endres ganske mye så slipper du pushe inn hver endring i modellen. Dvs du følger kontrakten, altså api spec
 
 ## Bygge og kjøre prosjekt
-1. Bygg `sokos-ktor-template` ved å kjøre `./gradlew shadowJar`
-1. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
-1. Appen nås på `URL`
+1. Bygg `sokos-ktor-template` ved å kjøre `./gradlew buildFatJar`
+2. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
+3. Appen nås på `URL`
+4. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
 ## Ting som enhver utvikler må ta høyde for og fikse
 1. [.nais](.nais) -> Mappen inneholder en `naiserator.yaml` fil og en `alerterator.yaml` for å unngå ha en fil for dev og prod for begge filene. Miljøvariabler legges i `dev-gcp.json` og `prod-gcp.json` hvor de populeres inn i `naiserator.yaml` og `alerterator.yaml`. 
