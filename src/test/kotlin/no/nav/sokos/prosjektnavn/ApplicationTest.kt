@@ -1,12 +1,13 @@
 package no.nav.sokos.prosjektnavn
 
-import org.junit.jupiter.api.Test
+import io.kotest.core.spec.style.FunSpec
+import io.kotest.matchers.shouldBe
 
 
-class ApplicationTest {
+class ApplicationTest : FunSpec ({
 
-    @Test
-    fun `test`() {
-        println("This is a test")
+    test("my first test") {
+        1 + 2 shouldBe 3
     }
-}
+
+})
