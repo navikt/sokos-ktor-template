@@ -26,7 +26,6 @@ jobs:
         with:
           command: monitor
           args: --org=team-mob --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
-          json: true
 
   docker-image-vulnerabilities:
     name: Skanner docker image for sårbarheter
