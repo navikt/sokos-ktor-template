@@ -1,4 +1,3 @@
-import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
@@ -86,7 +85,7 @@ sourceSets {
 }
 
 application {
-    mainClass.set("no.nav.sokos.skattekort.person.ApplicationKt")
+    mainClass.set("no.nav.sokos.prosjektnavn.ApplicationKt")
 }
 
 tasks {
