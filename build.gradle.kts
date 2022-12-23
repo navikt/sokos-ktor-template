@@ -7,8 +7,6 @@ plugins {
     kotlin("plugin.serialization") version "1.7.22"
     id("org.openapi.generator") version "6.2.1"
     id("io.ktor.plugin") version "2.2.1"
-    id("com.autonomousapps.dependency-analysis") version "1.17.0"
-
 }
 
 group = "no.nav.sokos"
