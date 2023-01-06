@@ -90,7 +90,7 @@ tasks {
     withType<GenerateTask> {
         generatorName.set("kotlin")
         generateModelDocumentation.set(false)
-        inputSpec.set("$rootDir/specs/pets.json")
+        inputSpec.set("$rootDir/src/main/resources/openapi/pets.json")
         outputDir.set("$buildDir/generated")
         globalProperties.set(
             mapOf(
