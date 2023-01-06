@@ -5,20 +5,17 @@ import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
-import no.nav.sokos.prosjektnavn.config.Config
-import no.nav.sokos.prosjektnavn.config.configureCallId
-import no.nav.sokos.prosjektnavn.config.configureMetrics
+import no.nav.sokos.prosjektnavn.config.PropertiesConfig
+import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.configureRouting
 import no.nav.sokos.prosjektnavn.config.configureSecurity
-import no.nav.sokos.prosjektnavn.config.configureSerialization
-import no.nav.sokos.prosjektnavn.config.configureStatusPages
 import no.nav.sokos.prosjektnavn.metrics.appStateReadyFalse
 import no.nav.sokos.prosjektnavn.metrics.appStateRunningFalse
 import no.nav.sokos.prosjektnavn.service.DummyService
 
 fun main() {
     val applicationState = ApplicationState()
-    val applicationConfiguration = Config.Configuration()
+    val applicationConfiguration = PropertiesConfig.Configuration()
     val dummyService = DummyService()
 
     HttpServer(applicationState, applicationConfiguration, dummyService).start()
@@ -26,7 +23,7 @@ fun main() {
 }
 class HttpServer(
     private val applicationState: ApplicationState,
-    private val applicationConfiguration: Config.Configuration,
+    private val applicationConfiguration: PropertiesConfig.Configuration,
     private val dummyService: DummyService,
     port: Int = 8080,
 ) {
@@ -37,11 +34,8 @@ class HttpServer(
     }
 
     private val embeddedServer = embeddedServer(Netty, port) {
+        commonConfig()
         configureSecurity(applicationConfiguration.azureAdConfig, applicationConfiguration.useAuthentication)
-        configureSerialization()
-        configureCallId()
-        configureMetrics()
-        configureStatusPages()
         configureRouting(applicationState, dummyService, applicationConfiguration.useAuthentication)
     }
 

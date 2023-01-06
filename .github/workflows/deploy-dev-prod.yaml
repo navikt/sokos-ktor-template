@@ -21,8 +21,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: .nais/naiserator.yaml
-          VARS: .nais/dev-gcp.json
+          RESOURCE: .nais/naiserator-dev.yaml
 
 #  deploy-prod-gcp:
 #    name: Deploy til prod-gcp
@@ -35,8 +34,7 @@ jobs:
 #        env:
 #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
 #          CLUSTER: prod-gcp
-#          RESOURCE: .nais/naiserator.yaml
-#          VARS: .nais/prod-gcp.json
+#          RESOURCE: .nais/naiserator-prod.yaml
 
   reportFailure:
     name: Slack notifikasjon bygg feiler

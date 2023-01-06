@@ -12,7 +12,8 @@ on:
       - '.github/workflows/alerts.yaml'
       - '.github/workflows/snyk.yaml'
       - '.github/workflows/manual-deploy.yaml'
-      - '.nais/alerterator.yaml'
+      - '.nais/alerterator-dev.yaml'
+      - '.nais/alerterator-prod.yaml'
 env:
   IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
   LATEST_IMAGE: ghcr.io/${{ github.repository }}:latest

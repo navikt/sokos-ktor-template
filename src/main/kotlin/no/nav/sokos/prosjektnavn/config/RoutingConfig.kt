@@ -8,6 +8,7 @@ import no.nav.sokos.prosjektnavn.ApplicationState
 import no.nav.sokos.prosjektnavn.api.dummyRoutes
 import no.nav.sokos.prosjektnavn.api.metricsRoutes
 import no.nav.sokos.prosjektnavn.api.naisRoutes
+import no.nav.sokos.prosjektnavn.api.swaggerRoutes
 import no.nav.sokos.prosjektnavn.service.DummyService
 
 
@@ -19,7 +20,7 @@ fun Application.configureRouting(
     routing {
         naisRoutes({ applicationState.initialized }, { applicationState.running })
         metricsRoutes()
-
+        swaggerRoutes()
         dummyRoutes(dummyService, useAuthentication)
     }
 }

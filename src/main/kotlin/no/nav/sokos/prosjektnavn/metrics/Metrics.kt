@@ -4,7 +4,7 @@ import io.micrometer.prometheus.PrometheusConfig
 import io.micrometer.prometheus.PrometheusMeterRegistry
 import io.prometheus.client.Counter
 
-private const val METRICS_NAMESPACE = "sokos_prosjektnavn"
+private const val METRICS_NAMESPACE = "sokos_ktor_template"
 
 val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 

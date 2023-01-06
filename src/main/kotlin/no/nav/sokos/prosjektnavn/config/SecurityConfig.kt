@@ -4,8 +4,6 @@ import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
 import com.fasterxml.jackson.annotation.JsonProperty
 import io.ktor.client.call.body
-import io.ktor.client.engine.ProxyBuilder
-import io.ktor.client.engine.http
 import io.ktor.client.request.get
 import io.ktor.server.application.Application
 import io.ktor.server.auth.authentication
@@ -15,12 +13,13 @@ import mu.KotlinLogging
 import java.net.URL
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.runBlocking
+import no.nav.sokos.prosjektnavn.util.httpClient
 
 private val log = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
 fun Application.configureSecurity(
-    azureAdConfig: Config.AzureAdConfig,
+    azureAdConfig: PropertiesConfig.AzureAdConfig,
     useAuthentication: Boolean = true
 ) {
     log.info("Use authentication: $useAuthentication")
@@ -30,7 +29,7 @@ fun Application.configureSecurity(
 
         authentication {
             jwt(AUTHENTICATION_NAME) {
-                realm = Config.Configuration().naisAppName
+                realm = PropertiesConfig.Configuration().naisAppName
                 verifier(
                     jwkProvider = jwkProvider,
                     issuer = openIdMetadata.issuer
@@ -71,7 +70,7 @@ data class OpenIdMetadata(
 
 private fun wellKnowConfig(wellKnownUrl: String): OpenIdMetadata {
     val openIdMetadata: OpenIdMetadata by lazy {
-        runBlocking { HttpClientConfig.httpClient.get(wellKnownUrl).body() }
+        runBlocking { httpClient.get(wellKnownUrl).body() }
     }
     return openIdMetadata
 }
