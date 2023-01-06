@@ -12,22 +12,26 @@
         </layout>
     </appender>
 
-    <!--    <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
-            <file>/secure-logs/secure.log</file>
-            <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
-                <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
-                <minIndex>1</minIndex>
-                <maxIndex>1</maxIndex>
-            </rollingPolicy>
-            <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-                <maxFileSize>50MB</maxFileSize>
-            </triggeringPolicy>
-            <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
-        </appender>
+<!--    <appender name="secureLog" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <file>/secure-logs/secure.log</file>
+        <rollingPolicy class="ch.qos.logback.core.rolling.FixedWindowRollingPolicy">
+            <fileNamePattern>/secure-logs/secure.log.%i</fileNamePattern>
+            <minIndex>1</minIndex>
+            <maxIndex>1</maxIndex>
+        </rollingPolicy>
+        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
+            <maxFileSize>50MB</maxFileSize>
+        </triggeringPolicy>
+        <encoder class="net.logstash.logback.encoder.LogstashEncoder"/>
+    </appender>
 
-        <logger name="secureLogger" level="DEBUG" additivity="false">
-            <appender-ref ref="${LOG_APPENDER:-secureLog}"/>
-        </logger>-->
+    <if condition='isDefined("NAIS_CLUSTER_NAME")'>
+        <then>
+            <logger name="secureLogger" level="DEBUG" additivity="false">
+                <appender-ref ref="${LOG_APPENDER:-secureLog}"/>
+            </logger>
+        </then>
+    </if>-->
 
     <root level="INFO">
         <if condition='isDefined("NAIS_CLUSTER_NAME")'>
@@ -40,7 +44,6 @@
         </if>
     </root>
 
-    <logger name="no.nav" level="DEBUG"/>
-    <logger name="ktor.application" level="DEBUG"/>
+    <logger name="no.nav.sokos.prosjektnavn" level="INFO"/>
 
 </configuration>
