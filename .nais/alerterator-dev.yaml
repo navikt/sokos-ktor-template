@@ -4,7 +4,7 @@ metadata:
   name: sokos-ktor-template
   namespace: okonomi
   labels:
-    team: {{team}}
+    team: okonomi
 spec:
   receivers:
     slack:
