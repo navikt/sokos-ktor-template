@@ -1,4 +1,5 @@
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
@@ -119,7 +120,7 @@ tasks {
 
     withType<KotlinCompile> {
         dependsOn("openApiGenerate")
-        kotlinOptions.jvmTarget = "17"
+        compilerOptions.jvmTarget.set(JVM_17)
     }
 
     withType<Test> {
