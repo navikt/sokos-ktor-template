@@ -50,7 +50,7 @@ jobs:
           args: --file=Dockerfile --severity-threshold=high
 
   reportFailure:
-    name: Slack notifikasjon for ikkerhet tester feilet
+    name: Slack notifikasjon for sikkerhet tester feilet
     needs: [ app-dependencies-vulnerabilities, docker-image-vulnerabilities ]
     if: ${{ failure() }}
     runs-on: ubuntu-latest
