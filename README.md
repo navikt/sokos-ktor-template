@@ -95,6 +95,7 @@ Hva er oppgaven til denne applikasjonen
 # 2. Utviklingsmiljø
 ### Forutsetninger
 * Java 17
+* Gradle 8
 
 ### Bygge prosjekt
 Hvordan bygger jeg prosjektet.
