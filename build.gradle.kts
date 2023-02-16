@@ -139,8 +139,4 @@ tasks {
         maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
         reports.forEach { report -> report.required.value(false) }
     }
-
-    withType<Wrapper>().configureEach {
-        gradleVersion = "7.6"
-    }
 }
