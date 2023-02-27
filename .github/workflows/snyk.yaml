@@ -55,7 +55,7 @@ jobs:
     if: ${{ failure() }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - name: Sender notifikasjon til Slack
         uses: rtCamp/action-slack-notify@v2
         env:
