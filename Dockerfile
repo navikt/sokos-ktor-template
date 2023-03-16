@@ -1,5 +1,5 @@
 FROM bellsoft/liberica-openjdk-alpine:17@sha256:de83ab3dd1f3855105bc5050b7b3064bb54e36a60cf8440d392de4fb46891937 as BUILDER
-ENV APP_HOME=/usr/app
+ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
 COPY build.gradle.kts settings.gradle.kts gradlew $APP_HOME
 COPY gradle $APP_HOME/gradle
