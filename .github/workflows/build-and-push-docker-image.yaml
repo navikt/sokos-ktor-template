@@ -10,7 +10,7 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.github/workflows/alerts.yaml'
-      - '.github/workflows/snyk.yaml'
+      - '.github/workflows/security.yaml'
       - '.github/workflows/manual-deploy.yaml'
       - '.nais/alerterator-dev.yaml'
       - '.nais/alerterator-prod.yaml'

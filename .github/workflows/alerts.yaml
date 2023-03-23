@@ -11,7 +11,7 @@ on:
       - '.gitignore'
       - '.dockerignore'
       - '.github/workflows/build-and-push-docker-image.yaml'
-      - '.github/workflows/snyk.yaml'
+      - '.github/workflows/security.yaml'
 jobs:
   deploy-alerts-dev:
     name: Deploy alarmer til dev

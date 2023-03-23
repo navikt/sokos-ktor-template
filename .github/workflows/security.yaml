@@ -12,25 +12,45 @@ env:
   IMAGE_LATEST: ghcr.io/${{ github.repository }}:latest
   GITHUB_USERNAME: x-access-token
   GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  SNYK_TOKEN: ${{ secrets.SNYK_TOKEN }}
 
 jobs:
-  app-dependencies-vulnerabilities:
-    name: Skanner applikasjon for sårbarheter
+  code-analyze:
+    name: Analyserer kode for sårbarheter
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      security-events: write
+    strategy:
+      fail-fast: false
+      matrix:
+        language: [ 'java' ]
     steps:
-      - uses: actions/checkout@v3
-      - name: Kjører Snyk for å sjekke sårbarheter
-        uses: snyk/actions/gradle@master
-        with:
-          command: monitor
-          args: --org=team-mob --project-name=${{ github.repository }} --remote-repo-url=https://github.com/${{ github.repository }}.git
+      - name: Sjekker ut repo
+        uses: actions/checkout@v3
 
-  docker-image-vulnerabilities:
+      - name: Initialiserer CodeQL
+        uses: github/codeql-action/init@v2
+        with:
+          languages: ${{ matrix.language }}
+
+      - name: Autobuild
+        uses: github/codeql-action/autobuild@v2
+
+      - name: Perform CodeQL Analysis
+        uses: github/codeql-action/analyze@v2
+        with:
+          category: "/language:${{matrix.language}}"
+
+  docker-analyze:
     name: Skanner docker image for sårbarheter
     needs: app-dependencies-vulnerabilities
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+      security-events: write
     steps:
       - name: Logger på Github Container Registry
         uses: docker/login-action@v2
@@ -38,20 +58,27 @@ jobs:
           registry: ghcr.io
           username: ${{ env.GITHUB_USERNAME }}
           password: ${{ env.GITHUB_TOKEN }}
+
       - name: Sjekker ut repo
         uses: actions/checkout@v3
-      - run: docker pull ${{ env.IMAGE_LATEST }}
-      - name: Skanner docker image for sårbarheter
-        uses: snyk/actions/docker@master
-        env:
-          SNYK_TOKEN: ${{ env.SNYK_TOKEN }}
+
+      - name: Run Trivy vulnerability scanner on docker image
+        uses: aquasecurity/trivy-action@master
         with:
-          image: ${{ env.IMAGE_LATEST }}
-          args: --file=Dockerfile --severity-threshold=high
+          image-ref: ${{ steps.docker-push.outputs.image }}
+          ignore-unfixed: true
+          format: 'sarif'
+          output: 'trivy-results.sarif'
+
+      - name: Upload Trivy scan results to GitHub Security tab
+        uses: github/codeql-action/upload-sarif@v2
+        if: always()
+        with:
+          sarif_file: 'trivy-results.sarif'
 
   reportFailure:
     name: Slack notifikasjon for sikkerhet tester feilet
-    needs: [ app-dependencies-vulnerabilities, docker-image-vulnerabilities ]
+    needs: [ code-analyze, docker-analyze ]
     if: ${{ failure() }}
     runs-on: ubuntu-latest
     steps:
