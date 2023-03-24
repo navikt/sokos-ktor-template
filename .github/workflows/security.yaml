@@ -19,7 +19,7 @@ jobs:
       contents: read
       id-token: write
       security-events: write
-    name: Analyserer kode for sårbarheter
+    name: Sikkerhet analyse
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'schedule'
     runs-on: ubuntu-latest
     strategy:
