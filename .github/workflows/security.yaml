@@ -29,6 +29,10 @@ jobs:
     steps:
       - name: Sjekker ut repo
         uses: actions/checkout@v3
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
 
       - name: Initialiserer CodeQL
         uses: github/codeql-action/init@v2
