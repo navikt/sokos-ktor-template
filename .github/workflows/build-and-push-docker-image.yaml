@@ -16,7 +16,7 @@ on:
       - '.nais/alerterator-prod.yaml'
 
 env:
-  LATEST_IMAGE: ${{ github.repository }}:latest
+  LATEST_IMAGE: ${{ github.event.repository.name }}:latest
 
 jobs:
   bygg-og-push-docker-image:

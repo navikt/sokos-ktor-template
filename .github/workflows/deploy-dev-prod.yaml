@@ -8,7 +8,7 @@ on:
       - completed
 
 env:
-  LATEST_IMAGE: ${{ github.repository }}:latest
+  LATEST_IMAGE: ${{ github.event.repository.name }}:latest
 
 jobs:
   deploy-dev-gcp:
