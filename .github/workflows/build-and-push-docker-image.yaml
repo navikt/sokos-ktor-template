@@ -22,6 +22,9 @@ env:
 
 jobs:
   bygg-og-push-docker-image:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: Bygg/test og push Docker image
     runs-on: ubuntu-latest
     steps:
@@ -51,29 +54,10 @@ jobs:
       - name: Bygg docker image
         uses: docker/setup-buildx-action@v2
 
-      - name: Logger på Github Container Registry
-        uses: docker/login-action@v2
+      - name: Push docker image til GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
         with:
-          registry: ghcr.io
-          username: ${{ env.GITHUB_USERNAME }}
-          password: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push docker image
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ env.IMAGE }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
-
-      - name: Tag image latest
-        uses: docker/build-push-action@v4
-        with:
-          context: .
-          file: Dockerfile
-          push: true
-          tags: ${{ env.LATEST_IMAGE }}
-          cache-from: type=gha
-          cache-to: type=gha,mode=max
+          team: okonomi
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
