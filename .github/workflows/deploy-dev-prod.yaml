@@ -12,6 +12,9 @@ env:
 
 jobs:
   deploy-dev-gcp:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: Deploy til dev-gcp
     if: github.event.workflow_run.conclusion == 'success' && (github.ref == 'refs/heads/dev' || github.ref == 'refs/heads/master')
     runs-on: ubuntu-latest
