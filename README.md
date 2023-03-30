@@ -148,7 +148,7 @@ kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-t
 ```
 
 ### Alarmer
-Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator.yaml](.nais/alerterator-dev.yaml) filen.
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator.yaml](.nais/alerterator.yaml) filen.
 
 ### Grafana
 - [appavn](url)

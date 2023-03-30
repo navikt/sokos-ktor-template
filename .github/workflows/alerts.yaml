@@ -24,7 +24,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: .nais/alerterator-dev.yaml
+          RESOURCE: .nais/alerterator.yaml
 
 #  deploy-alerts-prod:
 #    name: Deploy alarmer til prod
@@ -38,4 +38,4 @@ jobs:
 #        env:
 #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
 #          CLUSTER: prod-gcp
-#          RESOURCE: .nais/alerterator-prod.yaml
+#          RESOURCE: .nais/alerterator.yaml

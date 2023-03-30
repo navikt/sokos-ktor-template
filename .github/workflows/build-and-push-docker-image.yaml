@@ -12,13 +12,11 @@ on:
       - '.github/workflows/alerts.yaml'
       - '.github/workflows/security.yaml'
       - '.github/workflows/manual-deploy.yaml'
-      - '.nais/alerterator-dev.yaml'
+      - '.nais/alerterator.yaml'
       - '.nais/alerterator-prod.yaml'
+
 env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}
-  LATEST_IMAGE: ghcr.io/${{ github.repository }}:latest
-  GITHUB_USERNAME: x-access-token
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+  LATEST_IMAGE: ${{ github.repository }}:latest
 
 jobs:
   bygg-og-push-docker-image:
@@ -54,10 +52,11 @@ jobs:
       - name: Bygg docker image
         uses: docker/setup-buildx-action@v2
 
-      - name: Push docker image til GAR
+      - name: Push docker image til Google Artifact Registry
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
           team: okonomi
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          tag: ${{ env.LATEST_IMAGE }}
