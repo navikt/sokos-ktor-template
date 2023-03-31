@@ -1,4 +1,4 @@
-name: Bygg og push Docker image
+name: Bygg, test og deploy til GCP
 
 on:
   push:
@@ -13,13 +13,9 @@ on:
       - '.github/workflows/security.yaml'
       - '.github/workflows/manual-deploy.yaml'
       - '.nais/alerterator.yaml'
-      - '.nais/alerterator-prod.yaml'
-
-env:
-  LATEST_IMAGE: ${{ github.event.repository.name }}:latest
 
 jobs:
-  bygg-og-push-docker-image:
+  bygg-test-push-image:
     permissions:
       contents: "read"
       id-token: "write"
@@ -59,4 +55,32 @@ jobs:
           team: okonomi
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          tag: ${{ env.LATEST_IMAGE }}
+          tag: latest
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
+  deploy-dev-gcp:
+    name: Deploy til dev-gcp
+    needs: bygg-test-push-image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
+          RESOURCE: .nais/naiserator-dev.yaml
+
+  #  deploy-prod-gcp:
+  #    name: Deploy til prod-gcp
+  #    needs: deploy-dev-gcp
+  #    if: github.ref == 'refs/heads/master'
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v3
+  #      - uses: nais/deploy/actions/deploy@v1
+  #        env:
+  #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+  #          CLUSTER: prod-gcp
+  #          RESOURCE: .nais/naiserator-prod.yaml

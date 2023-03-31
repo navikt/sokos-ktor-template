@@ -10,7 +10,7 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.dockerignore'
-      - '.github/workflows/build-and-push-docker-image.yaml'
+      - '.github/workflows/build-test-push-image.yaml'
       - '.github/workflows/security.yaml'
 jobs:
   deploy-alerts-dev:

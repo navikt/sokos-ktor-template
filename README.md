@@ -15,10 +15,10 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
 NB! Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
 1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe alarmer for både dev og prod
    1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator-dev.yaml](.nais/naiserator-dev.yaml) og [naiserator-prod.yaml](.nais/naiserator-prod.yaml)
-2. [Bygg og push Docker image](.github/workflows/build-and-push-docker-image.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
+2. [Bygg og push Docker image](.github/workflows/build-test-push-image.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
    1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
 3. [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) -> For å pushe og deploye applikasjonen til dev og prod
-   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-and-push-docker-image.yaml) går gjennom
+   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-test-push-image.yaml) går gjennom
 4. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
    1. Denne workflow kjøres kun når det opprettes pull requester
 5. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
