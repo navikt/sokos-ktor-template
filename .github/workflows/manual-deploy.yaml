@@ -3,11 +3,6 @@ name: Manuell deploy til GCP
 on:
   workflow_dispatch:
 
-env:
-  IMAGE: ghcr.io/${{ github.repository }}:${{ github.sha }}-manuell
-  GITHUB_USERNAME: x-access-token
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
 jobs:
   bygg:
     name: Bygg og push Docker container
@@ -36,16 +31,22 @@ jobs:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygg og publiser Docker image
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: |
-          docker build --tag ${IMAGE} .
-          docker login ghcr.io -u ${GITHUB_REPOSITORY} -p ${GITHUB_TOKEN}
-          docker push ${IMAGE}
+      - name: Bygg docker image
+        uses: docker/setup-buildx-action@v2
+
+      - name: Push docker image til Google Artifact Registry
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: okonomi
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          tag: manuell
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-manuell-dev-gcp:
-    name: Deploy mnauell til dev-gcp
+    name: Deploy manuell til dev-gcp
     needs: [ bygg ]
     runs-on: ubuntu-latest
     steps:

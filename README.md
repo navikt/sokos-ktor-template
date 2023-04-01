@@ -12,47 +12,16 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
 
 ## Workflows
 
-NB! Endre navn på mappen `.github/workflow_files` til `.github/workflows` for at github actions skal plukke dem opp. Dette vil sørge for at du får fire github actions:
 1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe alarmer for både dev og prod
    1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator-dev.yaml](.nais/naiserator-dev.yaml) og [naiserator-prod.yaml](.nais/naiserator-prod.yaml)
-2. [Bygg og push Docker image](.github/workflows/build-test-push-image.yaml) -> For å bygge/teste prosjektet og bygge/pushe Docker image
+2. [Bygg, test og deploy til GCP](.github/workflows/build-test-push-deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til GCP
    1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
-3. [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) -> For å pushe og deploye applikasjonen til dev og prod
-   1. Denne workflow tar seg KUN av deploy av applikasjonen til NAIS. Den er avhengig av at [Bygg og test](.github/workflows/build-test-push-image.yaml) går gjennom
-4. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
+3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
    1. Denne workflow kjøres kun når det opprettes pull requester
-5. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
-   1. Denne kjøres når [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) har kjørt ferdig
-6. [Manuell deploy](./.github/workflows/manual-deploy.yaml) -> For å kjøre manuelle deploys
-   7. Denne workflow er for å kunne gjøre manuelle deploy basert på hvilken branch du velger
-
-NB! Hvis du ønsker at [Sikkerhet](.github/workflows/security.yaml) kjøres først og [Deploy til dev og prod](.github/workflows/deploy-dev-prod.yaml) kjøres NÅR `Sikkerhet` er ferdig så gjør følgende:
-
-i [security.yaml](.github/workflows/security.yaml) endrer du fra:
-```
-on:
-  workflow_run:
-    workflows: [ "Deploy til dev og prod" ]
-```
-til
-```
-on:
-  workflow_run:
-    workflows: [ "Bygg og push Docker image" ]
-```
-
-og i [deploy-dev-prod.yaml](.github/workflows/deploy-dev-prod.yaml) endrer du fra:
-```
-on:
-  workflow_run:
-    workflows: [ "Bygg og push Docker image" ]
-```
-til
-```
-on:
-  workflow_run:
-    workflows: [ "Sikkerhet" ]
-```
+4. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
+   1. Denne kjøres når [Bygg, test og deploy til GCP](.github/workflows/build-test-push-deploy.yaml) har kjørt ferdig
+5. [Manuell deploy](./.github/workflows/manual-deploy.yaml) -> For å kjøre manuelle deploys. Denne er ment for teste inviduelt
+   1. Denne workflow er for å kunne gjøre manuelle deploy basert på hvilken branch du velger
 
 ## OpenApi Generator og Swagger
 1. Endre [pets.json](https://github.com/navikt/sokos-ktor-template/blob/master/build.gradle.kts#L73) til hva spec filen skal hete som ligger i [specs](specs) mappa.
