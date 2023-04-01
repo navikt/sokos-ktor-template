@@ -4,6 +4,6 @@ import no.nav.sokos.prosjektnavn.domain.DummyDomain
 
 class DummyService {
     fun sayHello(): DummyDomain {
-        return DummyDomain("Gi meg siste image :(")
+        return DummyDomain("Hello World! Greeting sokos-ktor-template!")
     }
 }
