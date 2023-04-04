@@ -12,7 +12,7 @@ spec:
     - name: sokos-ktor-template-alerts
       rules:
         - alert: test alert will always trigger
-          expr: container_memory_working_set_bytes{namespace="okonomi", container="okonomi-sokos-ktor-template"} > 99
+          expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} > 0
           for: 1m
           annotations:
             consequence: "_*{{ $labels.container }}*_ has a working set of {{ $value }} bytes, there is no consequence"
