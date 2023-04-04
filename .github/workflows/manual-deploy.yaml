@@ -5,6 +5,9 @@ on:
 
 jobs:
   bygg:
+    permissions:
+      contents: "read"
+      id-token: "write"
     name: Bygg og push Docker container
     runs-on: ubuntu-latest
     steps:
