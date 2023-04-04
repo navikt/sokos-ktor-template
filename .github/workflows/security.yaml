@@ -10,7 +10,6 @@ on:
 
 env:
   LATEST_IMAGE: ${{ github.event.repository.name }}:latest
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
 jobs:
   vulnerability-analyze:
