@@ -89,8 +89,8 @@ spec:
             key: apiUrl
             name: slack-webhook
           channel: '#team-mob-alerts-prod'
-          iconEmoji: ':test:'
-          username: 'Testing Alert'
+          iconEmoji: ':alert:'
+          username: Alert ({{ cluster }})
           sendResolved: true
           title: |-
             [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
