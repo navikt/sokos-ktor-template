@@ -1,4 +1,4 @@
-name: Bygg, test og deploy til GCP
+name: Bygg, test og deploy til dev/prod
 
 on:
   push:

@@ -1,4 +1,4 @@
-name: Manuell deploy til GCP
+name: Manuell deploy til dev
 
 on:
   workflow_dispatch:
