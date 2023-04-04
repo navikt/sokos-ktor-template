@@ -42,7 +42,7 @@ spec:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: 'team-mob-alerts-dev'
+          channel: '#team-mob-alerts-dev'
           iconEmoji: ':test:'
           username: 'Testing Alert'
           sendResolved: true
