@@ -4,7 +4,7 @@ on:
   workflow_dispatch:
 
 jobs:
-  bygg:
+  bygg-push-image:
     permissions:
       contents: "read"
       id-token: "write"
@@ -50,7 +50,7 @@ jobs:
 
   deploy-manuell-dev-gcp:
     name: Deploy manuell til dev-gcp
-    needs: bygg
+    needs: bygg-push-image
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -58,5 +58,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.bygg.outputs.image }}
+          IMAGE: ${{ needs.bygg-push-image.outputs.image }}
           RESOURCE: .nais/naiserator-manuell.yaml
