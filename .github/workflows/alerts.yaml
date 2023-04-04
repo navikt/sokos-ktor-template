@@ -9,7 +9,6 @@ on:
       - 'Dockerfile'
       - 'CODEOWNERS'
       - '.gitignore'
-      - '.dockerignore'
       - '.github/workflows/build-pr.yaml'
       - '.github/workflows/manual-deploy.yaml'
       - '.github/workflows/security.yaml'
