@@ -12,8 +12,12 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
 
 ## Workflows
 
-1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe alarmer for både dev og prod
+1. [Deploy alarmer](.github/workflows/alerts-dev.yaml) -> For å pushe alarmer for dev
    1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator-dev.yaml](.nais/naiserator-dev.yaml) og [naiserator-prod.yaml](.nais/naiserator-prod.yaml)
+   2. NB! Denne bør du bytte fra å deploye til `prod-gcp` istedet.
+   3. Endre filnavn til `alerts-prod.yaml`
+   4. Endre slack kanal i yaml filen til `channel: '#team-mob-alerts-prod'`
+   5. Endre cluster som alert skal deployes til i workflow for alerts til `CLUSTER: prod-gcp`
 2. [Bygg, test og deploy til GCP](.github/workflows/build-test-push-deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til GCP
    1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
 3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet

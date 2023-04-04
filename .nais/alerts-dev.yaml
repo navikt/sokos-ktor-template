@@ -88,7 +88,7 @@ spec:
         - apiURL:
             key: apiUrl
             name: slack-webhook
-          channel: '#team-mob-alerts-prod'
+          channel: '#team-mob-alerts-dev'
           iconEmoji: ':alert:'
           username: Alert ({{ cluster }})
           sendResolved: true
