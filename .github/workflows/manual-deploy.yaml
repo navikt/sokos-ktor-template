@@ -58,5 +58,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
+          IMAGE: ${{ needs.bygg.outputs.image }}
           RESOURCE: .nais/naiserator-manuell.yaml
