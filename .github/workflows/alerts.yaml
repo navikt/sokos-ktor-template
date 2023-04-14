@@ -17,12 +17,12 @@ on:
 
 jobs:
   deploy-alerts-dev:
-    name: Deploy alarmer til dev
+    name: Deploy alarmer til prod
     runs-on: ubuntu-latest
     steps:
       - name: Sjekker ut kode
         uses: actions/checkout@v3
-      - name: Deploy til dev
+      - name: Deploy til prod
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
