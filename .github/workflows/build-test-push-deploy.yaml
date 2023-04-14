@@ -74,16 +74,15 @@ jobs:
           IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml
 
-  #  deploy-prod-gcp:
-  #    name: Deploy til prod-gcp
-  #    needs: deploy-dev-gcp
-  #    if: github.ref == 'refs/heads/master'
-  #    runs-on: ubuntu-latest
-  #    steps:
-  #      - uses: actions/checkout@v3
-  #      - uses: nais/deploy/actions/deploy@v1
-  #        env:
-  #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-  #          CLUSTER: prod-gcp
-  #          IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
-  #          RESOURCE: .nais/naiserator-prod.yaml
+  deploy-prod-gcp:
+    name: Deploy til prod-gcp
+    needs: deploy-dev-gcp
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          IMAGE: ${{ needs.deploy-dev-gcp.outputs.image }}
+          RESOURCE: .nais/naiserator-dev.yaml
