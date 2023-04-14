@@ -10,10 +10,11 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.github/workflows/build-pr.yaml'
-      - '.github/workflows/manual-deploy.yaml'
+      - '.github/workflows/manual-deploy-dev.yaml'
       - '.github/workflows/security.yaml'
       - '.github/workflows/build-test-push-deploy.yaml'
       - '.nais/naiserator-manuell.yaml'
+
 jobs:
   deploy-alerts-dev:
     name: Deploy alarmer til dev

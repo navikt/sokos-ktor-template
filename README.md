@@ -23,7 +23,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
    1. Denne workflow kjøres kun når det opprettes pull requester
 4. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
    1. Denne kjøres når [Bygg, test og deploy til dev/prodg](.github/workflows/build-test-push-deploy.yaml) har kjørt ferdig
-5. [Manuell deploy](./.github/workflows/manual-deploy.yaml) -> For å kjøre manuelle deploys til dev. Denne er ment for teste inviduelt
+5. [Manuell deploy](./.github/workflows/manual-deploy-dev.yaml) -> For å kjøre manuelle deploys til dev. Denne er ment for teste inviduelt
    1. Denne workflow er for å kunne gjøre manuelle deploy basert på hvilken branch du velger
 
 ## OpenApi Generator og Swagger

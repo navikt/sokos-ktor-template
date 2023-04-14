@@ -2,7 +2,7 @@ name: Sikkerhet
 
 on:
   workflow_run:
-    workflows: ["Bygg, test og deploy til dev/prod"]
+    workflows: [ "Bygg, test og deploy til dev/prod" ]
     types:
       - completed
   schedule:
