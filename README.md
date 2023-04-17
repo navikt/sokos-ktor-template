@@ -58,7 +58,7 @@ Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av u
 * [5. Autentisering](#5-autentisering)
 * [6. Drift og støtte](#6-drift-og-støtte)
 * [7. Swagger](#7-swagger)
-* [8. Henvendelser](#7-henvendelser)
+* [8. Henvendelser](#8-henvendelser)
 ---
 
 # 1. Funksjonelle Krav
@@ -128,4 +128,8 @@ Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette o
 
 # 7. Swagger
 Hva er url til Lokal, dev og prod?
+
+# 8. Henvendelser og tilgang
+   Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
+   Interne henvendelser kan sendes via Slack i kanalen #po-utbetaling
 
