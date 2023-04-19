@@ -1,9 +1,11 @@
 #!/bin/bash
 
+APP_NAME=''
 ENVIRONMENT_NAME=''
 
 echo '**** Get token from Azure ****'
 echo
+read -p 'Applikasjonsnavn: ' APP_NAME
 read -p 'Environment (dev | prod): ' ENVIRONMENT_NAME
 echo
 
@@ -17,9 +19,9 @@ kubectl config use-context $ENVIRONMENT_NAME-gcp
 kubectl config set-context --current --namespace=okonomi
 
 # Get secret from GCP
-AZURE_APP_CLIENT_ID=$(kubectl exec -it $(kubectl get pods | grep sokos-ktor-template | cut -f1 -d' ') -c sokos-ktor-template -- env | grep -E "AZURE_APP_CLIENT_ID" | cut -d "=" -f 2 | tr -d '\r')
-AZURE_APP_CLIENT_SECRET=$(kubectl exec -it $(kubectl get pods | grep sokos-ktor-template | cut -f1 -d' ') -c sokos-ktor-template -- env | grep -E "AZURE_APP_CLIENT_SECRET" | cut -d "=" -f 2 | tr -d '\r')
-AZURE_OPENID_CONFIG_TOKEN_ENDPOINT=$(kubectl exec -it $(kubectl get pods | grep sokos-ktor-template | cut -f1 -d' ') -c sokos-ktor-template -- env | grep -E "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT" | cut -d "=" -f 2 | tr -d '\r')
+AZURE_APP_CLIENT_ID=$(kubectl exec -it $(kubectl get pods | grep $APP_NAME | cut -f1 -d' ') -c $APP_NAME -- env | grep -E "AZURE_APP_CLIENT_ID" | cut -d "=" -f 2 | tr -d '\r')
+AZURE_APP_CLIENT_SECRET=$(kubectl exec -it $(kubectl get pods | grep $APP_NAME | cut -f1 -d' ') -c $APP_NAME -- env | grep -E "AZURE_APP_CLIENT_SECRET" | cut -d "=" -f 2 | tr -d '\r')
+AZURE_OPENID_CONFIG_TOKEN_ENDPOINT=$(kubectl exec -it $(kubectl get pods | grep $APP_NAME | cut -f1 -d' ') -c $APP_NAME -- env | grep -E "AZURE_OPENID_CONFIG_TOKEN_ENDPOINT" | cut -d "=" -f 2 | tr -d '\r')
 
 echo
 echo "AZURE_APP_CLIENT_ID                 : $AZURE_APP_CLIENT_ID"
