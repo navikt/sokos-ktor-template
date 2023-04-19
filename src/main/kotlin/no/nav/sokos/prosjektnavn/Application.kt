@@ -1,5 +1,6 @@
 package no.nav.sokos.prosjektnavn
 
+import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
@@ -7,7 +8,7 @@ import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
-import no.nav.sokos.prosjektnavn.config.configureRouting
+import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.config.configureSecurity
 import no.nav.sokos.prosjektnavn.metrics.appStateReadyFalse
 import no.nav.sokos.prosjektnavn.metrics.appStateRunningFalse
@@ -33,11 +34,9 @@ class HttpServer(
         })
     }
 
-    private val embeddedServer = embeddedServer(Netty, port) {
-        commonConfig()
-        configureSecurity(applicationConfiguration.azureAdConfig, applicationConfiguration.useAuthentication)
-        configureRouting(applicationState, dummyService, applicationConfiguration.useAuthentication)
-    }
+    private val embeddedServer = embeddedServer(Netty, port, module = {
+        applicationModule(applicationConfiguration, dummyService, applicationState)
+    })
 
     fun start() {
         applicationState.running = true
@@ -58,4 +57,14 @@ class ApplicationState(
     var running: Boolean by Delegates.observable(ready) { _, _, newValue ->
         if (!newValue) appStateRunningFalse.inc()
     }
+}
+
+fun Application.applicationModule(
+    applicationConfiguration: PropertiesConfig.Configuration,
+    dummyService: DummyService,
+    applicationState: ApplicationState,
+) {
+    commonConfig()
+    configureSecurity(applicationConfiguration.azureAdConfig, applicationConfiguration.useAuthentication)
+    routingConfig(applicationState, dummyService, applicationConfiguration.useAuthentication)
 }

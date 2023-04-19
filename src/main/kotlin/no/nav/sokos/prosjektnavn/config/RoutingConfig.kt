@@ -5,14 +5,14 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 import no.nav.sokos.prosjektnavn.ApplicationState
-import no.nav.sokos.prosjektnavn.api.dummyRoutes
+import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.api.metricsRoutes
 import no.nav.sokos.prosjektnavn.api.naisRoutes
 import no.nav.sokos.prosjektnavn.api.swaggerRoutes
 import no.nav.sokos.prosjektnavn.service.DummyService
 
 
-fun Application.configureRouting(
+fun Application.routingConfig(
     applicationState: ApplicationState,
     dummyService: DummyService,
     useAuthentication: Boolean
@@ -21,7 +21,7 @@ fun Application.configureRouting(
         naisRoutes({ applicationState.initialized }, { applicationState.running })
         metricsRoutes()
         swaggerRoutes()
-        dummyRoutes(dummyService, useAuthentication)
+        dummyApi(dummyService, useAuthentication)
     }
 }
 

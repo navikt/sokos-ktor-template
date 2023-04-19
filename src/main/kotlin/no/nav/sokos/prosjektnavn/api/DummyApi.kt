@@ -10,7 +10,7 @@ import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.service.DummyService
 
-fun Route.dummyRoutes(
+fun Route.dummyApi(
     dummyService: DummyService,
     useAuthentication: Boolean
 ) {
