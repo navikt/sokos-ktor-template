@@ -7,7 +7,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.serialization") version "1.8.21"
-    id("org.openapi.generator") version "6.5.0"
+    id("org.openapi.generator") version "6.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 
     application
