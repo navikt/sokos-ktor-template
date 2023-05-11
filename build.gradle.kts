@@ -29,7 +29,7 @@ val prometheusVersion = "1.11.0"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.9"
 val natpryceVersion = "1.6.10.0"
-val kotestVersion = "5.6.1"
+val kotestVersion = "5.6.2"
 
 dependencies {
 
