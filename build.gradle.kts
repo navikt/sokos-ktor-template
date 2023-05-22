@@ -7,7 +7,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 plugins {
     kotlin("jvm") version "1.8.21"
     kotlin("plugin.serialization") version "1.8.21"
-    id("org.openapi.generator") version "6.5.0"
+    id("org.openapi.generator") version "6.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 
     application
@@ -24,12 +24,12 @@ repositories {
 val ktorVersion = "2.3.0"
 val logbackVersion = "1.4.7"
 val logstashVersion = "7.3"
-val jacksonVersion = "2.14.2"
-val prometheusVersion = "1.11.0"
+val jacksonVersion = "2.15.1"
+val prometheusVersion = "1.10.6"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.9"
 val natpryceVersion = "1.6.10.0"
-val kotestVersion = "5.6.1"
+val kotestVersion = "5.6.2"
 
 dependencies {
 
