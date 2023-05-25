@@ -23,8 +23,6 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
    1. Denne workflow kjøres kun når det opprettes pull requester
 4. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
    1. Denne kjøres når [Bygg, test og deploy til dev/prodg](.github/workflows/build-test-push-deploy.yaml) har kjørt ferdig
-5. [Manuell deploy](./.github/workflows/manual-deploy-dev.yaml) -> For å kjøre manuelle deploys til dev. Denne er ment for teste inviduelt
-   1. Denne workflow er for å kunne gjøre manuelle deploy basert på hvilken branch du velger
 
 ## OpenApi Generator og Swagger
 1. Endre [pets.json](https://github.com/navikt/sokos-ktor-template/blob/master/build.gradle.kts#L73) til hva spec filen skal hete som ligger i [specs](specs) mappa.
@@ -83,7 +81,6 @@ Distribusjon av tjenesten er gjort med bruk av Github Actions.
 [sokos-ktor-template CI / CD](https://github.com/navikt/sokos-ktor-template/actions)
 
 Push/merge til master branche vil teste, bygge og deploye til produksjonsmiljø og testmiljø.
-Det foreligger også mulighet for manuell deploy.
 
 # 7. Autentisering
 Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering

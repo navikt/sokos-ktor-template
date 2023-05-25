@@ -14,4 +14,5 @@ WORKDIR $APP_HOME
 COPY --from=BUILDER $APP_HOME/build/libs/app.jar .
 EXPOSE 8080:8080
 CMD ["dumb-init", "--"]
+ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
 ENTRYPOINT ["java","-jar", "app.jar"]
