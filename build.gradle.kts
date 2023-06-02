@@ -141,8 +141,7 @@ tasks {
             events = setOf(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
 
-        // For å øke hastigheten på build kan vi benytte disse metodene
-        maxParallelForks = Runtime.getRuntime().availableProcessors() / 2
+        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
         reports.forEach { report -> report.required.value(false) }
     }
 }
