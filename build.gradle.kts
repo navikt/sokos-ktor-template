@@ -1,6 +1,6 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
-import org.jetbrains.kotlin.gradle.dsl.JvmTarget.JVM_17
+import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
@@ -14,7 +14,6 @@ plugins {
 }
 
 group = "no.nav.sokos"
-java.sourceCompatibility = JavaVersion.VERSION_17
 
 repositories {
     mavenCentral()
@@ -89,12 +88,16 @@ sourceSets {
     }
 }
 
+kotlin {
+    jvmToolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
 
 tasks {
 
     withType<KotlinCompile>().configureEach {
         dependsOn("openApiGenerate")
-        compilerOptions.jvmTarget.set(JVM_17)
     }
 
     withType<GenerateTask>().configureEach {
@@ -130,9 +133,12 @@ tasks {
 
     withType<Test>().configureEach {
         useJUnitPlatform()
+
         testLogging {
+            showExceptions = true
+            showStackTraces = true
             exceptionFormat = FULL
-            events("passed", "skipped", "failed")
+            events = setOf(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
 
         // For å øke hastigheten på build kan vi benytte disse metodene
