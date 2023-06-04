@@ -141,7 +141,6 @@ tasks {
             events = setOf(TestLogEvent.PASSED, TestLogEvent.SKIPPED, TestLogEvent.FAILED)
         }
 
-        maxParallelForks = (Runtime.getRuntime().availableProcessors() / 2).takeIf { it > 0 } ?: 1
         reports.forEach { report -> report.required.value(false) }
     }
 }
