@@ -12,11 +12,9 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
 
 ## Workflows
 
-1. [Deploy alarmer](.github/workflows/alerts.yaml) -> For å pushe alarmer for prod
-   1. Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator-dev.yaml](.nais/naiserator-dev.yaml) og [naiserator-prod.yaml](.nais/naiserator-prod.yaml)
-   2. NB! Denne bør du bytte fra `CLUSTER: dev-gcp` å deploye til -> `CLUSTER: prod-gcp`
-   4. Endre slack kanal i yaml filen til `channel: '#team-mob-alerts-prod'` på linje 93
-   5. Gjøre andre nødvendige endringer i alarmer som f.eks navn på applikasjon osv.
+1. [Deploy alarmer](.github/workflows/alerts-dev.yaml) og [prod](.github/workflows/alerts-prod.yaml) -> For å pushe alarmer for dev og prod
+   1 .Gjøre andre nødvendige endringer i alarmer som f.eks navn på applikasjon osv.
+   2Denne workflow kjører inviduelt og trigges også hvis det gjøres endringer i [naiserator-dev.yaml](.nais/naiserator-dev.yaml) og [naiserator-prod.yaml](.nais/naiserator-prod.yaml)
 2. [Bygg, test og deploy til dev/prod](.github/workflows/build-test-push-deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til dev og prod
    1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
 3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
@@ -117,7 +115,8 @@ kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-t
 ```
 
 ### Alarmer
-Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. Disse finner man konfigurert i [.nais/alerterator.yaml](.nais/alerterator.yaml) filen.
+Vi bruker [nais-alerts](https://doc.nais.io/observability/alerts) for å sette opp alarmer. 
+Disse finner man konfigurert i [.nais/alerts-dev.yaml](.nais/alerts-dev.yaml) filen og [.nais/alerts-dev.yaml](.nais/alerts-dev.yaml)
 
 ### Grafana
 - [appavn](url)

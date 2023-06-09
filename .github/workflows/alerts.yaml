@@ -25,6 +25,17 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          RESOURCE: .nais/alerts.yaml
+          RESOURCE: .nais/alerts-dev.yaml
 
-# Deploy alarmer til dev kan byttes til prod når applikasjonen prodsettes.
+#  deploy-alerts-prod:
+#    name: Deploy alarmer til prod
+#    runs-on: ubuntu-latest
+#    steps:
+#      - name: Sjekker ut kode
+#        uses: actions/checkout@v3
+#      - name: Deploy til prod
+#        uses: nais/deploy/actions/deploy@v1
+#        env:
+#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+#          CLUSTER: prod-gcp
+#          RESOURCE: .nais/alerts-prod.yaml

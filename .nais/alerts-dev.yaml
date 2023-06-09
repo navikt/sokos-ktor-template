@@ -1,0 +1,119 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: sokos-ktor-template
+  namespace: okonomi
+  labels:
+    team: okonomi
+spec:
+  groups:
+    - name: sokos-ktor-template-alerts
+      rules:
+        - alert: Applikasjon nede
+          expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
+          for: 2m
+          annotations:
+            action: "`kubectl describe pod {{ $labels.deployment }} -n {{ $labels.namespace }}` for events, og `kubectl logs -l {{ $labels.deployment }} -n {{ $labels.namespace }}` for logger"
+            summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
+          labels:
+            namespace: okonomi
+            severity: danger
+            sokos_ktor_template_type: sokos-ktor-template
+            alert_type: custom
+
+        - alert: Høy andel error i logger
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="sokos-ktor-template", level="error"} [3m]))) > 0
+          for: 5m
+          annotations:
+            action: "`kubectl logs {{ $labels.pod }} -c {{ $labels.container }} -n {{ $labels.namespace }}`"
+            summary: "Høy andel error i logger for app {{ $labels.app }} feiler med {{ $labels.exception }} i namespace {{ $labels.namespace }}"
+          labels:
+            namespace: okonomi
+            severity: danger
+            sokos_ktor_template_type: sokos-ktor-template
+            alert_type: custom
+
+        - alert: Høy andel warning i logger
+          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="sokos-ktor-template", level="warning"} [3m]))) > 0
+          for: 5m
+          annotations:
+            action: "`kubectl logs {{ $labels.pod }} -c {{ $labels.container }} -n {{ $labels.namespace }}`"
+            summary: "Høy andel error i logger for app {{ $labels.app }} feiler med {{ $labels.exception }} i namespace {{ $labels.namespace }}"
+          labels:
+            namespace: okonomi
+            severity: warning
+            sokos_ktor_template_type: sokos-ktor-template
+            alert_type: custom
+
+        - alert: Høy andel HTTP serverfeil (5xx responser)
+          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 1
+          for: 2m
+          annotations:
+            summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.\n
+                    Grunn:\n ```{{ $labels.problem_details }}```\n
+                    Sjekk loggene for å se hvorfor dette feiler."
+            action: "`kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}`"
+          labels:
+            namespace: okonomi
+            severity: danger
+            sokos_ktor_template_type: sokos-ktor-template
+            alert_type: custom
+
+        - alert: Høy andel HTTP klientfeil (4xx responser)
+          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 0
+          for: 2m
+          annotations:
+            summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.\n
+                    Grunn:\n ```{{ $labels.problem_details }}```\n
+                    Sjekk loggene for å se hvorfor dette feiler"
+            action: "`kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}`"
+          labels:
+            namespace: okonomi
+            severity: danger
+            sokos_ktor_template_type: sokos-ktor-template
+            alert_type: custom
+
+
+---
+
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: AlertmanagerConfig
+metadata:
+  name: sokos-ktor-template-slack
+  namespace: okonomi
+  labels:
+    alertmanagerConfig: sokos-ktor-template-slack
+spec:
+  receivers:
+    - name: sokos-ktor-template-receiver
+      slackConfigs:
+        - apiURL:
+            key: apiUrl
+            name: slack-webhook
+          channel: '#team-mob-alerts-dev'
+          iconEmoji: ':alert:'
+          username: 'Alert dev-gcp'
+          sendResolved: true
+          title: |-
+            [{{ .Status | toUpper }}{{ if eq .Status "firing" }}:{{ .Alerts.Firing | len }}{{ end }}] {{ .CommonLabels.alertname }}
+          text: >-
+            {{ range .Alerts }}
+            {{ if or .Annotations.summary .Annotations.message }}
+            {{ or .Annotations.summary .Annotations.message }}
+            {{ println " " }}
+            {{- end }}
+            {{- if .Annotations.action }}
+            • *action*: {{ .Annotations.action }} {{ println " " }}
+            {{- end }}
+            {{ end }}
+  route:
+    groupBy:
+      - alertname
+    matchers:
+      - name: "sokos_ktor_template_type"
+        matchType: "="
+        value: "sokos-ktor-template"
+    groupInterval: 10s
+    groupWait: 5s
+    receiver: sokos-ktor-template-receiver
+    repeatInterval: 2m
