@@ -13,8 +13,8 @@ spec:
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
           for: 2m
           annotations:
-            action: "`kubectl describe pod {{ $labels.deployment }} -n {{ $labels.namespace }}` for events, og `kubectl logs -l {{ $labels.deployment }} -n {{ $labels.namespace }}` for logger"
-            summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
+            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
+            summary: "App \{{ $labels.deployment }} er nede i namespace \{{ $labels.namespace }}"
           labels:
             namespace: okonomi
             severity: danger
@@ -22,11 +22,11 @@ spec:
             alert_type: custom
 
         - alert: Høy andel error i logger
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="sokos-ktor-template", level="error"} [3m]))) > 0
-          for: 5m
+          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Error"}[2m]))) > 2
+          for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.pod }} -c {{ $labels.container }} -n {{ $labels.namespace }}`"
-            summary: "Høy andel error i logger for app {{ $labels.app }} feiler med {{ $labels.exception }} i namespace {{ $labels.namespace }}"
+            action: "`kubectl logs \{{ $labels.log_pod_name }} -n \{{ $labels.log_namespace }}`"
+            summary: "Høy andel error i logger for app \{{ $labels.log_app }} feiler i namespace \{{ $labels.log_namespace }}"
           labels:
             namespace: okonomi
             severity: danger
@@ -34,11 +34,11 @@ spec:
             alert_type: custom
 
         - alert: Høy andel warning i logger
-          expr: sum by (app, container, pod, namespace) (floor(increase(logback_events_total{app="sokos-ktor-template", level="warning"} [3m]))) > 0
-          for: 5m
+          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Warning"}[2m]))) > 2
+          for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.pod }} -c {{ $labels.container }} -n {{ $labels.namespace }}`"
-            summary: "Høy andel error i logger for app {{ $labels.app }} feiler med {{ $labels.exception }} i namespace {{ $labels.namespace }}"
+            action: "`kubectl logs \{{ $labels.log_pod_name }} -n \{{ $labels.log_namespace }}`"
+            summary: "Høy andel warning i logger for app \{{ $labels.log_app }} feiler i namespace \{{ $labels.log_namespace }}"
           labels:
             namespace: okonomi
             severity: warning
@@ -46,13 +46,12 @@ spec:
             alert_type: custom
 
         - alert: Høy andel HTTP serverfeil (5xx responser)
-          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 1
+          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 2
           for: 2m
           annotations:
-            summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.\n
-                    Grunn:\n ```{{ $labels.problem_details }}```\n
-                    Sjekk loggene for å se hvorfor dette feiler."
-            action: "`kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}`"
+            summary: "Følgende request feilet: `Status \{{ $labels.status }} - \{{ $labels.method }} \{{ $labels.route }}`.\n
+                          Sjekk loggene for å se hvorfor dette feiler."
+            action: "`kubectl logs \{{ $labels.pod }} -n \{{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
@@ -60,13 +59,12 @@ spec:
             alert_type: custom
 
         - alert: Høy andel HTTP klientfeil (4xx responser)
-          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 0
+          expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 2
           for: 2m
           annotations:
-            summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.\n
-                    Grunn:\n ```{{ $labels.problem_details }}```\n
-                    Sjekk loggene for å se hvorfor dette feiler"
-            action: "`kubectl logs {{ $labels.kubernetes_pod_name }} -n {{ $labels.kubernetes_namespace }}`"
+            summary: "Følgende request feilet: `Status \{{ $labels.status }} - \{{ $labels.method }} \{{ $labels.route }}`.\n
+                          Sjekk loggene for å se hvorfor dette feiler"
+            action: "`kubectl logs \{{ $labels.pod }} -n \{{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
