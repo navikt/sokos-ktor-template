@@ -21,7 +21,7 @@ object PropertiesConfig {
     private val localDevProperties = ConfigurationMap(
         mapOf(
             "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
-            "USE_AUTHENTICATION" to "true",
+            "USE_AUTHENTICATION" to "false",
         )
     )
 

@@ -27,9 +27,11 @@ fun Route.dummyApi(
             }
             get("error") {
                 log.error { "Noe gikk galt" }
+                call.respond(HttpStatusCode.OK)
             }
             get("warning") {
                 log.warn { "Noe gikk galt" }
+                call.respond(HttpStatusCode.OK)
             }
         }
     }
