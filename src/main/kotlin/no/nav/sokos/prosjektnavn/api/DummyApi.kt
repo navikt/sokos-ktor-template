@@ -15,10 +15,13 @@ fun Route.dummyApi(
     useAuthentication: Boolean
 ) {
     authenticate(useAuthentication, AUTHENTICATION_NAME) {
-        route("/api") {
-            get("/v1/hello") {
-                val response = dummyService.sayHello()
-                call.respond(HttpStatusCode.OK, response)
+        route("/api/v1/") {
+            get("hello") {
+                //val response = dummyService.sayHello()
+                call.respond(HttpStatusCode.ServiceUnavailable)
+            }
+            get("goodbye") {
+                call.respond(HttpStatusCode.BadRequest)
             }
         }
     }
