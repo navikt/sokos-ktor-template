@@ -13,7 +13,7 @@ spec:
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
           for: 2m
           annotations:
-            action: "`kubectl describe pod <podname>` -> `kubectl logs <podname>`"
+            action: "`kubectl describe pod {{ $labels.pod }} -n {{ $labels.namespace }}` -> `kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi

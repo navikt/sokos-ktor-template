@@ -19,19 +19,8 @@ fun Route.dummyApi(
     authenticate(useAuthentication, AUTHENTICATION_NAME) {
         route("/api/v1/") {
             get("hello") {
-                //val response = dummyService.sayHello()
-                call.respond(HttpStatusCode.ServiceUnavailable)
-            }
-            get("goodbye") {
-                call.respond(HttpStatusCode.BadRequest)
-            }
-            get("error") {
-                log.error { "Noe gikk galt" }
-                call.respond(HttpStatusCode.OK)
-            }
-            get("warning") {
-                log.warn { "Noe gikk galt" }
-                call.respond(HttpStatusCode.OK)
+                val response = dummyService.sayHello()
+                call.respond(HttpStatusCode.OK, response)
             }
         }
     }

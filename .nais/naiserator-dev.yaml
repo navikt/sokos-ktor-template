@@ -39,4 +39,4 @@ spec:
       enabled: true
   env:
     - name: USE_AUTHENTICATION
-      value: "false"
+      value: "true"
