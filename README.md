@@ -9,6 +9,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
    ./setupTemplate.sh
    ```
 3. Fyll inn prosjektnavn og artifaktnavn (no.nav.sokos.xxx)
+4. Endre alarmtypen fra `sokos_ktor_template_type` til f.eks `sokos_din_app_type` i [alerts-dev.yaml](.nais/alerts-dev.yaml) og [alerts-prod.yaml](.nais/alerts-prod.yaml)
 
 ## Workflows
 
