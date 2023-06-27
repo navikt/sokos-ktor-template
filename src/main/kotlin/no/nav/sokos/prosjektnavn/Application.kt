@@ -1,18 +1,17 @@
 package no.nav.sokos.prosjektnavn
 
-import io.ktor.server.application.Application
-import io.ktor.server.engine.embeddedServer
-import io.ktor.server.engine.stop
-import io.ktor.server.netty.Netty
-import java.util.concurrent.TimeUnit
-import kotlin.properties.Delegates
+import io.ktor.server.application.*
+import io.ktor.server.engine.*
+import io.ktor.server.netty.*
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
-import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.config.configureSecurity
+import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.metrics.appStateReadyFalse
 import no.nav.sokos.prosjektnavn.metrics.appStateRunningFalse
 import no.nav.sokos.prosjektnavn.service.DummyService
+import java.util.concurrent.TimeUnit
+import kotlin.properties.Delegates
 
 fun main() {
     val applicationState = ApplicationState()
@@ -22,6 +21,7 @@ fun main() {
     HttpServer(applicationState, applicationConfiguration, dummyService).start()
 
 }
+
 class HttpServer(
     private val applicationState: ApplicationState,
     private val applicationConfiguration: PropertiesConfig.Configuration,
@@ -42,11 +42,13 @@ class HttpServer(
         applicationState.running = true
         embeddedServer.start(wait = true)
     }
+
     private fun stop() {
         applicationState.running = false
         embeddedServer.stop(5, 5, TimeUnit.SECONDS)
     }
 }
+
 class ApplicationState(
     alive: Boolean = true,
     ready: Boolean = false
