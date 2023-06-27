@@ -13,6 +13,7 @@ spec:
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
           for: 2m
           annotations:
+            action: "Sjekk hvorfor applikasjonen er nede"
             summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi
