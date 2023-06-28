@@ -14,6 +14,8 @@ on:
       - '.github/workflows/alerts.yaml'
       - '.nais/alerts-dev.yaml'
       - '.nais/alerts-prod.yaml'
+env:
+  TZ: Europe/Oslo
 
 jobs:
   bygg-test-push-image:
