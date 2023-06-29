@@ -1,0 +1,64 @@
+name: Manuell deploy til dev
+
+on:
+  workflow_dispatch:
+env:
+  TZ: Europe/Oslo
+
+jobs:
+  bygg-push-image:
+    permissions:
+      contents: read
+      id-token: write
+    name: Bygg og push Docker container
+    runs-on: ubuntu-latest
+    steps:
+      - name: Sjekker ut repo
+        uses: actions/checkout@v3
+        with:
+          ref: ${{ github.sha }}
+      - uses: actions/setup-java@v3
+        with:
+          distribution: 'temurin'
+          java-version: '17'
+      - name: Cacher gradle artifakter
+        uses: actions/cache@v3
+        with:
+          path: |
+            ~/.gradle/caches
+            ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-
+      - name: Bygg og test shadowJar
+        run: ./gradlew test shadowJar
+        env:
+          ORG_GRADLE_PROJECT_githubUser: x-access-token
+          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Bygg docker image
+        uses: docker/setup-buildx-action@v2
+
+      - name: Push docker image til Google Artifact Registry
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: okonomi
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+          tag: manuell
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
+
+  deploy-manuell-dev-gcp:
+    name: Deploy manuelt til dev-gcp
+    needs: bygg-push-image
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: nais/deploy/actions/deploy@v1
+        env:
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          IMAGE: ${{ needs.bygg-push-image.outputs.image }}
+          RESOURCE: .nais/naiserator-dev.yaml
