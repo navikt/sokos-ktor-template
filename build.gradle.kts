@@ -26,7 +26,7 @@ val logstashVersion = "7.4"
 val jacksonVersion = "2.15.2"
 val prometheusVersion = "1.11.1"
 val kotlinLoggingVersion = "3.0.5"
-val janionVersion = "3.1.9"
+val janionVersion = "3.1.10"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.6.2"
 
