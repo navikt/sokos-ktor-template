@@ -8,8 +8,8 @@ env:
 jobs:
   bygg-push-image:
     permissions:
-      contents: read
-      id-token: write
+      contents: "read"
+      id-token: "write"
     name: Bygg og push Docker container
     runs-on: ubuntu-latest
     steps:

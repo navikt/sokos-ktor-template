@@ -14,8 +14,8 @@ env:
 jobs:
   vulnerability-analyze:
     permissions:
-      contents: read
-      id-token: write
+      contents: "read"
+      id-token: "write"
       security-events: write
     name: Sikkerhet analyse
     if: github.event.workflow_run.conclusion == 'success' || github.event_name == 'schedule'
@@ -31,6 +31,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Oppretter dependency graph
+        uses: gradle/gradle-build-action@v2.6.1
+        env: # Eksluder test dependencies
+          DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
+        with:
+          dependency-graph: generate-and-submit
+          arguments: --configuration-cache build
 
       - name: Initialiserer CodeQL
         uses: github/codeql-action/init@v2
