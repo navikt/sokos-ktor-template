@@ -41,22 +41,6 @@ jobs:
           dependency-graph: generate-and-submit
           arguments: build
 
-      - name: Cache gradle artifacts
-        uses: actions/cache@v3
-        with:
-          path: |
-            ~/.gradle/caches
-            ~/.gradle/wrapper
-          key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
-          restore-keys: |
-            ${{ runner.os }}-gradle-
-
-      - name: Build and test shadowJar
-        run: ./gradlew test shadowJar
-        env:
-          ORG_GRADLE_PROJECT_githubUser: x-access-token
-          ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
-
       - name: Build docker image
         uses: docker/setup-buildx-action@v2
 
