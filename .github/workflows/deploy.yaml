@@ -82,7 +82,7 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml
 
 #  deploy-prod:
