@@ -1,4 +1,4 @@
-name: Deploy alarmer
+name: Deploy alerts
 on:
   push:
     branches:
@@ -14,26 +14,26 @@ on:
       - '.github/workflows/deploy.yaml'
 
 jobs:
-  deploy-alerts-dev:
-    name: Deploy alarmer til dev
+  deploy-dev:
+    name: Deploy alerts to dev
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekker ut kode
+      - name: Checkout repository
         uses: actions/checkout@v3
-      - name: Deploy til dev
+      - name: Deploy to dev
         uses: nais/deploy/actions/deploy@v1
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
           RESOURCE: .nais/alerts-dev.yaml
 
-#  deploy-alerts-prod:
-#    name: Deploy alarmer til prod
+#  deploy-prod:
+#    name: Deploy alerts to prod
 #    runs-on: ubuntu-latest
 #    steps:
-#      - name: Sjekker ut kode
+#      - name: Checkout repository
 #        uses: actions/checkout@v3
-#      - name: Deploy til prod
+#      - name: Deploy to prod
 #        uses: nais/deploy/actions/deploy@v1
 #        env:
 #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}

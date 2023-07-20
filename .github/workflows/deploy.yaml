@@ -23,17 +23,17 @@ jobs:
     permissions:
       contents: "write"
       id-token: "write"
-    name: Bygg/test og push Docker image
+    name: Build/test & push Docker image
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekker ut repo
+      - name: Checkout repository
         uses: actions/checkout@v3
       - uses: actions/setup-java@v3
         with:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Oppretter dependency graph
+      - name: Create dependency graph
         uses: gradle/gradle-build-action@v2.6.1
         env: # Eksluder test dependencies
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
@@ -41,7 +41,7 @@ jobs:
           dependency-graph: generate-and-submit
           arguments: build
 
-      - name: Cache gradle artifakter
+      - name: Cache gradle artifacts
         uses: actions/cache@v3
         with:
           path: |
@@ -51,16 +51,16 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-gradle-
 
-      - name: Bygg og test shadowJar
+      - name: Build and test shadowJar
         run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygg docker image
+      - name: Build docker image
         uses: docker/setup-buildx-action@v2
 
-      - name: Push docker image til Google Artifact Registry
+      - name: Push docker image to Google Artifact Registry
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -72,8 +72,8 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  deploy-dev-gcp:
-    name: Deploy til dev-gcp
+  deploy-dev:
+    name: Deploy to dev
     needs: build
     runs-on: ubuntu-latest
     steps:
@@ -85,9 +85,9 @@ jobs:
           IMAGE: ${{ needs.bygg-test-push-image.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml
 
-#  deploy-prod-gcp:
-#    name: Deploy til prod-gcp
-#    needs: [ bygg-test-push-image , deploy-dev-gcp ]
+#  deploy-prod:
+#    name: Deploy to prod
+#    needs: [ build , deploy-dev ]
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v3

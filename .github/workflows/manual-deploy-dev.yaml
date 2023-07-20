@@ -1,4 +1,4 @@
-name: Manuell deploy til dev
+name: Manuell deploy to dev
 
 on:
   workflow_dispatch:
@@ -6,14 +6,14 @@ env:
   TZ: Europe/Oslo
 
 jobs:
-  bygg-push-image:
+  build:
     permissions:
       contents: "read"
       id-token: "write"
-    name: Bygg og push Docker container
+    name: Build and push Docker image
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekker ut repo
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.sha }}
@@ -21,7 +21,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Cacher gradle artifakter
+      - name: Cache gradle artifacts
         uses: actions/cache@v3
         with:
           path: |
@@ -30,16 +30,16 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Bygg og test shadowJar
+      - name: Build and test shadowJar
         run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
           ORG_GRADLE_PROJECT_githubPassword: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Bygg docker image
+      - name: Build docker image
         uses: docker/setup-buildx-action@v2
 
-      - name: Push docker image til Google Artifact Registry
+      - name: Push docker image to Google Artifact Registry
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
@@ -50,9 +50,9 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
-  deploy-manuell-dev-gcp:
-    name: Deploy manuelt til dev-gcp
-    needs: bygg-push-image
+  deploy-dev:
+    name: Manual deploy to dev
+    needs: build
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
@@ -60,5 +60,5 @@ jobs:
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.bygg-push-image.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml

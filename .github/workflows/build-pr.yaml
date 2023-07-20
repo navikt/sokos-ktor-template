@@ -1,14 +1,14 @@
-name: Bygg og test PR
+name: Build/test PR
 
 on:
   pull_request:
 
 jobs:
-  build-pull-request:
-    name: Bygg og test
+  build-pr:
+    name: Build and test
     runs-on: ubuntu-latest
     steps:
-      - name: Sjekker ut repo
+      - name: Checkout repository
         uses: actions/checkout@v3
         with:
           ref: ${{ github.event.pull_request.head.sha }}
@@ -16,7 +16,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - name: Cacher gradle artifakter
+      - name: Cache gradle artifacts
         uses: actions/cache@v3
         with:
           path: |
@@ -25,7 +25,7 @@ jobs:
           key: ${{ runner.os }}-gradle-${{ hashFiles('**/*.gradle*', '**/gradle-wrapper.properties') }}
           restore-keys: |
             ${{ runner.os }}-gradle-
-      - name: Bygg og test shadowJar
+      - name: Build and test shadowJar
         run: ./gradlew test shadowJar
         env:
           ORG_GRADLE_PROJECT_githubUser: x-access-token
