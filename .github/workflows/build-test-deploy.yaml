@@ -21,7 +21,7 @@ env:
 jobs:
   bygg-test-push-image:
     permissions:
-      contents: "read"
+      contents: "write"
       id-token: "write"
     name: Bygg/test og push Docker image
     runs-on: ubuntu-latest
@@ -32,6 +32,14 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
+
+      - name: Oppretter dependency graph
+        uses: gradle/gradle-build-action@v2.6.1
+        env: # Eksluder test dependencies
+          DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
+        with:
+          dependency-graph: generate-and-submit
+          arguments: bygg-test-push-image
 
       - name: Cache gradle artifakter
         uses: actions/cache@v3
@@ -56,6 +64,7 @@ jobs:
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
+          byosbom: dependency-graph-reports/build-test-deploy-bygg-test-push-image.json
           team: okonomi
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}

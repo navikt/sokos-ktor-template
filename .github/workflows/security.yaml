@@ -32,14 +32,6 @@ jobs:
           distribution: 'temurin'
           java-version: '17'
 
-      - name: Oppretter dependency graph
-        uses: gradle/gradle-build-action@v2.6.1
-        env: # Eksluder test dependencies
-          DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
-        with:
-          dependency-graph: generate-and-submit
-          arguments: --configuration-cache build
-
       - name: Initialiserer CodeQL
         uses: github/codeql-action/init@v2
         with:

@@ -11,7 +11,7 @@ on:
       - '.gitignore'
       - '.github/workflows/build-pr.yaml'
       - '.github/workflows/security.yaml'
-      - '.github/workflows/build-test-push-deploy.yaml'
+      - '.github/workflows/build-test-deploy.yaml'
 
 jobs:
   deploy-alerts-dev:
