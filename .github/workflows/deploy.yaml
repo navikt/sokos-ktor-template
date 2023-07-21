@@ -38,7 +38,6 @@ jobs:
         env: # Eksluder test dependencies
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
-          cache-disabled: true
           dependency-graph: generate-and-submit
           arguments: build
 
@@ -69,6 +68,7 @@ jobs:
           CLUSTER: dev-gcp
           IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml
+          PRINT_PAYLOAD: true
 
 #  deploy-prod:
 #    name: Deploy to prod
