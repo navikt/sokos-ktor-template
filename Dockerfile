@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:17@sha256:de83ab3dd1f3855105bc5050b7b3064bb54e36a60cf8440d392de4fb46891937 as BUILDER
+FROM bellsoft/liberica-openjdk-alpine:20@sha256:d167d993577dbbb40e21f4f7928df66196cd2cbf1e4d006bbcf94f0d610ab6ac as BUILDER
 ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
 COPY build.gradle.kts settings.gradle.kts gradlew $APP_HOME
@@ -7,7 +7,7 @@ RUN ./gradlew build -x test || return 0
 COPY . .
 RUN ./gradlew build -x test
 
-FROM bellsoft/liberica-openjdk-alpine:17@sha256:de83ab3dd1f3855105bc5050b7b3064bb54e36a60cf8440d392de4fb46891937
+FROM bellsoft/liberica-openjdk-alpine:20@sha256:d167d993577dbbb40e21f4f7928df66196cd2cbf1e4d006bbcf94f0d610ab6ac
 RUN apk add --no-cache bash
 ENV APP_HOME=/usr/app/
 WORKDIR $APP_HOME
