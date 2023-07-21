@@ -38,6 +38,7 @@ jobs:
         env: # Eksluder test dependencies
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
+          cache-disabled: true
           dependency-graph: generate-and-submit
           arguments: build
 
