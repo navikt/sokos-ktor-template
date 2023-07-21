@@ -15,6 +15,7 @@ on:
       - '.github/workflows/alerts.yaml'
       - '.nais/alerts-dev.yaml'
       - '.nais/alerts-prod.yaml'
+      - '.github/dependabot.yml'
 env:
   TZ: Europe/Oslo
 
