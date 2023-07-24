@@ -4,6 +4,6 @@ import no.nav.sokos.prosjektnavn.domain.DummyDomain
 
 class DummyService {
     fun sayHello(): DummyDomain {
-        return DummyDomain("Hello World! Greeting from master branch!")
+        return DummyDomain("Hello World! Greeting from PR!")
     }
 }
