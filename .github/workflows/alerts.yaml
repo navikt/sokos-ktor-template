@@ -12,6 +12,7 @@ on:
       - '.github/workflows/build-pr.yaml'
       - '.github/workflows/security.yaml'
       - '.github/workflows/deploy.yaml'
+      - '.github/dependabot.yml'
 
 jobs:
   deploy-dev:

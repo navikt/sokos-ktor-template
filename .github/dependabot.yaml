@@ -17,8 +17,3 @@ updates:
       github:
         patterns:
           - "*"
-
-  - package-ecosystem: docker
-    directory: "/"
-    schedule:
-      interval: daily
