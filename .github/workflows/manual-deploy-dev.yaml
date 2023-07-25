@@ -1,4 +1,4 @@
-name: Manuell deploy to dev
+name: Manual deploy to dev
 
 on:
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
           team: okonomi
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-          tag: manuell
+          tag: dev
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
