@@ -20,7 +20,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '17'
-      - uses: gradle/gradle-build-action@v2.8.1
+      - uses: gradle/gradle-build-action@v2.9.0
         with:
           arguments: --configuration-cache build
 
