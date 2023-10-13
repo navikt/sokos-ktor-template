@@ -23,7 +23,7 @@ repositories {
 val ktorVersion = "2.3.5"
 val logbackVersion = "1.4.11"
 val logstashVersion = "7.4"
-val jacksonVersion = "2.15.2"
+val jacksonVersion = "2.15.3"
 val prometheusVersion = "1.11.5"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.10"
