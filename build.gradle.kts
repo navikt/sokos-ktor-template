@@ -6,11 +6,8 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     kotlin("jvm") version "1.9.10"
-    kotlin("plugin.serialization") version "1.9.10"
     id("org.openapi.generator") version "7.0.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-
-    application
 }
 
 group = "no.nav.sokos"
@@ -45,14 +42,12 @@ dependencies {
     implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
 
-    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
-
     // Security
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion")
 
-    // Jackson
-    implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
+    // Serialization / Jackson
+    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
     implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
     implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
@@ -73,10 +68,6 @@ dependencies {
     // Test
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
-}
-
-application {
-    mainClass.set("no.nav.sokos.prosjektnavn.ApplicationKt")
 }
 
 sourceSets {
