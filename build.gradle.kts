@@ -73,7 +73,7 @@ dependencies {
 sourceSets {
     main {
         java {
-            srcDirs("$buildDir/generated/src/main/kotlin")
+            srcDirs("${layout.buildDirectory.get()}/generated/src/main/kotlin")
         }
     }
 }
@@ -94,7 +94,7 @@ tasks {
         generatorName.set("kotlin")
         generateModelDocumentation.set(false)
         inputSpec.set("$rootDir/src/main/resources/openapi/pets.json")
-        outputDir.set("$buildDir/generated")
+        outputDir.set("${layout.buildDirectory.get()}/generated")
         globalProperties.set(
             mapOf(
                 "models" to ""
@@ -132,5 +132,9 @@ tasks {
         }
 
         reports.forEach { report -> report.required.value(false) }
+    }
+
+    withType<Wrapper>() {
+        gradleVersion = "8.4"
     }
 }
