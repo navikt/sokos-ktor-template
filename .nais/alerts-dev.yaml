@@ -14,7 +14,7 @@ spec:
           for: 1s
           annotations:
             action: "Sjekk hvorfor applikasjonen er nede"
-            summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
+            summary: "{{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi
             severity: danger
@@ -26,7 +26,7 @@ spec:
           for: 1s
           annotations:
             action: "Sjekk hvorfor applikasjonen ikke klarer å restarte"
-            summary: "App {{ $labels.container }} restarter mange ganger"
+            summary: "{{ $labels.container }} restarter mange ganger"
           labels:
             namespace: okonomi
             severity: danger
@@ -42,7 +42,7 @@ spec:
           for: 1s
           annotations:
             action: "Sjekk error loggene i applikasjonen"
-            summary: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
+            summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
             severity: danger
@@ -58,7 +58,7 @@ spec:
           for: 1s
           annotations:
             action: "Sjekk warning loggene i applikasjonen"
-            summary: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
+            summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
             severity: warning
