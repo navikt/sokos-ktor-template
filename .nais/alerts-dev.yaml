@@ -34,7 +34,7 @@ spec:
             alert_type: custom
 
         - alert: Høy andel error i logger
-          expr: sum by(app, pod, namespace) (floor(increase(log_messages_errors{app="sokos-ktor-template", level="Error"}[2m]))) > 2
+          expr: sum(increase(log_messages_errors{app="sokos-ktor-template", level="Error"}[5m])) > 2
           for: 2m
           annotations:
             summary: "Høy andel error i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
@@ -46,7 +46,7 @@ spec:
             alert_type: custom
 
         - alert: Høy andel warning i logger
-          expr: sum by(app, pod, namespace) (floor(increase(log_messages_errors{app="sokos-ktor-template", level="Warning"}[2m]))) > 2
+          expr: sum(increase(log_messages_errors{app="sokos-ktor-template", level="Warning"}[5m])) > 2
           for: 2m
           annotations:
             summary: "Høy andel warning i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
