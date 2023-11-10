@@ -9,7 +9,7 @@ spec:
   groups:
     - name: sokos-ktor-template-alerts
       rules:
-        - alert: Applikasjon nede
+        - alert: Applikasjonen er nede
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
           for: 1s
           annotations:
@@ -21,7 +21,7 @@ spec:
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Applikasjonen har restartet flere ganger de siste 5 minuttene!
+        - alert: Applikasjonen restarter flere ganger de siste 5 minuttene!
           expr: sum(increase(kube_pod_container_status_restarts_total{container=~"sokos-ktor-template"}[5m])) by (container) > 2
           for: 1s
           annotations:
@@ -33,23 +33,23 @@ spec:
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Error i loggene
+        - alert: Applikasjonen logger error
           expr:
-            'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[5m])
+            'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m])
               or vector(0)) -
-              sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[5m]
+              sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m]
               offset 15m) or vector(0)) > 0'
           for: 1s
           annotations:
-            summary: "Høy andel error i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
+            action: "Sjekk error loggene i applikasjonen"
+            summary: "Error i logger for app {{ $labels.app }} i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Warning i loggene
+        - alert: Applikasjonen logger warning
           expr:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[5m])
               or vector(0)) -
@@ -57,8 +57,8 @@ spec:
               offset 15m) or vector(0)) > 0'
           for: 1s
           annotations:
-            summary: "Høy andel warning i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
+            action: "Sjekk warning loggene i applikasjonen"
+            summary: "Warning i logger for app {{ $labels.app }} i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi
             severity: warning
@@ -69,9 +69,9 @@ spec:
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 2
           for: 1s
           annotations:
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.
                       Sjekk loggene for å se hvorfor dette feiler."
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
@@ -82,9 +82,9 @@ spec:
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 2
           for: 1s
           annotations:
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`. 
                       Sjekk loggene for å se hvorfor dette feiler"
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
