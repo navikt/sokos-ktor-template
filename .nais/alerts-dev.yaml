@@ -34,11 +34,11 @@ spec:
             alert_type: custom
 
         - alert: Høy andel error i logger
-          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Error"}[2m]))) > 2
+          expr: sum by(app, pod, namespace) (floor(increase(log_messages_errors{app="sokos-ktor-template", level="Error"}[2m]))) > 2
           for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}`"
-            summary: "Høy andel error i logger for app {{ $labels.log_app }} feiler i namespace {{ $labels.log_namespace }}"
+            summary: "Høy andel error i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
@@ -46,11 +46,11 @@ spec:
             alert_type: custom
 
         - alert: Høy andel warning i logger
-          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Warning"}[2m]))) > 2
+          expr: sum by(app, pod, namespace) (floor(increase(log_messages_errors{app="sokos-ktor-template", level="Warning"}[2m]))) > 2
           for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}`"
-            summary: "Høy andel warning i logger for app {{ $labels.log_app }} feiler i namespace {{ $labels.log_namespace }}"
+            summary: "Høy andel warning i logger for app {{ $labels.deployment }} i namespace {{ $labels.namespace }}"
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: warning
