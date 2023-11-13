@@ -9,80 +9,87 @@ spec:
   groups:
     - name: sokos-ktor-template-alerts
       rules:
-        - alert: Applikasjon nede
+        - alert: sokos-ktor-template er nede
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
           for: 2m
           annotations:
             action: "Sjekk hvorfor applikasjonen er nede"
-            summary: "App {{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
+            summary: "{{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Applikasjonen har restartet flere ganger de siste 5 minuttene!
+        - alert: sokos-ktor-template har restartet flere ganger de siste 5 minuttene!
           expr: sum(increase(kube_pod_container_status_restarts_total{container=~"sokos-ktor-template"}[5m])) by (container) > 2
           for: 2m
           annotations:
             action: "Sjekk hvorfor applikasjonen ikke klarer å restarte"
-            summary: "App {{ $labels.container }} restarter mange ganger"
+            summary: "{{ $labels.container }} restarter mange ganger"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Høy andel error i logger
-          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Error"}[2m]))) > 2
+        - alert: sokos-ktor-template logger error
+          expr:
+            'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m])
+              or vector(0)) -
+              sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m]
+              offset 15m) or vector(0)) > 0'
           for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}`"
-            summary: "Høy andel error i logger for app {{ $labels.log_app }} feiler i namespace {{ $labels.log_namespace }}"
+            action: "Sjekk error loggene i applikasjonen"
+            summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Høy andel warning i logger
-          expr: sum by(log_app, log_pod_name, log_namespace) (floor(increase(logd_messages_total{log_app="sokos-ktor-template", log_level="Warning"}[2m]))) > 2
+        - alert: sokos-ktor-template logger warning
+          expr:
+            'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m])
+              or vector(0)) -
+              sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m]
+              offset 15m) or vector(0)) > 0'
           for: 2m
           annotations:
-            action: "`kubectl logs {{ $labels.log_pod_name }} -n {{ $labels.log_namespace }}`"
-            summary: "Høy andel warning i logger for app {{ $labels.log_app }} feiler i namespace {{ $labels.log_namespace }}"
+            action: "Sjekk warning loggene i applikasjonen"
+            summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
             severity: warning
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Høy andel HTTP serverfeil (5xx responser)
+        - alert: sokos-ktor-template har høy andel HTTP serverfeil (5xx responser)
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 2
           for: 2m
           annotations:
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.
                       Sjekk loggene for å se hvorfor dette feiler."
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: Høy andel HTTP klientfeil (4xx responser)
+        - alert: sokos-ktor-template har høy andel HTTP klientfeil (4xx responser)
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 2
           for: 2m
           annotations:
+            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`. 
                       Sjekk loggene for å se hvorfor dette feiler"
-            action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
           labels:
             namespace: okonomi
             severity: danger
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
-
 
 ---
 
