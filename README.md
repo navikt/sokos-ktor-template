@@ -79,7 +79,7 @@ Legg ved skissediagram for hvordan arkitekturen er bygget
 Distribusjon av tjenesten er gjort med bruk av Github Actions.
 [sokos-ktor-template CI / CD](https://github.com/navikt/sokos-ktor-template/actions)
 
-Push/merge til master branche vil teste, bygge og deploye til produksjonsmiljø og testmiljø.
+Push/merge til main branche vil teste, bygge og deploye til produksjonsmiljø og testmiljø.
 
 # 7. Autentisering
 Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering
