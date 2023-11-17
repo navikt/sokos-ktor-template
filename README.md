@@ -63,7 +63,7 @@ Hva er oppgaven til denne applikasjonen
 
 # 2. Utviklingsmiljø
 ### Forutsetninger
-* Java 17
+* Java 21
 * Gradle 8
 
 ### Bygge prosjekt
