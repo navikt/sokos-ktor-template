@@ -37,6 +37,14 @@ spec:
   azure:
     application:
       enabled: true
+      tenant: trygdeetaten.no
+      allowAllUsers: true
+  accessPolicy:
+    inbound:
+      rules:
+        - application: azure-token-generator
+          namespace: aura
+          cluster: dev-gcp
   env:
     - name: USE_AUTHENTICATION
       value: "true"
