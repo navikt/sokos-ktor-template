@@ -84,15 +84,6 @@ Push/merge til main branche vil teste, bygge og deploye til produksjonsmiljø og
 # 7. Autentisering
 Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering
 
-### Hente token
-1. Installer `vault` kommandolinje verktøy
-2. Gi rettighet for å kjøre scriptet `chmod 755 getToken.sh`
-3. Kjør scriptet:
-   ```
-   ./getToken.sh
-   ```
-4. Skriv inn applikasjonsnavn du vil hente `client_id` og `client_secret` for
-
 # 6. Drift og støtte
 
 ### Logging
