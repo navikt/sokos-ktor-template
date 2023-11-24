@@ -6,6 +6,7 @@ import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     kotlin("jvm") version "1.9.20"
+    kotlin("plugin.serialization") version "1.9.20"
     id("org.openapi.generator") version "7.0.1"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
@@ -26,6 +27,7 @@ val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.10"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.8.0"
+val kotlinxSerializationVersion = "1.6.0"
 
 dependencies {
 
@@ -46,11 +48,9 @@ dependencies {
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt-jvm:$ktorVersion")
 
-    // Serialization / Jackson
-    implementation("io.ktor:ktor-serialization-jackson-jvm:$ktorVersion")
-    implementation("com.fasterxml.jackson.core:jackson-databind:$jacksonVersion")
-    implementation("com.fasterxml.jackson.module:jackson-module-kotlin:$jacksonVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:$jacksonVersion")
+    // Serialization
+    implementation("io.ktor:ktor-serialization-kotlinx-json-jvm:$ktorVersion")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json-jvm:$kotlinxSerializationVersion")
 
     // Monitorering
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm:$ktorVersion")
@@ -103,7 +103,7 @@ tasks {
         configOptions.set(
             mapOf(
                 "library" to "jvm-ktor",
-                "serializationLibrary" to "jackson"
+                "serializationLibrary" to "kotlinx_serialization",
             )
         )
     }

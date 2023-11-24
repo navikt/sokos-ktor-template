@@ -19,25 +19,10 @@ fun Route.dummyApi(
     authenticate(useAuthentication, AUTHENTICATION_NAME) {
         route("/api/v1/") {
             get("hello") {
+                log.info("Kaller service")
                 val response = dummyService.sayHello()
                 call.respond(HttpStatusCode.OK, response)
             }
-
-            get("error") {
-                for (i in 0..5) {
-                    log.error { "Nå er'e feil igjen, Error: $i" }
-                }
-                call.respond("Nå er det 1000 errors i loggen")
-            }
-
-            get("warn") {
-
-                for (i in 0..5) {
-                    log.warn { "Nå er'e feil igjen, Warning: $i" }
-                }
-                call.respond("Nå er det 1000 errors i loggen")
-            }
-
         }
     }
 }

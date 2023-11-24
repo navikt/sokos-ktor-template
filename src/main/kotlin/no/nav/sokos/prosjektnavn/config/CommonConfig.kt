@@ -1,10 +1,7 @@
 package no.nav.sokos.prosjektnavn.config
 
-import com.fasterxml.jackson.annotation.JsonInclude
-import com.fasterxml.jackson.databind.DeserializationFeature
-import com.fasterxml.jackson.databind.SerializationFeature
 import io.ktor.http.HttpHeaders
-import io.ktor.serialization.jackson.jackson
+import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
 import io.ktor.server.application.install
 import io.ktor.server.metrics.micrometer.MicrometerMetrics
@@ -19,6 +16,8 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import java.util.UUID
+import kotlinx.serialization.ExperimentalSerializationApi
+import kotlinx.serialization.json.Json
 import no.nav.sokos.prosjektnavn.metrics.prometheusMeterRegistry
 import org.slf4j.event.Level
 
@@ -35,13 +34,14 @@ fun Application.commonConfig() {
         disableDefaultColors()
     }
     install(ContentNegotiation) {
-        jackson {
-            findAndRegisterModules()
-            disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)
-            disable(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES)
-            enable(SerializationFeature.INDENT_OUTPUT)
-            setSerializationInclusion(JsonInclude.Include.NON_NULL)
-        }
+        json(Json {
+            prettyPrint = true
+            isLenient = true
+
+            @OptIn(ExperimentalSerializationApi::class)
+            explicitNulls = false
+
+        })
     }
     install(MicrometerMetrics) {
         registry = prometheusMeterRegistry
