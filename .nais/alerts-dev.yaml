@@ -33,7 +33,7 @@ spec:
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: sokos-ktor-template logger error
+        - alert: Applikasjonen logger høy andel errors
           expr:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m])
               or vector(0)) -
@@ -41,7 +41,7 @@ spec:
               offset 15m) or vector(0)) > 0'
           for: 2m
           annotations:
-            action: "Sjekk error loggene i applikasjonen"
+            action: "Sjekk error loggene i sokos-ktor-template"
             summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
@@ -49,7 +49,7 @@ spec:
             sokos_ktor_template_type: sokos-ktor-template
             alert_type: custom
 
-        - alert: sokos-ktor-template logger warning
+        - alert: Applikasjonen logger høy andel warnings
           expr:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m])
               or vector(0)) -
@@ -57,7 +57,7 @@ spec:
               offset 15m) or vector(0)) > 0'
           for: 2m
           annotations:
-            action: "Sjekk warning loggene i applikasjonen"
+            action: "Sjekk warning loggene i sokos-ktor-template"
             summary: "`kubectl logs <podname> -n okonomi`"
           labels:
             namespace: okonomi
