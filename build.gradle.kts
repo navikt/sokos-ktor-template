@@ -19,7 +19,7 @@ repositories {
 }
 
 val ktorVersion = "2.3.6"
-val logbackVersion = "1.4.11"
+val logbackVersion = "1.4.12"
 val logstashVersion = "7.4"
 val jacksonVersion = "2.15.3"
 val prometheusVersion = "1.12.0"
