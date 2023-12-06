@@ -18,8 +18,14 @@ import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import java.util.UUID
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
+import mu.KotlinLogging
 import no.nav.sokos.prosjektnavn.metrics.prometheusMeterRegistry
 import org.slf4j.event.Level
+
+const val SECURE_LOGGER = "secureLogger"
+
+val logger = KotlinLogging.logger {}
+val secureLogger = KotlinLogging.logger(SECURE_LOGGER)
 
 fun Application.commonConfig() {
     install(CallId) {

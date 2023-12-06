@@ -7,7 +7,7 @@ import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 
-fun Routing.naisRoutes(alive: () -> Boolean, ready: () -> Boolean) {
+fun Routing.naisApi(alive: () -> Boolean, ready: () -> Boolean) {
     route("internal") {
         get("isAlive") {
             when (alive()) {

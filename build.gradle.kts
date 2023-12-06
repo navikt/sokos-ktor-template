@@ -28,11 +28,13 @@ val janionVersion = "3.1.11"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.8.0"
 val kotlinxSerializationVersion = "1.6.2"
+val mockOAuth2ServerVersion = "2.0.1"
+val mockkVersion = "1.13.8"
 
 dependencies {
 
     // Ktor server
-    implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
+    //implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
@@ -41,7 +43,7 @@ dependencies {
 
     // Ktor client
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
-    implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
+    //implementation("io.ktor:ktor-client-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
 
     // Security
@@ -66,8 +68,12 @@ dependencies {
     implementation("com.natpryce:konfig:$natpryceVersion")
 
     // Test
+    testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
+    testImplementation("io.mockk:mockk:$mockkVersion")
+    testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
+
 }
 
 sourceSets {

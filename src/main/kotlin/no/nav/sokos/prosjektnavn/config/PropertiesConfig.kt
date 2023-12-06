@@ -7,7 +7,6 @@ import com.natpryce.konfig.Key
 import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
 import java.io.File
-import java.util.UUID
 
 object PropertiesConfig {
 
