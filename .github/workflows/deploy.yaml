@@ -46,7 +46,6 @@ jobs:
         uses: nais/docker-build-push@v0
         id: docker-build-push
         with:
-          byosbom: dependency-graph-reports/deploy-build.json
           team: okonomi
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
