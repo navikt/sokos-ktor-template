@@ -21,7 +21,8 @@ object PropertiesConfig {
         mapOf(
             "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
             "USE_AUTHENTICATION" to "false",
-        )
+            "AZURE_APP_CLIENT_ID" to "azure-app-client-id",
+            )
     )
 
     private val devProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.DEV.toString()))
