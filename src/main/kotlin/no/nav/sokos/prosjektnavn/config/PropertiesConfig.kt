@@ -22,6 +22,7 @@ object PropertiesConfig {
             "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
             "USE_AUTHENTICATION" to "false",
             "AZURE_APP_CLIENT_ID" to "azure-app-client-id",
+            "AZURE_APP_WELL_KNOWN_URL" to "azure-app-well-known-url"
             )
     )
 
