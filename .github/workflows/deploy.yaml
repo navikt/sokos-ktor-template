@@ -77,5 +77,5 @@ jobs:
 #        env:
 #          CLUSTER: prod-gcp
 #          RESOURCE: .nais/naiserator-dev.yaml
-#          VAR: image=${{ steps.docker-build-push.outputs.image }}
+#          IMAGE: ${{ needs.build.outputs.image }}
 #          PRINT_PAYLOAD: true
