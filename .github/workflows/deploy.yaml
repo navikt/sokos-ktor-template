@@ -32,7 +32,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - uses: gradle/gradle-build-action@v2.10.0
+      - uses: gradle/gradle-build-action@v2.11.0
         env: # Eksluder test dependencies
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
@@ -59,7 +59,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
           APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
@@ -73,7 +73,7 @@ jobs:
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: nais/deploy/actions/deploy@v1
+#      - uses: nais/deploy/actions/deploy@v2
 #        env:
 #          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
 #          CLUSTER: prod-gcp
