@@ -19,11 +19,12 @@ on:
 env:
   TZ: Europe/Oslo
 
+permissions:
+  contents: "write"
+  id-token: "write"
+
 jobs:
   build:
-    permissions:
-      contents: "write"
-      id-token: "write"
     name: Build/test & push image
     runs-on: ubuntu-latest
     steps:
@@ -32,7 +33,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - uses: gradle/gradle-build-action@v2.10.0
+      - uses: gradle/gradle-build-action@v2.11.0
         env: # Eksluder test dependencies
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
@@ -50,8 +51,6 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: latest
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-dev:
     name: Deploy to dev
@@ -59,12 +58,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
+      - uses: nais/deploy/actions/deploy@v2
         env:
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
           CLUSTER: dev-gcp
-          IMAGE: ${{ needs.build.outputs.image }}
           RESOURCE: .nais/naiserator-dev.yaml
+          VAR: image=${{ steps.docker-build-push.outputs.image }}
           PRINT_PAYLOAD: true
 
 #  deploy-prod:
@@ -73,10 +71,9 @@ jobs:
 #    runs-on: ubuntu-latest
 #    steps:
 #      - uses: actions/checkout@v4
-#      - uses: nais/deploy/actions/deploy@v1
+#      - uses: nais/deploy/actions/deploy@v2
 #        env:
-#          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
 #          CLUSTER: prod-gcp
-#          IMAGE: ${{ needs.build.outputs.image }}
 #          RESOURCE: .nais/naiserator-dev.yaml
+#          VAR: image=${{ steps.docker-build-push.outputs.image }}
 #          PRINT_PAYLOAD: true
