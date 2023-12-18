@@ -51,6 +51,8 @@ jobs:
           identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
           project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
           tag: latest
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-dev:
     name: Deploy to dev
@@ -62,7 +64,7 @@ jobs:
         env:
           CLUSTER: dev-gcp
           RESOURCE: .nais/naiserator-dev.yaml
-          VAR: image=${{ steps.docker-build-push.outputs.image }}
+          IMAGE: ${{ needs.build.outputs.image }}
           PRINT_PAYLOAD: true
 
 #  deploy-prod:
