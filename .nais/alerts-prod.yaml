@@ -38,7 +38,7 @@ spec:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m])
               or vector(0)) -
               sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m]
-              offset 15m) or vector(0)) > 0'
+              offset 15m) or vector(0)) > 2'
           for: 2m
           annotations:
             action: "Sjekk error loggene i sokos-ktor-template"
@@ -54,7 +54,7 @@ spec:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m])
               or vector(0)) -
               sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m]
-              offset 15m) or vector(0)) > 0'
+              offset 15m) or vector(0)) > 5'
           for: 2m
           annotations:
             action: "Sjekk warning loggene i sokos-ktor-template"
