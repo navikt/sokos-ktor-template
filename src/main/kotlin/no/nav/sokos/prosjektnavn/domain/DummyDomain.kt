@@ -4,5 +4,7 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class DummyDomain(
-    val message: String
+    val id: String,
+    val navn: String,
+    val yrke: String,
 )
