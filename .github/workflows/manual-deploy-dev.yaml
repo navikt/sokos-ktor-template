@@ -21,7 +21,7 @@ jobs:
         with:
           distribution: 'temurin'
           java-version: '21'
-      - uses: gradle/gradle-build-action@v3.0.0
+      - uses: gradle/actions/setup-gradle@v3
         with:
           arguments: --configuration-cache build shadowJar
 
