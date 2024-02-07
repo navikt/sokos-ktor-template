@@ -19,7 +19,7 @@ import java.util.UUID
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import mu.KotlinLogging
-import no.nav.sokos.prosjektnavn.metrics.prometheusMeterRegistry
+import no.nav.sokos.prosjektnavn.metrics.Metrics
 import org.slf4j.event.Level
 
 const val SECURE_LOGGER = "secureLogger"
@@ -50,7 +50,7 @@ fun Application.commonConfig() {
         })
     }
     install(MicrometerMetrics) {
-        registry = prometheusMeterRegistry
+        registry = Metrics.prometheusMeterRegistry
         meterBinders = listOf(
             UptimeMetrics(),
             JvmMemoryMetrics(),

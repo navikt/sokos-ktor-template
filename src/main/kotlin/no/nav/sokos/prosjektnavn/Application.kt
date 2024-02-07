@@ -7,10 +7,9 @@ import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.configureSecurity
 import no.nav.sokos.prosjektnavn.config.routingConfig
-import no.nav.sokos.prosjektnavn.metrics.appStateReadyFalse
-import no.nav.sokos.prosjektnavn.metrics.appStateRunningFalse
 import java.util.concurrent.TimeUnit
 import kotlin.properties.Delegates
+import no.nav.sokos.prosjektnavn.metrics.Metrics
 
 fun main() {
     val applicationState = ApplicationState()
@@ -51,10 +50,10 @@ class ApplicationState(
     ready: Boolean = false
 ) {
     var initialized: Boolean by Delegates.observable(alive) { _, _, newValue ->
-        if (!newValue) appStateReadyFalse.inc()
+        if (!newValue) Metrics.appStateReadyFalse.inc()
     }
     var running: Boolean by Delegates.observable(ready) { _, _, newValue ->
-        if (!newValue) appStateRunningFalse.inc()
+        if (!newValue) Metrics.appStateRunningFalse.inc()
     }
 }
 

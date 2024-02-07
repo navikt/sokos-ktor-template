@@ -6,16 +6,20 @@ import io.prometheus.client.Counter
 
 private const val METRICS_NAMESPACE = "sokos_ktor_template"
 
-val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
+object Metrics {
 
-val appStateRunningFalse: Counter = Counter.build()
-    .namespace(METRICS_NAMESPACE)
-    .name("app_state_running_false")
-    .help("app state running changed to false")
-    .register(prometheusMeterRegistry.prometheusRegistry)
+    val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
-val appStateReadyFalse: Counter = Counter.build()
-    .namespace(METRICS_NAMESPACE)
-    .name("app_state_ready_false")
-    .help("app state ready changed to false")
-    .register(prometheusMeterRegistry.prometheusRegistry)
+    val appStateRunningFalse: Counter = Counter.build()
+        .namespace(METRICS_NAMESPACE)
+        .name("app_state_running_false")
+        .help("app state running changed to false")
+        .register(prometheusMeterRegistry.prometheusRegistry)
+
+    val appStateReadyFalse: Counter = Counter.build()
+        .namespace(METRICS_NAMESPACE)
+        .name("app_state_ready_false")
+        .help("app state ready changed to false")
+        .register(prometheusMeterRegistry.prometheusRegistry)
+
+}
