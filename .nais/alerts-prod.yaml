@@ -11,7 +11,7 @@ spec:
       rules:
         - alert: sokos-ktor-template er nede
           expr: kube_deployment_status_replicas_available{deployment="sokos-ktor-template"} == 0
-          for: 2m
+          for: 5m
           annotations:
             action: "Sjekk hvorfor applikasjonen er nede"
             summary: "{{ $labels.deployment }} er nede i namespace {{ $labels.namespace }}"
@@ -23,7 +23,7 @@ spec:
 
         - alert: sokos-ktor-template har restartet flere ganger de siste 5 minuttene!
           expr: sum(increase(kube_pod_container_status_restarts_total{container=~"sokos-ktor-template"}[5m])) by (container) > 2
-          for: 2m
+          for: 5m
           annotations:
             action: "Sjekk hvorfor applikasjonen ikke klarer å restarte"
             summary: "{{ $labels.container }} restarter mange ganger"
@@ -38,8 +38,8 @@ spec:
             'sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m])
               or vector(0)) -
               sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Error"}[15m]
-              offset 15m) or vector(0)) > 2'
-          for: 2m
+              offset 15m) or vector(0)) > 5'
+          for: 5m
           annotations:
             action: "Sjekk error loggene i sokos-ktor-template"
             summary: "`kubectl logs <podname> -n okonomi`"
@@ -55,7 +55,7 @@ spec:
               or vector(0)) -
               sum(max_over_time(log_messages_errors{namespace="okonomi",app="sokos-ktor-template",level="Warning"}[15m]
               offset 15m) or vector(0)) > 5'
-          for: 2m
+          for: 5m
           annotations:
             action: "Sjekk warning loggene i sokos-ktor-template"
             summary: "`kubectl logs <podname> -n okonomi`"
@@ -67,7 +67,7 @@ spec:
 
         - alert: sokos-ktor-template har høy andel HTTP serverfeil (5xx responser)
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"5.*", app="sokos-ktor-template"}[3m])) > 2
-          for: 2m
+          for: 5m
           annotations:
             action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`.
@@ -80,7 +80,7 @@ spec:
 
         - alert: sokos-ktor-template har høy andel HTTP klientfeil (4xx responser)
           expr: floor(increase(ktor_http_server_requests_seconds_count{status=~"4.*", status!~"404", app="sokos-ktor-template"}[3m])) > 2
-          for: 2m
+          for: 5m
           annotations:
             action: "`kubectl logs {{ $labels.pod }} -n {{ $labels.namespace }}`"
             summary: "Følgende request feilet: `Status {{ $labels.status }} - {{ $labels.method }} {{ $labels.route }}`. 
@@ -133,4 +133,4 @@ spec:
     groupInterval: 10s
     groupWait: 5s
     receiver: sokos-ktor-template-receiver
-    repeatInterval: 2m
+    repeatInterval: 5m
