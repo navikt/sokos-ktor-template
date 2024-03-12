@@ -5,9 +5,9 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
-    kotlin("jvm") version "1.9.22"
-    kotlin("plugin.serialization") version "1.9.22"
-    id("org.openapi.generator") version "7.3.0"
+    kotlin("jvm") version "1.9.23"
+    kotlin("plugin.serialization") version "1.9.23"
+    id("org.openapi.generator") version "7.4.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
 }
 
@@ -18,14 +18,14 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
 }
 
-val ktorVersion = "2.3.8"
-val logbackVersion = "1.5.2"
+val ktorVersion = "2.3.9"
+val logbackVersion = "1.5.3"
 val logstashVersion = "7.4"
 val prometheusVersion = "1.12.3"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
-val kotestVersion = "5.8.0"
+val kotestVersion = "5.8.1"
 val kotlinxSerializationVersion = "1.6.3"
 val mockOAuth2ServerVersion = "2.1.2"
 val mockkVersion = "1.13.10"
