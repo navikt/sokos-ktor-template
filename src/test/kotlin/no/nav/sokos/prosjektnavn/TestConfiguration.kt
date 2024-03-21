@@ -3,7 +3,6 @@ package no.nav.sokos.prosjektnavn
 import io.ktor.server.config.MapApplicationConfig
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
-import no.nav.sokos.prosjektnavn.api.metricsApi
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.api.swaggerApi
 import no.nav.sokos.prosjektnavn.config.commonConfig
@@ -22,7 +21,6 @@ fun ApplicationTestBuilder.configureTestApplication() {
 
         routing {
             naisApi({ applicationState.initialized }, { applicationState.running })
-            metricsApi()
             swaggerApi()
         }
     }
