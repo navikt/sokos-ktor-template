@@ -12,7 +12,7 @@ fun Route.dummyApi(
     dummyService: DummyService = DummyService()
 ) {
         route("/api/v1/") {
-            get("hello") {
+            get("helloo") {
                 val response = dummyService.sayHello()
                 call.respond(HttpStatusCode.OK, response)
             }
