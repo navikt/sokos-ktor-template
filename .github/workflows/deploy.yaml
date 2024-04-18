@@ -38,7 +38,7 @@ jobs:
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
           dependency-graph: generate-and-submit
-          arguments: --configuration-cache build shadowJar
+      - run: ./gradlew build shadowJar --configuration-cache
 
       - name: Build docker image
         uses: docker/setup-buildx-action@v3
