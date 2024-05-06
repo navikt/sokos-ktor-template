@@ -104,8 +104,7 @@ tasks {
 
     ktlint {
         filter {
-            exclude("**/generated/**")
-            include("**/kotlin/**")
+            exclude { element -> element.file.path.contains("generated/") }
         }
     }
 
@@ -113,7 +112,7 @@ tasks {
         generatorName.set("kotlin")
         generateModelDocumentation.set(false)
         inputSpec.set("$rootDir/src/main/resources/openapi/pets.json")
-        outputDir.set("${layout.buildDirectory.get()}/generated")
+        outputDir.set("${layout.buildDirectory.get()}/generated/")
         globalProperties.set(
             mapOf(
                 "models" to "",
