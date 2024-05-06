@@ -22,8 +22,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v3
-        with:
-          arguments: --configuration-cache build shadowJar
+      - run: ./gradlew build shadowJar --configuration-cache
 
       - name: Build docker image
         uses: docker/setup-buildx-action@v3

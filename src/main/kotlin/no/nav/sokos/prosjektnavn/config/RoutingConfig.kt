@@ -11,7 +11,7 @@ import no.nav.sokos.prosjektnavn.api.swaggerApi
 
 fun Application.routingConfig(
     applicationState: ApplicationState,
-    useAuthentication: Boolean
+    useAuthentication: Boolean,
 ) {
     routing {
         naisApi({ applicationState.initialized }, { applicationState.running })
@@ -22,6 +22,10 @@ fun Application.routingConfig(
     }
 }
 
-fun Route.authenticate(useAuthentication: Boolean, authenticationProviderId: String? = null, block: Route.() -> Unit) {
+fun Route.authenticate(
+    useAuthentication: Boolean,
+    authenticationProviderId: String? = null,
+    block: Route.() -> Unit,
+) {
     if (useAuthentication) authenticate(authenticationProviderId) { block() } else block()
 }

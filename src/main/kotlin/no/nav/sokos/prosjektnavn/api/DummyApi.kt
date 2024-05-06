@@ -8,13 +8,11 @@ import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 import no.nav.sokos.prosjektnavn.service.DummyService
 
-fun Route.dummyApi(
-    dummyService: DummyService = DummyService()
-) {
-        route("/api/v1/") {
-            get("helloo") {
-                val response = dummyService.sayHello()
-                call.respond(HttpStatusCode.OK, response)
-            }
+fun Route.dummyApi(dummyService: DummyService = DummyService()) {
+    route("/api/v1/") {
+        get("hello") {
+            val response = dummyService.sayHello()
+            call.respond(HttpStatusCode.OK, response)
         }
+    }
 }

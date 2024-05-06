@@ -22,11 +22,11 @@ import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
 import io.prometheus.client.exporter.common.TextFormat
-import java.util.UUID
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import no.nav.sokos.prosjektnavn.metrics.Metrics
 import org.slf4j.event.Level
+import java.util.UUID
 
 fun Application.commonConfig() {
     install(CallId) {
@@ -41,24 +41,26 @@ fun Application.commonConfig() {
         disableDefaultColors()
     }
     install(ContentNegotiation) {
-        json(Json {
-            prettyPrint = true
-            isLenient = true
+        json(
+            Json {
+                prettyPrint = true
+                isLenient = true
 
-            @OptIn(ExperimentalSerializationApi::class)
-            explicitNulls = false
-
-        })
+                @OptIn(ExperimentalSerializationApi::class)
+                explicitNulls = false
+            },
+        )
     }
     install(MicrometerMetrics) {
         registry = Metrics.prometheusMeterRegistry
-        meterBinders = listOf(
-            UptimeMetrics(),
-            JvmMemoryMetrics(),
-            JvmGcMetrics(),
-            JvmThreadMetrics(),
-            ProcessorMetrics()
-        )
+        meterBinders =
+            listOf(
+                UptimeMetrics(),
+                JvmMemoryMetrics(),
+                JvmGcMetrics(),
+                JvmThreadMetrics(),
+                ProcessorMetrics(),
+            )
     }
     routing {
         route("internal") {

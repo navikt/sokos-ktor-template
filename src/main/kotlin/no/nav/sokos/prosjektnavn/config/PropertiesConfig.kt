@@ -9,22 +9,25 @@ import com.natpryce.konfig.stringType
 import java.io.File
 
 object PropertiesConfig {
+    private val defaultProperties =
+        ConfigurationMap(
+            mapOf(
+                "NAIS_APP_NAME" to "sokos-ktor-template",
+                "NAIS_NAMESPACE" to "okonomi",
 
-    private val defaultProperties = ConfigurationMap(
-        mapOf(
-            "NAIS_APP_NAME" to "sokos-ktor-template",
-            "NAIS_NAMESPACE" to "okonomi"
+                // Azure
+                "AZURE_APP_CLIENT_ID" to "",
+                "AZURE_APP_WELL_KNOWN_URL" to "",
+            ),
         )
-    )
 
-    private val localDevProperties = ConfigurationMap(
-        mapOf(
-            "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
-            "USE_AUTHENTICATION" to "false",
-            "AZURE_APP_CLIENT_ID" to "azure-app-client-id",
-            "AZURE_APP_WELL_KNOWN_URL" to "azure-app-well-known-url"
-            )
-    )
+    private val localDevProperties =
+        ConfigurationMap(
+            mapOf(
+                "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
+                "USE_AUTHENTICATION" to "false",
+            ),
+        )
 
     private val devProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.DEV.toString()))
     private val prodProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.PROD.toString()))
@@ -49,11 +52,13 @@ object PropertiesConfig {
 
     class AzureAdConfig(
         val clientId: String = this["AZURE_APP_CLIENT_ID"],
-        val wellKnownUrl: String = this["AZURE_APP_WELL_KNOWN_URL"]
+        val wellKnownUrl: String = this["AZURE_APP_WELL_KNOWN_URL"],
     )
 
     enum class Profile {
-        LOCAL, DEV, PROD
+        LOCAL,
+        DEV,
+        PROD,
     }
 }
 
