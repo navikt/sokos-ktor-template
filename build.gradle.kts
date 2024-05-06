@@ -104,7 +104,7 @@ tasks {
 
     ktlint {
         filter {
-            exclude("**/build/generated/**/*.kt")
+            exclude("**/generated/**")
         }
     }
 
