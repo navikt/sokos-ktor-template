@@ -10,6 +10,7 @@ plugins {
     id("org.openapi.generator") version "7.5.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
+    jacoco
 }
 
 group = "no.nav.sokos"
@@ -132,10 +133,18 @@ tasks {
         manifest {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
+        finalizedBy(jacocoTestReport)
     }
 
     ("jar") {
         enabled = false
+    }
+
+    withType<JacocoReport>().configureEach {
+        dependsOn(test)
+        reports {
+            html.required.set(true)
+        }
     }
 
     withType<Test>().configureEach {
