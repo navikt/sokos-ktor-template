@@ -14,6 +14,9 @@ object PropertiesConfig {
             mapOf(
                 "NAIS_APP_NAME" to "sokos-ktor-template",
                 "NAIS_NAMESPACE" to "okonomi",
+                // Azure
+                "AZURE_APP_CLIENT_ID" to "",
+                "AZURE_APP_WELL_KNOWN_URL" to "",
             ),
         )
 
@@ -22,8 +25,6 @@ object PropertiesConfig {
             mapOf(
                 "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
                 "USE_AUTHENTICATION" to "false",
-                "AZURE_APP_CLIENT_ID" to "azure-app-client-id",
-                "AZURE_APP_WELL_KNOWN_URL" to "azure-app-well-known-url",
             ),
         )
 
