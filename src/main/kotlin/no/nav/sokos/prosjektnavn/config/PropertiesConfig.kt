@@ -14,7 +14,6 @@ object PropertiesConfig {
             mapOf(
                 "NAIS_APP_NAME" to "sokos-ktor-template",
                 "NAIS_NAMESPACE" to "okonomi",
-
                 // Azure
                 "AZURE_APP_CLIENT_ID" to "",
                 "AZURE_APP_WELL_KNOWN_URL" to "",
@@ -32,14 +31,16 @@ object PropertiesConfig {
     private val devProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.DEV.toString()))
     private val prodProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.PROD.toString()))
 
-    private val config = when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
-
-        "dev-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding devProperties overriding defaultProperties
-        "prod-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding prodProperties overriding defaultProperties
-        else -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding ConfigurationProperties.fromOptionalFile(
-            File("defaults.properties")
-        ) overriding localDevProperties overriding defaultProperties
-    }
+    private val config =
+        when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
+            "dev-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding devProperties overriding defaultProperties
+            "prod-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding prodProperties overriding defaultProperties
+            else ->
+                ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding
+                    ConfigurationProperties.fromOptionalFile(
+                        File("defaults.properties"),
+                    ) overriding localDevProperties overriding defaultProperties
+        }
 
     operator fun get(key: String): String = config[Key(key, stringType)]
 
@@ -61,4 +62,3 @@ object PropertiesConfig {
         PROD,
     }
 }
-
