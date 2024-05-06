@@ -9,6 +9,7 @@ plugins {
     kotlin("plugin.serialization") version "1.9.23"
     id("org.openapi.generator") version "7.5.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
+    id("org.jlleitschuh.gradle.ktlint") version "12.1.0"
 }
 
 group = "no.nav.sokos"
@@ -70,7 +71,6 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
-
 }
 
 sourceSets {
@@ -89,8 +89,23 @@ kotlin {
 
 tasks {
 
-    withType<KotlinCompile>().configureEach {
+    named("runKtlintCheckOverMainSourceSet").configure {
         dependsOn("openApiGenerate")
+    }
+
+    named("runKtlintFormatOverMainSourceSet").configure {
+        dependsOn("openApiGenerate")
+    }
+
+    withType<KotlinCompile>().configureEach {
+        dependsOn("ktlintFormat")
+        dependsOn("openApiGenerate")
+    }
+
+    ktlint {
+        filter {
+            exclude("**/build/generated/**/*.kt")
+        }
     }
 
     withType<GenerateTask>().configureEach {
@@ -100,14 +115,14 @@ tasks {
         outputDir.set("${layout.buildDirectory.get()}/generated")
         globalProperties.set(
             mapOf(
-                "models" to ""
-            )
+                "models" to "",
+            ),
         )
         configOptions.set(
             mapOf(
                 "library" to "jvm-ktor",
                 "serializationLibrary" to "kotlinx_serialization",
-            )
+            ),
         )
     }
 
@@ -123,7 +138,6 @@ tasks {
         enabled = false
     }
 
-
     withType<Test>().configureEach {
         useJUnitPlatform()
 
@@ -137,7 +151,7 @@ tasks {
         reports.forEach { report -> report.required.value(false) }
     }
 
-    withType<Wrapper>() {
+    withType<Wrapper> {
         gradleVersion = "8.7"
     }
 }
