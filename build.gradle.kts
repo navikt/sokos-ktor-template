@@ -105,6 +105,7 @@ tasks {
     ktlint {
         filter {
             exclude("**/generated/**")
+            include("**/kotlin/**")
         }
     }
 
