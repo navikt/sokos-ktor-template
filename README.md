@@ -1,6 +1,6 @@
 # sokos-ktor-template
 
-Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Beregne.
+Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Moby (Motta og Beregne Ytelser)
 
 ## Tilpass repo-et
 1. Gi rettighet for å kjøre scriptet `chmod 755 setupTemplate.sh`
@@ -8,9 +8,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
    ```
    ./setupTemplate.sh
    ```
-3. Fyll inn prosjektnavn og artifaktnavn (no.nav.sokos.xxx)
-4. Endre alarmtypen fra `sokos_ktor_template_type` til f.eks `sokos_din_app_type` i [alerts-dev.yaml](.nais/alerts-dev.yaml) og [alerts-prod.yaml](.nais/alerts-prod.yaml)
-5. Endre metric namespace fra `sokos_tor_template` til f.eks `sokos_din_app` i [Metrics.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/metrics/Metrics.kt)
+3. Fyll inn prosjektnavn (sokos-foo-bar) og artifaktnavn (foo.bar)
 
 ## Workflows
 
@@ -30,10 +28,9 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Motta og Ber
 3. Når du kjører applikasjonen genereres det en SwaggerUI som kan nås på [localhost:8080/api/v1/docs](localhost:8080/api/v1/docs)
 
 ## Bygge og kjøre prosjekt
-1. Bygg `sokos-ktor-template` ved å kjøre `./gradlew buildFatJar`
-2. Start appen lokalt ved å kjøre main metoden i [Bootstrap.kt](src/main/kotlin/no/nav/sokos/prosjektnavn/Bootstrap.kt)
-3. Appen nås på `URL`
-4. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
+1. Bygg prosjektet ved å kjøre `./gradlew build shadowJar`
+2. Start appen lokalt ved å kjøre main metoden i ***Application.kt***
+3. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
 # NB!! Kommer du på noe lurt vi bør ha med i template som default så opprett gjerne en PR 
   
@@ -65,7 +62,8 @@ Hva er oppgaven til denne applikasjonen
 # 2. Utviklingsmiljø
 ### Forutsetninger
 * Java 21
-* Gradle 8
+* [Gradle](https://gradle.org/)
+* [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
 ### Bygge prosjekt
 Hvordan bygger jeg prosjektet.
