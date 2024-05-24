@@ -1,4 +1,5 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import kotlinx.kover.gradle.plugin.dsl.tasks.KoverReport
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
@@ -10,7 +11,7 @@ plugins {
     id("org.openapi.generator") version "7.5.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-    jacoco
+    id("org.jetbrains.kotlinx.kover") version "0.8.0"
 }
 
 group = "no.nav.sokos"
@@ -133,17 +134,23 @@ tasks {
         manifest {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
-        finalizedBy(jacocoTestReport)
+        finalizedBy(koverHtmlReport)
     }
 
     ("jar") {
         enabled = false
     }
 
-    withType<JacocoReport>().configureEach {
+    withType<KoverReport>().configureEach {
         dependsOn(test)
-        reports {
-            html.required.set(true)
+        kover {
+            reports {
+                total {
+                    html {
+                        enabled = true
+                    }
+                }
+            }
         }
     }
 
