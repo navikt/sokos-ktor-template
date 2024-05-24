@@ -5,8 +5,8 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.serialization") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("org.openapi.generator") version "7.5.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
@@ -30,7 +30,7 @@ val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.9.0"
 val kotlinxSerializationVersion = "1.6.3"
 val mockOAuth2ServerVersion = "2.1.5"
-val mockkVersion = "1.13.10"
+val mockkVersion = "1.13.11"
 
 dependencies {
 
