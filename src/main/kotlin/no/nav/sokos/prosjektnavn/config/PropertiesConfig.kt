@@ -14,9 +14,6 @@ object PropertiesConfig {
             mapOf(
                 "NAIS_APP_NAME" to "sokos-ktor-template",
                 "NAIS_NAMESPACE" to "okonomi",
-                // Azure
-                "AZURE_APP_CLIENT_ID" to "",
-                "AZURE_APP_WELL_KNOWN_URL" to "",
             ),
         )
 
@@ -44,6 +41,8 @@ object PropertiesConfig {
 
     operator fun get(key: String): String = config[Key(key, stringType)]
 
+    fun getOrEmpty(key: String): String = config.getOrElse(Key(key, stringType), "")
+
     data class Configuration(
         val naisAppName: String = get("NAIS_APP_NAME"),
         val profile: Profile = Profile.valueOf(this["APPLICATION_PROFILE"]),
@@ -52,8 +51,8 @@ object PropertiesConfig {
     )
 
     class AzureAdConfig(
-        val clientId: String = this["AZURE_APP_CLIENT_ID"],
-        val wellKnownUrl: String = this["AZURE_APP_WELL_KNOWN_URL"],
+        val clientId: String = getOrEmpty("AZURE_APP_CLIENT_ID"),
+        val wellKnownUrl: String = getOrEmpty("AZURE_APP_WELL_KNOWN_URL"),
     )
 
     enum class Profile {

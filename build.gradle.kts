@@ -1,16 +1,17 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
+import kotlinx.kover.gradle.plugin.dsl.tasks.KoverReport
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
-    kotlin("jvm") version "1.9.24"
-    kotlin("plugin.serialization") version "1.9.24"
+    kotlin("jvm") version "2.0.0"
+    kotlin("plugin.serialization") version "2.0.0"
     id("org.openapi.generator") version "7.5.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-    jacoco
+    id("org.jetbrains.kotlinx.kover") version "0.8.0"
 }
 
 group = "no.nav.sokos"
@@ -30,7 +31,7 @@ val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.9.0"
 val kotlinxSerializationVersion = "1.6.3"
 val mockOAuth2ServerVersion = "2.1.5"
-val mockkVersion = "1.13.10"
+val mockkVersion = "1.13.11"
 
 dependencies {
 
@@ -133,17 +134,23 @@ tasks {
         manifest {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
-        finalizedBy(jacocoTestReport)
+        finalizedBy(koverHtmlReport)
     }
 
     ("jar") {
         enabled = false
     }
 
-    withType<JacocoReport>().configureEach {
+    withType<KoverReport>().configureEach {
         dependsOn(test)
-        reports {
-            html.required.set(true)
+        kover {
+            reports {
+                total {
+                    html {
+                        enabled = true
+                    }
+                }
+            }
         }
     }
 

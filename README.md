@@ -62,7 +62,7 @@ Hva er oppgaven til denne applikasjonen
 # 2. Utviklingsmiljø
 ### Forutsetninger
 * Java 21
-* [Gradle](https://gradle.org/)
+* [Gradle >= 8.7](https://gradle.org/)
 * [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
 ### Bygge prosjekt
