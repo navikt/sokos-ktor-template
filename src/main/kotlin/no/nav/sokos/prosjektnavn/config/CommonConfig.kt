@@ -1,6 +1,5 @@
 package no.nav.sokos.prosjektnavn.config
 
-import io.ktor.http.ContentType
 import io.ktor.http.HttpHeaders
 import io.ktor.serialization.kotlinx.json.json
 import io.ktor.server.application.Application
@@ -21,7 +20,6 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
-import io.prometheus.client.exporter.common.TextFormat
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
 import no.nav.sokos.prosjektnavn.metrics.Metrics
@@ -65,7 +63,7 @@ fun Application.commonConfig() {
     routing {
         route("internal") {
             get("metrics") {
-                call.respondText(ContentType.parse(TextFormat.CONTENT_TYPE_004)) { Metrics.prometheusMeterRegistry.scrape() }
+                call.respondText(Metrics.prometheusMeterRegistry.scrape())
             }
         }
     }
