@@ -24,7 +24,7 @@ repositories {
 val ktorVersion = "2.3.11"
 val logbackVersion = "1.5.6"
 val logstashVersion = "7.4"
-val prometheusVersion = "1.13.0"
+val micrometerVersion = "1.13.0"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
@@ -56,7 +56,7 @@ dependencies {
 
     // Monitorering
     implementation("io.ktor:ktor-server-metrics-micrometer-jvm:$ktorVersion")
-    implementation("io.micrometer:micrometer-registry-prometheus:$prometheusVersion")
+    implementation("io.micrometer:micrometer-registry-prometheus:$micrometerVersion")
 
     // Logging
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
