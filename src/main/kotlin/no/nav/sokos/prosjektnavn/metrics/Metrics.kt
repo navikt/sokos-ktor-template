@@ -9,17 +9,14 @@ private const val METRICS_NAMESPACE = "sokos_ktor_template"
 object Metrics {
     val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
-    val appStateRunningFalse: Counter =
+    /**
+     * This is an example counter. It is used to demonstrate how to create a counter metric.
+     * To use this counter metric, you can call `exampleCounter.inc()` to increment the counter by 1.
+     */
+    val exampleCounter: Counter =
         Counter.builder()
-            .name("${METRICS_NAMESPACE}_app_state_running_false")
-            .help("app state running changed to false")
-            .withoutExemplars()
-            .register(prometheusMeterRegistry.prometheusRegistry)
-
-    val appStateReadyFalse: Counter =
-        Counter.builder()
-            .name("${METRICS_NAMESPACE}_app_state_ready_false")
-            .help("app state ready changed to false")
+            .name("${METRICS_NAMESPACE}_example_counter")
+            .help("Example counter")
             .withoutExemplars()
             .register(prometheusMeterRegistry.prometheusRegistry)
 }
