@@ -94,7 +94,7 @@ class SecurityTest : FunSpec({
 })
 
 private fun MockOAuth2Server.authConfig() =
-    PropertiesConfig.AzureAdConfig(
+    PropertiesConfig.AzureAdProperties(
         wellKnownUrl = wellKnownUrl("default").toString(),
         clientId = "default",
     )

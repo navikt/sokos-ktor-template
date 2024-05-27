@@ -20,12 +20,12 @@ val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
 fun Application.configureSecurity(
-    azureAdConfig: PropertiesConfig.AzureAdConfig,
+    azureAdProperties: PropertiesConfig.AzureAdProperties,
     useAuthentication: Boolean = true,
 ) {
     logger.info("Use authentication: $useAuthentication")
     if (useAuthentication) {
-        val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdConfig.wellKnownUrl)
+        val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
         val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
 
         authentication {
@@ -41,7 +41,7 @@ fun Application.configureSecurity(
                             logger.info("Auth: Missing audience in token")
                             "Auth: Missing audience in token"
                         }
-                        require(credential.payload.audience.contains(azureAdConfig.clientId)) {
+                        require(credential.payload.audience.contains(azureAdProperties.clientId)) {
                             logger.info("Auth: Valid audience not found in claims")
                             "Auth: Valid audience not found in claims"
                         }

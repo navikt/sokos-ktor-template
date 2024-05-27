@@ -33,6 +33,7 @@ class HttpServer(
     private val embeddedServer =
         embeddedServer(Netty, port, module = {
             serverModule(applicationConfiguration, applicationState)
+            applicationState.initialized = true
         })
 
     fun start() {
@@ -56,8 +57,6 @@ fun Application.serverModule(
     applicationState: ApplicationState,
 ) {
     commonConfig()
-    configureSecurity(applicationConfiguration.azureAdConfig, applicationConfiguration.useAuthentication)
+    configureSecurity(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
     routingConfig(applicationState, applicationConfiguration.useAuthentication)
-
-    applicationState.initialized = true
 }
