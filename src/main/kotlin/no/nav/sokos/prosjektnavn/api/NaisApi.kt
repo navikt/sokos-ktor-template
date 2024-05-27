@@ -6,28 +6,26 @@ import io.ktor.server.response.respondText
 import io.ktor.server.routing.Routing
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
+import no.nav.sokos.prosjektnavn.ApplicationState
 
-fun Routing.naisApi(
-    alive: () -> Boolean,
-    ready: () -> Boolean,
-) {
+fun Routing.naisApi(applicationState: ApplicationState) {
     route("internal") {
         get("isAlive") {
-            when (alive()) {
-                true -> call.respondText { "Application is alive" }
+            when (applicationState.running) {
+                true -> call.respondText { "I'm alive :)" }
                 else ->
                     call.respondText(
-                        text = "Application is not alive",
+                        text = "I'm dead x_x",
                         status = HttpStatusCode.InternalServerError,
                     )
             }
         }
         get("isReady") {
-            when (ready()) {
-                true -> call.respondText { "Application is ready" }
+            when (applicationState.initialized) {
+                true -> call.respondText { "I'm ready! :)" }
                 else ->
                     call.respondText(
-                        text = "Application is not ready",
+                        text = "Wait! I'm not ready yet! :O",
                         status = HttpStatusCode.InternalServerError,
                     )
             }

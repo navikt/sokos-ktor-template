@@ -8,9 +8,7 @@ import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.configureSecurity
 import no.nav.sokos.prosjektnavn.config.routingConfig
-import no.nav.sokos.prosjektnavn.metrics.Metrics
 import java.util.concurrent.TimeUnit
-import kotlin.properties.Delegates
 
 fun main() {
     val applicationState = ApplicationState()
@@ -34,7 +32,7 @@ class HttpServer(
 
     private val embeddedServer =
         embeddedServer(Netty, port, module = {
-            applicationModule(applicationConfiguration, applicationState)
+            serverModule(applicationConfiguration, applicationState)
         })
 
     fun start() {
@@ -49,22 +47,17 @@ class HttpServer(
 }
 
 class ApplicationState(
-    alive: Boolean = true,
-    ready: Boolean = false,
-) {
-    var initialized: Boolean by Delegates.observable(alive) { _, _, newValue ->
-        if (!newValue) Metrics.appStateReadyFalse.inc()
-    }
-    var running: Boolean by Delegates.observable(ready) { _, _, newValue ->
-        if (!newValue) Metrics.appStateRunningFalse.inc()
-    }
-}
+    var running: Boolean = false,
+    var initialized: Boolean = false,
+)
 
-fun Application.applicationModule(
+fun Application.serverModule(
     applicationConfiguration: PropertiesConfig.Configuration,
     applicationState: ApplicationState,
 ) {
     commonConfig()
     configureSecurity(applicationConfiguration.azureAdConfig, applicationConfiguration.useAuthentication)
     routingConfig(applicationState, applicationConfiguration.useAuthentication)
+
+    applicationState.initialized = true
 }
