@@ -6,6 +6,8 @@ import io.prometheus.metrics.core.metrics.Counter
 
 private const val METRICS_NAMESPACE = "sokos_ktor_template"
 
+private const val EXAMPLE_COUNTER = "${METRICS_NAMESPACE}_example_counter"
+
 object Metrics {
     val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
@@ -15,7 +17,7 @@ object Metrics {
      */
     val exampleCounter: Counter =
         Counter.builder()
-            .name("${METRICS_NAMESPACE}_example_counter")
+            .name(EXAMPLE_COUNTER)
             .help("Example counter")
             .withoutExemplars()
             .register(prometheusMeterRegistry.prometheusRegistry)
