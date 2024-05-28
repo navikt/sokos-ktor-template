@@ -3,9 +3,8 @@ package no.nav.sokos.prosjektnavn.config
 import io.ktor.server.application.Application
 import io.ktor.server.application.ApplicationStarted
 import io.ktor.server.application.ApplicationStopped
-import no.nav.sokos.prosjektnavn.ApplicationState
 
-fun Application.lifecycleConfig(applicationState: ApplicationState) {
+fun Application.applicationLifecycleConfig(applicationState: ApplicationState = ApplicationState()) {
     environment.monitor.subscribe(ApplicationStarted) {
         applicationState.ready = true
     }
@@ -14,3 +13,8 @@ fun Application.lifecycleConfig(applicationState: ApplicationState) {
         applicationState.ready = false
     }
 }
+
+class ApplicationState(
+    var ready: Boolean = true,
+    var alive: Boolean = true,
+)

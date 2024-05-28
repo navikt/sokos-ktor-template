@@ -5,8 +5,8 @@ import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
+import no.nav.sokos.prosjektnavn.config.applicationLifecycleConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
-import no.nav.sokos.prosjektnavn.config.lifecycleConfig
 import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.config.securityConfig
 import java.util.concurrent.TimeUnit
@@ -15,19 +15,13 @@ fun main() {
     HttpServer(8080).start()
 }
 
-class ApplicationState(
-    var ready: Boolean = true,
-    var alive: Boolean = true,
-)
-
 private fun Application.serverModule() {
-    val applicationState = ApplicationState()
-    val applicationConfiguration = PropertiesConfig.Configuration()
+    val useAuthentication = PropertiesConfig.Configuration().useAuthentication
 
     commonConfig()
-    lifecycleConfig(applicationState)
-    securityConfig(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
-    routingConfig(applicationState, applicationConfiguration.useAuthentication)
+    applicationLifecycleConfig()
+    securityConfig(useAuthentication)
+    routingConfig(useAuthentication)
 }
 
 private class HttpServer(

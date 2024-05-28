@@ -20,8 +20,8 @@ private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
 fun Application.securityConfig(
-    azureAdProperties: PropertiesConfig.AzureAdProperties,
     useAuthentication: Boolean = true,
+    azureAdProperties: PropertiesConfig.AzureAdProperties = PropertiesConfig.AzureAdProperties(),
 ) {
     logger.info("Use authentication: $useAuthentication")
     if (useAuthentication) {

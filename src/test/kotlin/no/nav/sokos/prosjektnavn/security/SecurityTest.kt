@@ -37,7 +37,7 @@ class SecurityTest : FunSpec({
             testApplication {
                 configureTestApplication()
                 this.application {
-                    securityConfig(authConfig())
+                    securityConfig(azureAdProperties = authConfig())
                     routing {
                         authenticate(true, AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
@@ -71,7 +71,7 @@ class SecurityTest : FunSpec({
                     }
                 configureTestApplication()
                 this.application {
-                    securityConfig(authConfig())
+                    securityConfig(azureAdProperties = authConfig())
                     routing {
                         authenticate(true, AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
