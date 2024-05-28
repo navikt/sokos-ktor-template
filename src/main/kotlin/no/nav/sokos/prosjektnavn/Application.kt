@@ -12,10 +12,15 @@ import no.nav.sokos.prosjektnavn.config.routingConfig
 import java.util.concurrent.TimeUnit
 
 fun main() {
-    HttpServer().start()
+    HttpServer(8080).start()
 }
 
-fun Application.serverModule() {
+class ApplicationState(
+    var ready: Boolean = true,
+    var alive: Boolean = true,
+)
+
+private fun Application.serverModule() {
     val applicationState = ApplicationState()
     val applicationConfiguration = PropertiesConfig.Configuration()
 
@@ -25,7 +30,9 @@ fun Application.serverModule() {
     routingConfig(applicationState, applicationConfiguration.useAuthentication)
 }
 
-private class HttpServer(port: Int = 8080) {
+private class HttpServer(
+    port: Int,
+) {
     init {
         Runtime.getRuntime().addShutdownHook(
             Thread {
@@ -47,8 +54,3 @@ private class HttpServer(port: Int = 8080) {
         embeddedServer.stop(5, 5, TimeUnit.SECONDS)
     }
 }
-
-class ApplicationState(
-    var ready: Boolean = true,
-    var alive: Boolean = true,
-)

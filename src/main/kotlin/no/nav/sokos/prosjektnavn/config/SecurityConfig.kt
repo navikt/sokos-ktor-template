@@ -16,7 +16,7 @@ import no.nav.sokos.prosjektnavn.util.httpClient
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
-val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
 fun Application.configureSecurity(
