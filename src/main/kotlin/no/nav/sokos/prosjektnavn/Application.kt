@@ -15,9 +15,17 @@ fun main() {
     HttpServer().start()
 }
 
-class HttpServer(
-    port: Int = 8080,
-) {
+fun Application.serverModule() {
+    val applicationState = ApplicationState()
+    val applicationConfiguration = PropertiesConfig.Configuration()
+
+    commonConfig()
+    configureLifecycleConfig(applicationState)
+    configureSecurity(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
+    routingConfig(applicationState, applicationConfiguration.useAuthentication)
+}
+
+private class HttpServer(port: Int = 8080) {
     init {
         Runtime.getRuntime().addShutdownHook(
             Thread {
@@ -44,13 +52,3 @@ class ApplicationState(
     var ready: Boolean = true,
     var alive: Boolean = true,
 )
-
-fun Application.serverModule() {
-    val applicationState = ApplicationState()
-    val applicationConfiguration = PropertiesConfig.Configuration()
-
-    commonConfig()
-    configureLifecycleConfig(applicationState)
-    configureSecurity(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
-    routingConfig(applicationState, applicationConfiguration.useAuthentication)
-}
