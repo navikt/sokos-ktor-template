@@ -6,9 +6,9 @@ import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
-import no.nav.sokos.prosjektnavn.config.configureLifecycleConfig
-import no.nav.sokos.prosjektnavn.config.configureSecurity
+import no.nav.sokos.prosjektnavn.config.lifecycleConfig
 import no.nav.sokos.prosjektnavn.config.routingConfig
+import no.nav.sokos.prosjektnavn.config.securityConfig
 import java.util.concurrent.TimeUnit
 
 fun main() {
@@ -25,8 +25,8 @@ private fun Application.serverModule() {
     val applicationConfiguration = PropertiesConfig.Configuration()
 
     commonConfig()
-    configureLifecycleConfig(applicationState)
-    configureSecurity(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
+    lifecycleConfig(applicationState)
+    securityConfig(applicationConfiguration.azureAdProperties, applicationConfiguration.useAuthentication)
     routingConfig(applicationState, applicationConfiguration.useAuthentication)
 }
 

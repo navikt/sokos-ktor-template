@@ -23,7 +23,7 @@ import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.authenticate
-import no.nav.sokos.prosjektnavn.config.configureSecurity
+import no.nav.sokos.prosjektnavn.config.securityConfig
 import no.nav.sokos.prosjektnavn.configureTestApplication
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
@@ -37,7 +37,7 @@ class SecurityTest : FunSpec({
             testApplication {
                 configureTestApplication()
                 this.application {
-                    configureSecurity(authConfig())
+                    securityConfig(authConfig())
                     routing {
                         authenticate(true, AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
@@ -71,7 +71,7 @@ class SecurityTest : FunSpec({
                     }
                 configureTestApplication()
                 this.application {
-                    configureSecurity(authConfig())
+                    securityConfig(authConfig())
                     routing {
                         authenticate(true, AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
