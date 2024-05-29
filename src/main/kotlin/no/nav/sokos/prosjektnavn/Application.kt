@@ -4,6 +4,7 @@ import io.ktor.server.application.Application
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.engine.stop
 import io.ktor.server.netty.Netty
+import no.nav.sokos.prosjektnavn.config.ApplicationState
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.applicationLifecycleConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
@@ -17,11 +18,12 @@ fun main() {
 
 private fun Application.serverModule() {
     val useAuthentication = PropertiesConfig.Configuration().useAuthentication
+    val applicationState = ApplicationState()
 
     commonConfig()
-    applicationLifecycleConfig()
+    applicationLifecycleConfig(applicationState)
     securityConfig(useAuthentication)
-    routingConfig(useAuthentication)
+    routingConfig(useAuthentication, applicationState)
 }
 
 private class HttpServer(

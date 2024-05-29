@@ -9,7 +9,7 @@ import io.ktor.server.routing.route
 import no.nav.sokos.prosjektnavn.config.ApplicationState
 
 fun Routing.naisApi(
-    applicationState: ApplicationState = ApplicationState(),
+    applicationState: ApplicationState,
     readynessCheck: () -> Boolean = { applicationState.ready },
     alivenessCheck: () -> Boolean = { applicationState.alive },
 ) {

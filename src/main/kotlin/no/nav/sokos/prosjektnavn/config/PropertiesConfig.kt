@@ -14,6 +14,7 @@ object PropertiesConfig {
             mapOf(
                 "NAIS_APP_NAME" to "sokos-ktor-template",
                 "NAIS_NAMESPACE" to "okonomi",
+                "USE_AUTHENTICATION" to "true",
             ),
         )
 
@@ -41,15 +42,12 @@ object PropertiesConfig {
 
     operator fun get(key: String): String = config[Key(key, stringType)]
 
-    fun getOrEmpty(
-        key: String,
-        default: String = "",
-    ): String = config.getOrElse(Key(key, stringType), default)
+    fun getOrEmpty(key: String): String = config.getOrElse(Key(key, stringType), "")
 
     data class Configuration(
         val naisAppName: String = get("NAIS_APP_NAME"),
         val profile: Profile = Profile.valueOf(get("APPLICATION_PROFILE")),
-        val useAuthentication: Boolean = getOrEmpty("USE_AUTHENTICATION", "true").toBoolean(),
+        val useAuthentication: Boolean = get("USE_AUTHENTICATION").toBoolean(),
         val azureAdProperties: AzureAdProperties = AzureAdProperties(),
     )
 
