@@ -41,6 +41,7 @@ jobs:
           ktlint_version: 1.0.1
   build:
     name: Build/test & push image
+    needs: code-style-violations
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4

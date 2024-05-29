@@ -21,6 +21,7 @@ jobs:
           ktlint_version: 1.0.1
   build-pr:
     name: Build and test
+    needs: code-style-violations
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
