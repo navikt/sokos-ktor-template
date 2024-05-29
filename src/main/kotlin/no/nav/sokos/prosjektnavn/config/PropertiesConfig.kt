@@ -41,12 +41,12 @@ object PropertiesConfig {
 
     operator fun get(key: String): String = config[Key(key, stringType)]
 
-    fun getOrEmpty(key: String): String = config.getOrElse(Key(key, stringType), "")
+    fun getOrEmpty(key: String, default: String = ""): String = config.getOrElse(Key(key, stringType), default)
 
     data class Configuration(
         val naisAppName: String = get("NAIS_APP_NAME"),
         val profile: Profile = Profile.valueOf(get("APPLICATION_PROFILE")),
-        val useAuthentication: Boolean = get("USE_AUTHENTICATION").toBooleanStrictOrNull() ?: true,
+        val useAuthentication: Boolean = getOrEmpty("USE_AUTHENTICATION", "true").toBoolean(),
         val azureAdProperties: AzureAdProperties = AzureAdProperties(),
     )
 
