@@ -12,15 +12,16 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Moby (Motta 
 
 ## Workflows
 
-1. [Deploy alarmer](.github/workflows/alerts-dev.yaml) og [prod](.github/workflows/alerts-prod.yaml) -> For å pushe alarmer for dev og prod
-   1 .Gjøre andre nødvendige endringer i alarmer som f.eks navn på applikasjon osv.
-   Denne workflow kjører inviduelt og trigges bare hvis det gjøres endringer i [alerts-dev.yaml](.nais/alerts-dev.yaml) og [alerts-prod.yaml](.nais/alerts-prod.yaml)
-2. [Bygg, test og deploy til dev/prod](.github/workflows/deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til dev og prod
-   1. Denne workflow er den aller første som kjøres når kode er i `master/main` branch
-3. [Bygg og test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
+1. [Deploy alerts](.github/workflows/alerts.yaml) -> For å pushe alarmer for dev og prod
+   1. Denne workflow trigges bare hvis det gjøres endringer i [alerts-dev.yaml](.nais/alerts-dev.yaml) og [alerts-prod.yaml](.nais/alerts-prod.yaml)
+2. [Deploy application](.github/workflows/deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til dev og prod
+   1. Denne workflow trigges når kode pushes i `main` branch
+3. [Build/test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet
    1. Denne workflow kjøres kun når det opprettes pull requester
-4. [Sikkerhet](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
-   1. Denne kjøres når [Bygg, test og deploy til dev/prodg](.github/workflows/deploy.yaml) har kjørt ferdig
+4. [Security](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
+   1. Denne kjøres når [Deploy application](.github/workflows/deploy.yaml) har kjørt ferdig
+5. [Deploy application manual to dev](.github/workflows/manual-deploy-dev.yaml) -> For å deploye applikasjonen manuelt til dev
+   1. Denne workflow trigges manuelt og utifra hvilken branch du er på vil den deploye
 
 ## OpenApi Generator og Swagger
 1. Endre [pets.json](https://github.com/navikt/sokos-ktor-template/blob/master/build.gradle.kts#L73) til hva spec filen skal hete som ligger i [specs](specs) mappa.
@@ -28,7 +29,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Moby (Motta 
 3. Når du kjører applikasjonen genereres det en SwaggerUI som kan nås på [localhost:8080/api/v1/docs](localhost:8080/api/v1/docs)
 
 ## Bygge og kjøre prosjekt
-1. Bygg prosjektet ved å kjøre `./gradlew build shadowJar`
+1. Bygg prosjektet ved å kjøre `./gradlew --configuration-cache clean build shadowJar`
 2. Start appen lokalt ved å kjøre main metoden i ***Application.kt***
 3. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
