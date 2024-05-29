@@ -5,7 +5,6 @@ import io.ktor.server.routing.routing
 import io.ktor.server.testing.ApplicationTestBuilder
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.api.swaggerApi
-import no.nav.sokos.prosjektnavn.config.ApplicationState
 import no.nav.sokos.prosjektnavn.config.commonConfig
 
 internal const val API_BASE_PATH = "/api/v1"
@@ -18,10 +17,9 @@ fun ApplicationTestBuilder.configureTestApplication() {
 
     application {
         commonConfig()
-        val applicationState = ApplicationState()
 
         routing {
-            naisApi(applicationState)
+            naisApi()
             swaggerApi()
         }
     }
