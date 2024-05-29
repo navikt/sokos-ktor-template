@@ -15,7 +15,6 @@ on:
       - '.github/workflows/alerts.yaml'
       - '.nais/alerts-dev.yaml'
       - '.nais/alerts-prod.yaml'
-      - '.github/workflows/reviewdog.yaml'
       - '.github/dependabot.yaml'
 env:
   TZ: Europe/Oslo
@@ -25,6 +24,21 @@ permissions:
   id-token: "write"
 
 jobs:
+  code-style-violations:
+    name: Check coding style violations
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@master
+        with:
+          fetch-depth: 1
+      - name: ktlint
+        uses: ScaCap/action-ktlint@master
+        with:
+          github_token: ${{ secrets.github_token }}
+          reporter: github-check
+          ktlint_version: 1.0.1
   build:
     name: Build/test & push image
     runs-on: ubuntu-latest
