@@ -41,7 +41,10 @@ object PropertiesConfig {
 
     operator fun get(key: String): String = config[Key(key, stringType)]
 
-    fun getOrEmpty(key: String, default: String = ""): String = config.getOrElse(Key(key, stringType), default)
+    fun getOrEmpty(
+        key: String,
+        default: String = "",
+    ): String = config.getOrElse(Key(key, stringType), default)
 
     data class Configuration(
         val naisAppName: String = get("NAIS_APP_NAME"),
