@@ -8,7 +8,7 @@ import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.api.naisApi
 import no.nav.sokos.prosjektnavn.api.swaggerApi
 
-fun Application.routingConfig(useAuthentication: Boolean = true) {
+fun Application.routingConfig(useAuthentication: Boolean) {
     routing {
         naisApi()
         swaggerApi()
