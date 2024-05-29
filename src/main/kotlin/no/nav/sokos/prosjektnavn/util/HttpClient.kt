@@ -6,11 +6,8 @@ import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.serialization.kotlinx.json.json
 import kotlinx.serialization.ExperimentalSerializationApi
 import kotlinx.serialization.json.Json
-import mu.KotlinLogging
 import org.apache.http.impl.conn.SystemDefaultRoutePlanner
 import java.net.ProxySelector
-
-private val logger = KotlinLogging.logger {}
 
 val httpClient =
     HttpClient(Apache) {
