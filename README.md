@@ -23,11 +23,6 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-apper for Team Moby (Motta 
 5. [Deploy application manual to dev](.github/workflows/manual-deploy-dev.yaml) -> For å deploye applikasjonen manuelt til dev
    1. Denne workflow trigges manuelt og utifra hvilken branch du er på vil den deploye
 
-## OpenApi Generator og Swagger
-1. Endre [pets.json](https://github.com/navikt/sokos-ktor-template/blob/master/build.gradle.kts#L73) til hva spec filen skal hete som ligger i [specs](specs) mappa.
-2. Når prosjektet bygges genereres det data klasser i `build` mappa. Disse sjekkes ikke inn i Git pga. datamodellen kan endres ganske mye så slipper du pushe inn hver endring i modellen. Dvs du følger kontrakten, altså api spec
-3. Når du kjører applikasjonen genereres det en SwaggerUI som kan nås på [localhost:8080/api/v1/docs](localhost:8080/api/v1/docs)
-
 ## Bygge og kjøre prosjekt
 1. Bygg prosjektet ved å kjøre `./gradlew --configuration-cache clean build shadowJar`
 2. Start appen lokalt ved å kjøre main metoden i ***Application.kt***

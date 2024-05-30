@@ -3,12 +3,10 @@ import kotlinx.kover.gradle.plugin.dsl.tasks.KoverReport
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
-import org.openapitools.generator.gradle.plugin.tasks.GenerateTask
 
 plugins {
     kotlin("jvm") version "2.0.0"
     kotlin("plugin.serialization") version "2.0.0"
-    id("org.openapi.generator") version "7.6.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
     id("org.jetbrains.kotlinx.kover") version "0.8.0"
@@ -91,41 +89,14 @@ kotlin {
 
 tasks {
 
-    named("runKtlintCheckOverMainSourceSet").configure {
-        dependsOn("openApiGenerate")
-    }
-
-    named("runKtlintFormatOverMainSourceSet").configure {
-        dependsOn("openApiGenerate")
-    }
-
     withType<KotlinCompile>().configureEach {
         dependsOn("ktlintFormat")
-        dependsOn("openApiGenerate")
     }
 
     ktlint {
         filter {
             exclude { element -> element.file.path.contains("generated/") }
         }
-    }
-
-    withType<GenerateTask>().configureEach {
-        generatorName.set("kotlin")
-        generateModelDocumentation.set(false)
-        inputSpec.set("$rootDir/src/main/resources/openapi/pets.json")
-        outputDir.set("${layout.buildDirectory.get()}/generated/")
-        globalProperties.set(
-            mapOf(
-                "models" to "",
-            ),
-        )
-        configOptions.set(
-            mapOf(
-                "library" to "jvm-ktor",
-                "serializationLibrary" to "kotlinx_serialization",
-            ),
-        )
     }
 
     withType<ShadowJar>().configureEach {
