@@ -5,14 +5,13 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 import no.nav.sokos.prosjektnavn.api.dummyApi
-import no.nav.sokos.prosjektnavn.api.naisApi
 
 fun Application.routingConfig(
     useAuthentication: Boolean,
     applicationState: ApplicationState,
 ) {
     routing {
-        naisApi(applicationState)
+        internalNaisRoutes(applicationState)
         authenticate(useAuthentication, AUTHENTICATION_NAME) {
             dummyApi()
         }

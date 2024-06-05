@@ -1,4 +1,4 @@
-FROM bellsoft/liberica-openjdk-alpine:21@sha256:c5781987118dcfe21d3b5c4ba9f7ddf572d5fc56da3b1e02842e0b7740c1233d
+FROM bellsoft/liberica-openjdk-alpine:21@sha256:b4f3b3f5c31e2935f5e941664e45156284ec14fc5745486291a7c45fbccd253d
 COPY build/libs/*.jar app.jar
 CMD ["dumb-init", "--"]
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
