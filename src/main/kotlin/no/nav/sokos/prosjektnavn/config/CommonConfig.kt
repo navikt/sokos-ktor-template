@@ -44,6 +44,7 @@ fun Application.commonConfig() {
                 prettyPrint = true
                 ignoreUnknownKeys = true
                 encodeDefaults = true
+                explicitNulls = false
             },
         )
     }

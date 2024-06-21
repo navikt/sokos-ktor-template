@@ -60,6 +60,7 @@ class SecurityTest : FunSpec({
                                     prettyPrint = true
                                     ignoreUnknownKeys = true
                                     encodeDefaults = true
+                                    explicitNulls = false
                                 },
                             )
                         }
