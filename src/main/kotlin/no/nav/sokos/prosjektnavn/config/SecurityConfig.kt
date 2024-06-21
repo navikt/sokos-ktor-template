@@ -12,7 +12,6 @@ import kotlinx.coroutines.runBlocking
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import mu.KotlinLogging
-import no.nav.sokos.prosjektnavn.util.httpClient
 import java.net.URI
 import java.util.concurrent.TimeUnit
 
