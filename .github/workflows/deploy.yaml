@@ -38,13 +38,7 @@ jobs:
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
           dependency-graph: generate-and-submit
-      - run: ./gradlew --configuration-cache build shadowJar koverXmlReport
-
-      - name: Publish Test Results
-        uses: EnricoMi/publish-unit-test-result-action@v2
-        if: always()
-        with:
-          files: build/test-results/test/TEST-*.xml
+      - run: ./gradlew --configuration-cache build shadowJar
 
       - name: Build docker image
         uses: docker/setup-buildx-action@v3
