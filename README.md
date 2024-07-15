@@ -82,9 +82,17 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
 # 6. Drift og støtte
 
 ### Logging
-Hvor finner jeg logger? Hvordan filtrerer jeg mellom dev og prod logger?
 
-[sikker-utvikling/logging](https://sikkerhet.nav.no/docs/sikker-utvikling/logging) - Anbefales å lese
+https://logs.adeo.no.
+
+Feilmeldinger og infomeldinger som ikke innheholder sensitive data logges til data view `Applikasjonslogger`.  
+Sensetive meldinger logges til data view `Securelogs` [sikker-utvikling/logging](https://sikkerhet.nav.no/docs/sikker-utvikling/logging)).
+
+- Filter for Produksjon
+    * application:sokos-ktor-template AND envclass:p
+
+- Filter for Dev
+    * application:sokos-ktor-template AND envclass:q
 
 ### Kubectl
 For dev-gcp:
