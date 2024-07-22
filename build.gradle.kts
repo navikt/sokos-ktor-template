@@ -8,7 +8,7 @@ plugins {
     kotlin("plugin.serialization") version "2.0.0"
     id("com.github.johnrengelman.shadow") version "8.1.1"
     id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-    id("org.jetbrains.kotlinx.kover") version "0.8.2"
+    id("org.jetbrains.kotlinx.kover") version "0.8.3"
 }
 
 group = "no.nav.sokos"
@@ -28,7 +28,7 @@ val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.9.1"
 val kotlinxSerializationVersion = "1.7.1"
 val mockOAuth2ServerVersion = "2.1.8"
-val mockkVersion = "1.13.11"
+val mockkVersion = "1.13.12"
 
 dependencies {
 
