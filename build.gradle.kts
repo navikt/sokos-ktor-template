@@ -26,7 +26,7 @@ val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.9.1"
-val kotlinxSerializationVersion = "1.7.1"
+val kotlinxSerializationVersion = "1.7.2"
 val mockOAuth2ServerVersion = "2.1.9"
 val mockkVersion = "1.13.12"
 
