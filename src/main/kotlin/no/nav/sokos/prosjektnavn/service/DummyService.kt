@@ -6,6 +6,6 @@ import no.nav.sokos.prosjektnavn.metrics.Metrics
 class DummyService {
     fun sayHello(): DummyDomain {
         Metrics.exampleCounter.inc()
-        return DummyDomain("Hello Team Moby!g")
+        return DummyDomain("Hello Team Moby!")
     }
 }
