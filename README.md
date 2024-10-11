@@ -24,7 +24,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
    1. Denne workflow trigges manuelt og utifra hvilken branch du er på vil den deploye
 
 ## Bygge og kjøre prosjekt
-1. Bygg prosjektet ved å kjøre `./gradlew --configuration-cache clean build shadowJar`
+1. Bygg prosjektet ved å kjøre `./gradlew clean build shadowJar`
 2. Start appen lokalt ved å kjøre main metoden i ***Application.kt***
 3. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
