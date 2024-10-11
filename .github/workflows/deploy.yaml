@@ -1,32 +1,3 @@
-name: Deploy application
-
-on:
-  push:
-    branches:
-      - main
-    paths-ignore:
-      - '**.md'
-      - 'LICENCE'
-      - 'CODEOWNERS'
-      - '.gitignore'
-      - '.editorconfig'
-      - 'setupLocalEnvironment.sh'
-      - 'dokumentasjon/**'
-      - '.github/workflows/build-pr.yaml'
-      - '.github/workflows/manual-deploy-dev.yaml'
-      - '.github/workflows/security.yaml'
-      - '.github/workflows/alerts.yaml'
-      - '.github/pr-labeler.yaml'
-      - '.nais/alerts-dev.yaml'
-      - '.nais/alerts-prod.yaml'
-      - '.github/dependabot.yaml'
-env:
-  TZ: Europe/Oslo
-
-permissions:
-  contents: "write"
-  id-token: "write"
-
 jobs:
   build:
     name: Build/test & push image
@@ -38,7 +9,7 @@ jobs:
           distribution: 'temurin'
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
-        env: # Eksluder test dependencies
+        env:
           DEPENDENCY_GRAPH_INCLUDE_CONFIGURATIONS: compileClasspath|runtimeClasspath
         with:
           dependency-graph: generate-and-submit
@@ -58,9 +29,39 @@ jobs:
     outputs:
       image: ${{ steps.docker-build-push.outputs.image }}
 
+  label:
+    name: Add Label Based on Branch Name
+    needs: build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Add Label
+        uses: actions/github-script@v6
+        with:
+          script: |
+            const branchName = context.payload.ref.split('/').pop();
+            const labelPrefix = branchName.split('/')[0]; // Get the first part (e.g., 'feature')
+            const label = labelPrefix; // Use as label directly
+
+            // Add the label to the pull request
+            const prNumber = context.payload.pull_request ? context.payload.pull_request.number : null;
+
+            if (prNumber) {
+              await github.issues.addLabels({
+                owner: context.repo.owner,
+                repo: context.repo.repo,
+                issue_number: prNumber,
+                labels: [label],
+              });
+            } else {
+              console.log('No pull request associated with this push.');
+            }
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   deploy-dev:
     name: Deploy to dev
-    needs: build
+    needs: [build, label]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -72,16 +73,19 @@ jobs:
           TIMEOUT: 10m
           PRINT_PAYLOAD: true
 
-#  deploy-prod:
-#    name: Deploy to prod
-#    needs: [ build , deploy-dev ]
-#    runs-on: ubuntu-latest
-#    steps:
-#      - uses: actions/checkout@v4
-#      - uses: nais/deploy/actions/deploy@v2
-#        env:
-#          CLUSTER: prod-gcp
-#          RESOURCE: .nais/naiserator-prod.yaml
-#          IMAGE: ${{ needs.build.outputs.image }}
-#          TIMEOUT: 10m
-#          PRINT_PAYLOAD: true
+
+
+# Uncomment and modify as needed for production deployment
+# deploy-prod:
+#   name: Deploy to prod
+#   needs: [ build , deploy-dev ]
+#   runs-on: ubuntu-latest
+#   steps:
+#     - uses: actions/checkout@v4
+#     - uses: nais/deploy/actions/deploy@v2
+#       env:
+#         CLUSTER: prod-gcp
+#         RESOURCE: .nais/naiserator-prod.yaml
+#         IMAGE: ${{ needs.build.outputs.image }}
+#         TIMEOUT: 10m
+#         PRINT_PAYLOAD: true
