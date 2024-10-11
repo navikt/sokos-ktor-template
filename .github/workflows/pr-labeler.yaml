@@ -1,0 +1,6 @@
+feature: feature/*
+bugfix: bugfix/*
+hotfix: hotfix/*
+deps: dependencies/*
+github-action: github-action/*
+docs: documentation/*
