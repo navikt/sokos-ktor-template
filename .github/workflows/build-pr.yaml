@@ -2,9 +2,20 @@ name: Build/test PR
 
 on:
   pull_request:
-    types: [opened]  # This triggers the labeler job on pull request opened
+    types: [opened]
     paths-ignore:
-      - 'README.md'
+      - '**.md'
+      - 'LICENCE'
+      - 'CODEOWNERS'
+      - '.gitignore'
+      - '.editorconfig'
+      - 'setupLocalEnvironment.sh'
+      - 'dokumentasjon/**'
+      - '.nais/**'
+      - '.github/workflows/deploy.yaml'
+      - '.github/workflows/manual-deploy-dev.yaml'
+      - '.github/workflows/security.yaml'
+      - '.github/workflows/alerts.yaml'
 
 jobs:
   build-pr:
