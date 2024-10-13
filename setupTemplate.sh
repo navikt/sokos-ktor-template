@@ -49,3 +49,9 @@ mv src/test/kotlin/no/nav/sokos/prosjektnavn/* "src/test/kotlin/no/nav/sokos/$ar
 # Remove the old directories
 rmdir src/main/kotlin/no/nav/sokos/prosjektnavn
 rmdir src/test/kotlin/no/nav/sokos/prosjektnavn
+
+# Copy hooks to the .git/hooks directory
+cp -r .githooks/* .git/hooks/
+
+# Make sure the hooks are executable
+chmod +x .git/hooks/*
