@@ -1,4 +1,4 @@
-name: Build/test and validate PRg
+name: Build/test and validate PR
 
 on:
   pull_request:
