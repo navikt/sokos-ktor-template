@@ -8,7 +8,6 @@ jobs:
   validate-pr:
     name: Validate PR Branch and Title
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -19,24 +18,20 @@ jobs:
           PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           
           if [[ -z "$BRANCH_NAME" ]]; then
-            echo "::error::Branch name does not match the required prefixes. Please use one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
+            echo "Branch "${{ github.head_ref }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor/
             exit 1
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
-            echo "::error::PR title does not match the required prefixes. Please start the title with one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
+            echo "PR title "${{ github.event.pull_request.title }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor/
             exit 1
           fi
-
-      - name: Success message
-        if: success()
-        run: echo "Branch name and PR title are valid."
 
   build-pr:
     name: Build and test
     runs-on: ubuntu-latest
     needs: validate-pr
-    if: "!failure() && !contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
+    if: "!contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
     steps:
       - uses: actions/checkout@v4
         with:
