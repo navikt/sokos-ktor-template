@@ -1,28 +1,14 @@
-name: Build/test PR
+name: Build and PR Labeler
 
 on:
   pull_request:
-    types: [opened, synchronize, edited]
+    types: [opened, edited, synchronize]
 
 jobs:
-  build-pr:
-    name: Build and test
-    runs-on: ubuntu-latest
-    if: "!contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
-    steps:
-      - uses: actions/checkout@v4
-        with:
-          ref: ${{ github.event.pull_request.head.sha }}
-      - uses: actions/setup-java@v4
-        with:
-          distribution: 'temurin'
-          java-version: '21'
-      - uses: gradle/actions/setup-gradle@v4
-      - run: ./gradlew --configuration-cache build shadowJar
-
   validate-pr:
-    name: Validate PR Branch nameg and Title
+    name: Validate PR Branch and Title
     runs-on: ubuntu-latest
+    continue-on-error: true
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -43,4 +29,21 @@ jobs:
           fi
 
       - name: Success message
+        if: success()
         run: echo "Branch name and PR title are valid."
+
+  build-pr:
+    name: Build and test
+    runs-on: ubuntu-latest
+    needs: validate-pr
+    if: "!failure() && !contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+      - uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '21'
+      - uses: gradle/actions/setup-gradle@v4
+      - run: ./gradlew --configuration-cache build shadowJar
