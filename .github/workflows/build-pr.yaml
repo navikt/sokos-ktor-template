@@ -18,19 +18,14 @@ jobs:
           PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           
           if [[ -z "$BRANCH_NAME" ]]; then
-            exit 0
+            echo "Branch "${{ github.head_ref }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor
+            exit 1
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
-            exit 0
-          fi
-          
-          echo "Branch "${{ github.head_ref }}" and PR title "${{ github.event.pull_request.title }}" are not valid."
+            echo "PR title "${{ github.event.pull_request.title }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor
             exit 1
-
-      - name: Success message
-        if: success()
-        run: echo "Branch name and PR title are valid."
+          fi
 
   build-pr:
     name: Build and test
