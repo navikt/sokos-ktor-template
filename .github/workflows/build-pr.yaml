@@ -16,18 +16,23 @@ jobs:
       - name: Validate PR branch name and title
         id: validate
         run: |
+          STATUS=0
           BRANCH_NAME=$(echo "${{ github.head_ref }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           
           if [[ -z "$BRANCH_NAME" ]]; then
             echo "::error::Branch name does not match the required prefixes. Please use one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
             echo "error_message=Branch name does not match the required prefixes." >> $GITHUB_ENV
+            STATUS=1
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
             echo "::error::PR title does not match the required prefixes. Please start the title with one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
             echo "error_message=PR title does not match the required prefixes." >> $GITHUB_ENV
+            STATUS=1
           fi
+
+          exit $STATUS
 
       - name: Success message
         if: success()
