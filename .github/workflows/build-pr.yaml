@@ -6,7 +6,7 @@ on:
 
 jobs:
   validate-pr:
-    name: Validate PR Branch and Title
+    name: Validate PR branch and title
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
