@@ -19,12 +19,12 @@ jobs:
           PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           
           if [[ -z "$BRANCH_NAME" ]]; then
-            echo "Branch name does not match the required prefixes."
+            echo "::error::Branch name does not match the required prefixes. Please use one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
             exit 1
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
-            echo "PR title does not match the required prefixes."
+            echo "::error::PR title does not match the required prefixes. Please start the title with one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
             exit 1
           fi
 
