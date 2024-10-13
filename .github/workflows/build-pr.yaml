@@ -10,8 +10,8 @@ jobs:
     steps:
       - name: Check branch name and title
         run: |
-          BRANCH_NAME=${{ github.head_ref }}
-          PR_TITLE=${{ github.event.pull_request.title }}
+          BRANCH_NAME="${{ github.head_ref }}"
+          PR_TITLE="${{ github.event.pull_request.title }}"
           if [[ ! "$BRANCH_NAME" =~ ^(feature|bugfix|hotfix|chore|refactor|docs)/ ]] || [[ ! "$PR_TITLE" =~ ^(feature|bugfix|hotfix|chore|refactor|docs)/ ]]; then
             echo "Branch name or PR title does not match the required prefixes."
             exit 1
