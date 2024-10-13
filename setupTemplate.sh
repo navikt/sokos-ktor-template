@@ -55,3 +55,5 @@ cp -r .githooks/* .git/hooks/
 
 # Make sure the hooks are executable
 chmod +x .git/hooks/*
+
+rm -rf .githooks

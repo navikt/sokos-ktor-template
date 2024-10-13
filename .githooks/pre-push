@@ -4,7 +4,7 @@
 branch_name=$(git symbolic-ref HEAD 2>/dev/null | cut -d"/" -f 3-)
 
 # Define valid branch prefixes
-valid_prefixes=("feature/" "bugfix/" "hotfix/" "chore/" "docs/")
+valid_prefixes=("feature/" "bugfix/" "hotfix/" "chore/" "refactor/" "docs/")
 
 # Check if the branch name starts with any of the valid prefixes
 is_valid=false
@@ -18,7 +18,7 @@ done
 # If the branch name is not valid, prevent the push and display a message
 if [ "$is_valid" = false ]; then
   echo "Error: Invalid branch name '$branch_name'."
-  echo "Valid branch name prefixes are:"
+  echo "Create a valid branch name, valid branch name prefixes are:"
   for prefix in "${valid_prefixes[@]}"; do
     echo "  - $prefix"
   done
