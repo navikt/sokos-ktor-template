@@ -32,6 +32,15 @@ jobs:
             exit 1
           fi
 
+      - name: Add label based on branch name
+        run: |
+          LABEL=$(echo "${{ github.head_ref }}" | grep -oE '^(feature|bugfix|hotfix|chore|refactor|docs)')
+          if [[ -n "$LABEL" ]]; then
+            gh pr edit ${{ github.event.pull_request.number }} --add-label "$LABEL"
+          fi
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
   build-pr:
     name: Build and test
     runs-on: ubuntu-latest
