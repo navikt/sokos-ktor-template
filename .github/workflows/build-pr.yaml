@@ -20,7 +20,7 @@ jobs:
       - run: ./gradlew --configuration-cache build shadowJar
 
   validate-pr:
-    name: Validate PR Branch and Title
+    name: Validate PR Branch nameg and Title
     runs-on: ubuntu-latest
     steps:
       - name: Check out repository
