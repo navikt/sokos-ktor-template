@@ -32,6 +32,10 @@ jobs:
         if: success()
         run: echo "Branch name and PR title are valid."
 
+      - name: Failure message
+        if: failure()
+        run: echo "${{ steps.validate.outputs.error_message }}"
+
   build-pr:
     name: Build and test
     runs-on: ubuntu-latest
