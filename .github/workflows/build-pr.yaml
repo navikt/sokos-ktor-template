@@ -1,4 +1,4 @@
-name: Build and PR Labeler
+name: Build/test PR
 
 on:
   pull_request:
@@ -18,3 +18,28 @@ jobs:
           java-version: '21'
       - uses: gradle/actions/setup-gradle@v4
       - run: ./gradlew --configuration-cache build shadowJar
+
+  validate-pr:
+    name: Validate PR Branch and Title
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate PR branch name and title
+        run: |
+          BRANCH_NAME=$(echo "${{ github.head_ref }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
+          PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
+          
+          if [[ -z "$BRANCH_NAME" ]]; then
+            echo "Branch name does not match the required prefixes."
+            exit 1
+          fi
+          
+          if [[ -z "$PR_TITLE" ]]; then
+            echo "PR title does not match the required prefixes."
+            exit 1
+          fi
+
+      - name: Success message
+        run: echo "Branch name and PR title are valid."
