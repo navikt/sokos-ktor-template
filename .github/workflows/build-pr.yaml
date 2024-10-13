@@ -34,7 +34,9 @@ jobs:
 
       - name: Failure message
         if: failure()
-        run: echo "${{ steps.validate.outputs.error_message }}"
+        run: |
+          echo "${{ steps.validate.outputs.error_message }}"
+          exit 1
 
   build-pr:
     name: Build and test
