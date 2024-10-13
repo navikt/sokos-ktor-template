@@ -18,12 +18,15 @@ jobs:
           PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
           
           if [[ -z "$BRANCH_NAME" ]]; then
-            exit 1
+            exit 0
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
-            exit 1
+            exit 0
           fi
+          
+          echo "Branch "${{ github.head_ref }}" and PR title "${{ github.event.pull_request.title }}" are not valid."
+            exit 1
 
       - name: Success message
         if: success()
