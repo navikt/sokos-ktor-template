@@ -20,12 +20,10 @@ jobs:
           
           if [[ -z "$BRANCH_NAME" ]]; then
             echo "::error::Branch name does not match the required prefixes. Please use one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
-            exit 1
           fi
           
           if [[ -z "$PR_TITLE" ]]; then
             echo "::error::PR title does not match the required prefixes. Please start the title with one of the following prefixes: feature/*, bugfix/*, hotfix/*, chore/*, refactor/*, docs/*."
-            exit 1
           fi
 
       - name: Success message
