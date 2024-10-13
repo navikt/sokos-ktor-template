@@ -10,6 +10,12 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
    ```
 3. Fyll inn prosjektnavn (sokos-foo-bar) og artifaktnavn (foo.bar)
 
+## Git hooks oppsett
+
+Vi har regler for å opprette PR med en spesifikk prefix i branch navnet. 
+Dette er for å kunne holde styr på hvilken type PR det er og hva som skal gjøres samt ryddig git historikk.
+Reglene finner du [her](https://confluence.adeo.no/display/OKSY/Git)
+
 ## Workflows
 
 1. [Deploy alerts](.github/workflows/alerts.yaml) -> For å pushe alarmer for dev og prod
