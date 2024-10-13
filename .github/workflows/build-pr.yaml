@@ -8,7 +8,6 @@ jobs:
   validate-pr:
     name: Validate PR Branch and Title
     runs-on: ubuntu-latest
-    continue-on-error: true
     steps:
       - name: Check out repository
         uses: actions/checkout@v4
@@ -34,7 +33,7 @@ jobs:
     name: Build and test
     runs-on: ubuntu-latest
     needs: validate-pr
-    if: "!failure() && !contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
+    if: "!contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
     steps:
       - uses: actions/checkout@v4
         with:
