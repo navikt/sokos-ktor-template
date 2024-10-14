@@ -2,35 +2,11 @@ name: Build/test and validate PR
 
 on:
   pull_request:
-    types: [opened, edited, synchronize]
 
 jobs:
-  validate-pr:
-    name: Validate PR branch and title
-    runs-on: ubuntu-latest
-    steps:
-      - name: Check out repository
-        uses: actions/checkout@v4
-
-      - name: Validate PR branch name and title
-        run: |
-          BRANCH_NAME=$(echo "${{ github.head_ref }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
-          PR_TITLE=$(echo "${{ github.event.pull_request.title }}" | grep -E '^(feature|bugfix|hotfix|chore|refactor|docs)/')
-          
-          if [[ -z "$BRANCH_NAME" ]]; then
-            echo "Branch "${{ github.head_ref }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor/
-            exit 1
-          fi
-          
-          if [[ -z "$PR_TITLE" ]]; then
-            echo "PR title "${{ github.event.pull_request.title }}" must start with one of the following: feature/, bugfix/, hotfix/, chore/, refactor/
-            exit 1
-          fi
-
   build-pr:
     name: Build and test
     runs-on: ubuntu-latest
-    needs: validate-pr
     if: "!contains(github.event.pull_request.changed_files, 'LICENSE') && !contains(github.event.pull_request.changed_files, 'CODEOWNERS') && !contains(github.event.pull_request.changed_files, '.gitignore') && !contains(github.event.pull_request.changed_files, '.editorconfig') && !contains(github.event.pull_request.changed_files, 'setupLocalEnvironment.sh') && !contains(github.event.pull_request.changed_files, 'dokumentasjon/**') && !contains(github.event.pull_request.changed_files, '.nais/**') && !contains(github.event.pull_request.changed_files, '.github/workflows/deploy.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/manual-deploy-dev.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/security.yaml') && !contains(github.event.pull_request.changed_files, '.github/workflows/alerts.yaml')"
     steps:
       - uses: actions/checkout@v4
