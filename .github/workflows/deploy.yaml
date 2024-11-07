@@ -16,7 +16,6 @@ on:
       - '.github/workflows/manual-deploy-dev.yaml'
       - '.github/workflows/security.yaml'
       - '.github/workflows/alerts.yaml'
-      - '.github/pr-labeler.yaml'
       - '.nais/alerts-dev.yaml'
       - '.nais/alerts-prod.yaml'
       - '.github/dependabot.yaml'
