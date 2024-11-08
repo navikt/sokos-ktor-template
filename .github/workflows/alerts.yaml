@@ -18,7 +18,6 @@ jobs:
     with:
       cluster: dev-gcp
       resource: .nais/alerts-dev.yaml
-      image: ${{ needs.build.outputs.image }}
 
 #  deploy-prod:
 #    name: Deploy to prod-gcp
@@ -26,4 +25,3 @@ jobs:
 #    with:
 #      cluster: prod-gcp
 #      resource: .nais/alerts-prod.yaml
-#      image: ${{ needs.build.outputs.image }}
