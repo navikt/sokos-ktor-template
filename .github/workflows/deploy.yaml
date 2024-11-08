@@ -34,6 +34,7 @@ jobs:
 
   deploy:
     needs: build
+    secrets: inherit
     name: Deploy to dev
     uses: navikt/moby-gha-workflows/.github/workflows/nais-deploy.yaml@main
     with:
