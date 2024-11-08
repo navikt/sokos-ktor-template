@@ -16,7 +16,7 @@ jobs:
     uses: navikt/moby-gha-workflows/.github/workflows/build-push-image.yaml@main
     secrets: inherit
     with:
-      tag: snapshot
+      image-tag: snapshot
 
   deploy-dev:
     needs: build
