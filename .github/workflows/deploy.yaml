@@ -25,5 +25,5 @@ jobs:
     with:
       cluster: dev-gcp
       resource: .nais/naiserator-dev.yaml
-      image: ${{ steps.docker-build-push.outputs.image }}
+      image: ${{ job.build.outputs.image }}
 
