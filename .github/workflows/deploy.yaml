@@ -28,11 +28,13 @@ permissions:
 
 jobs:
   build:
+    name: Build/test & push image
     uses: navikt/moby-gha-workflows/.github/workflows/build-push-image.yaml@main
     secrets: inherit
 
   deploy:
     needs: build
+    name: Deploy to dev
     uses: navikt/moby-gha-workflows/.github/workflows/nais-deploy.yaml@main
     with:
       cluster: dev-gcp
