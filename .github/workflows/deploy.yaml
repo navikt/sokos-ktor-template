@@ -4,21 +4,6 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'LICENCE'
-      - 'CODEOWNERS'
-      - '.gitignore'
-      - '.editorconfig'
-      - 'setupLocalEnvironment.sh'
-      - 'dokumentasjon/**'
-      - '.github/workflows/build-pr.yaml'
-      - '.github/workflows/manual-deploy-dev.yaml'
-      - '.github/workflows/security.yaml'
-      - '.github/workflows/alerts.yaml'
-      - '.nais/alerts-dev.yaml'
-      - '.nais/alerts-prod.yaml'
-      - '.github/dependabot.yaml'
 env:
   TZ: Europe/Oslo
 
@@ -34,10 +19,11 @@ jobs:
 
   deploy:
     needs: build
-    secrets: inherit
     name: Deploy to dev
     uses: navikt/moby-gha-workflows/.github/workflows/nais-deploy.yaml@main
+    secrets: inherit
     with:
       cluster: dev-gcp
       resource: .nais/naiserator-dev.yaml
-      image: ${{ needs.build.outputs.image }}
+      image: ${{ steps.docker-build-push.outputs.image }}
+
