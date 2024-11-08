@@ -19,6 +19,7 @@ on:
       - '.nais/alerts-dev.yaml'
       - '.nais/alerts-prod.yaml'
       - '.github/dependabot.yaml'
+
 env:
   TZ: Europe/Oslo
 
