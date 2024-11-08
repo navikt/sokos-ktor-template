@@ -17,12 +17,20 @@ jobs:
     uses: navikt/moby-gha-workflows/.github/workflows/build-push-image.yaml@main
     secrets: inherit
 
-  deploy:
+  deploy-dev:
     needs: build
-    name: Deploy to dev
-    uses: navikt/moby-gha-workflows/.github/workflows/nais-deploy.yaml@main
+    name: Deploy to dev-gcp
+    uses: navikt/moby-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
       cluster: dev-gcp
       resource: .nais/naiserator-dev.yaml
       image: ${{ needs.build.outputs.image }}
 
+  deploy-prod:
+    needs: build
+    name: Deploy to prod-gcp
+    uses: navikt/moby-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
+    with:
+      cluster: prod-gcp
+      resource: .nais/naiserator-prod.yaml
+      image: ${{ needs.build.outputs.image }}
