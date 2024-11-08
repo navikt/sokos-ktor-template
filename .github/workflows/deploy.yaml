@@ -29,6 +29,7 @@ permissions:
 jobs:
   build:
     uses: navikt/moby-gha-workflows/.github/workflows/build-push-image.yaml@main
+    secrets: inherit
 
   deploy:
     needs: build
