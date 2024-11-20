@@ -30,7 +30,7 @@ val kotlinxSerializationVersion = "1.7.3"
 val mockOAuth2ServerVersion = "2.1.10"
 val mockkVersion = "1.13.13"
 
-// /Due to vulnerabilities
+// Due to vulnerabilities
 val nettyCommonVersion = "4.1.115.Final"
 
 dependencies {
