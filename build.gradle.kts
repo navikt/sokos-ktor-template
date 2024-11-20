@@ -35,12 +35,6 @@ val nettyCommonVersion = "4.1.115.Final"
 
 dependencies {
 
-    constraints {
-        implementation("ch.qos.logback:logback-classic:1.5.12") {
-            because("Override version used by ktlint")
-        }
-    }
-
     // Ktor server
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
@@ -87,13 +81,8 @@ dependencies {
 }
 
 // Vulnerabilities fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
-configurations.all {
-    resolutionStrategy.eachDependency {
-        if (requested.group == "ch.qos.logback" && requested.name == "logback-classic") {
-            useVersion("1.5.12")
-            because("Override version used by ktlint")
-        }
-    }
+configurations.ktlint {
+    resolutionStrategy.force("ch.qos.logback:logback-classic:1.5.12")
 }
 
 sourceSets {
