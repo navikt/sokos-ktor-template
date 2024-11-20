@@ -80,9 +80,9 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
-// Vulnerabilities fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
 configurations.ktlint {
-    resolutionStrategy.force("ch.qos.logback:logback-classic:1.5.12")
+    resolutionStrategy.force("ch.qos.logback:logback-classic:$logbackVersion")
 }
 
 sourceSets {
