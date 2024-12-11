@@ -17,4 +17,4 @@ jobs:
     uses: navikt/monster-gha-workflows/.github/workflows/security.yaml@main
     secrets: inherit
     with:
-      language: 'java-kotlin'
+      language: 'kotlin'
