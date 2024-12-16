@@ -122,5 +122,5 @@ Hva er url til Lokal, dev og prod?
 
 # 8. Henvendelser og tilgang
    Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
-   Interne henvendelser kan sendes via Slack i kanalen #po-utbetaling
+   Interne henvendelser kan sendes via Slack i kanalen [#po-utbetaling](https://nav-it.slack.com/archives/CKZADNFBP)
 
