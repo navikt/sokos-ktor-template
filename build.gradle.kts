@@ -30,20 +30,12 @@ val kotlinxSerializationVersion = "1.7.3"
 val mockOAuth2ServerVersion = "2.1.10"
 val mockkVersion = "1.13.14"
 
-// Due to vulnerabilities
-val nettyCommonVersion = "4.1.116.Final"
-
 dependencies {
 
     // Ktor server
     implementation("io.ktor:ktor-server-call-logging-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-call-id-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
-    constraints {
-        implementation("io.netty:netty-common:$nettyCommonVersion") {
-            because("override transient from io.ktor:ktor-server-netty-jvm")
-        }
-    }
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
 
@@ -80,7 +72,7 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
-// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1.1"
+// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1."
 configurations.ktlint {
     resolutionStrategy.force("ch.qos.logback:logback-classic:$logbackVersion")
 }
