@@ -6,6 +6,7 @@ import no.nav.sokos.prosjektnavn.metrics.Metrics
 class DummyService {
     fun sayHello(): DummyDomain {
         Metrics.exampleCounter.inc()
+
         return DummyDomain("This is a template for Team Monster")
     }
 }

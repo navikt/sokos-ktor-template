@@ -6,8 +6,9 @@ echo "*********************************************************"
 # Gather the staged files - to make sure changes are saved only for these files.
 stagedFiles=$(git diff --staged --name-only)
 
-# run spotless apply
+# run ktlintMainSourceSetCheck apply
 ./gradlew ktlintFormat
+./gradlew ktlintMainSourceSetCheck
 
 status=$?
 
