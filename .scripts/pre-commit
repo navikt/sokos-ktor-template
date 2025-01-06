@@ -7,8 +7,7 @@ echo "*********************************************************"
 stagedFiles=$(git diff --staged --name-only)
 
 # run ktlintMainSourceSetCheck apply
-./gradlew ktlintFormat
-./gradlew ktlintMainSourceSetCheck
+./gradlew ktlintFormat ktlintMainSourceSetCheck
 
 status=$?
 
