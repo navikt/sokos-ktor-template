@@ -105,6 +105,7 @@ tasks {
         }
         finalizedBy(koverHtmlReport)
         dependsOn("gitHooks")
+        dependsOn("preCommitPermissions")
     }
 
     ("jar") {
@@ -131,5 +132,9 @@ tasks {
     register<Copy>("gitHooks") {
         from(file("./.scripts/pre-commit"))
         into(file("./.git/hooks"))
+    }
+
+    register<Exec>("preCommitPermissions") {
+        commandLine("chmod", "+x", "./.git/hooks/pre-commit")
     }
 }
