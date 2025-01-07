@@ -106,10 +106,6 @@ tasks {
         finalizedBy(koverHtmlReport)
     }
 
-    ("jar") {
-        enabled = false
-    }
-
     withType<Test>().configureEach {
         useJUnitPlatform()
 
@@ -124,7 +120,11 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.11"
+        gradleVersion = "8.12"
+    }
+
+    ("jar") {
+        enabled = false
     }
 
     ("build") {
