@@ -137,5 +137,10 @@ tasks {
         outputs.upToDateWhen { false }
         from(".scripts/pre-commit")
         into(".git/hooks")
+        filePermissions {
+            user {
+                execute = true
+            }
+        }
     }
 }
