@@ -93,10 +93,6 @@ kotlin {
 
 tasks {
 
-    ("build") {
-        dependsOn("copyPreCommitHook")
-    }
-
     withType<KotlinCompile>().configureEach {
         dependsOn("ktlintFormat")
     }
@@ -129,6 +125,10 @@ tasks {
 
     withType<Wrapper> {
         gradleVersion = "8.11"
+    }
+
+    ("build") {
+        dependsOn("copyPreCommitHook")
     }
 
     register<Copy>("copyPreCommitHook") {

@@ -7,12 +7,16 @@ echo "*********************************************************"
 stagedFiles=$(git diff --staged --name-only)
 
 # run ktlintMainSourceSetCheck apply
-./gradlew ktlintFormat ktlintMainSourceSetCheck
+./gradlew ktlintCheck
 
-status=$?
+ktlintCheckStatus=$?
 
-if [ "$status" = 0 ] ; then
-    echo "Ktlintformat - nothing to format"
+if [ "$ktlintCheckStatus" = 0 ] ; then
+    echo "*********************************************************"
+    echo "       ********************************************      "
+    echo "              Ktlint - no violations found"
+    echo "       ********************************************      "
+    echo "*********************************************************"
     # Add staged file changes to git
     for file in $stagedFiles; do
       if test -f "$file"; then
@@ -24,10 +28,40 @@ if [ "$status" = 0 ] ; then
 else
     echo "*********************************************************"
     echo "       ********************************************      "
-    echo 1>&2 "Ktlintformat - found violations it could not fix."
-    echo "Run (ktlintFormat) in your terminal and fix the issues before trying to commit again."
+    echo                  "Ktlint - found violations"
+    echo              "Running ktlintFormat to fix issues..."
     echo "       ********************************************      "
     echo "*********************************************************"
-    #Exit
-    exit 1
+
+    # Run ktlintFormat
+    ./gradlew ktlintFormat
+
+    # Run ktlintCheck again to verify if issues are fixed
+    ./gradlew ktlintCheck
+    ktlintCheckStatus=$?
+
+    if [ "$ktlintCheckStatus" = 0 ] ; then
+        echo "*********************************************************"
+        echo "       ********************************************      "
+        echo                    "Ktlint - issues fixed"
+        echo "       ********************************************      "
+        echo "*********************************************************"
+        # Add staged file changes to git
+        for file in $stagedFiles; do
+          if test -f "$file"; then
+            git add $file
+          fi
+        done
+        #Exit
+        exit 0
+    else
+        echo "*********************************************************"
+        echo "       ********************************************      "
+        echo        "Ktlint - found violations it could not fix."
+        echo        "Fix the issues before trying to commit again."
+        echo "       ********************************************      "
+        echo "*********************************************************"
+        #Exit
+        exit 1
+    fi
 fi
