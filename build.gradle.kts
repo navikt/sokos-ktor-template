@@ -93,6 +93,10 @@ kotlin {
 
 tasks {
 
+    ("build") {
+        dependsOn("copyPreCommitHook")
+    }
+
     withType<KotlinCompile>().configureEach {
         dependsOn("ktlintFormat")
     }
@@ -104,8 +108,6 @@ tasks {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
         finalizedBy(koverHtmlReport)
-        dependsOn("gitHooks")
-        dependsOn("preCommitPermission")
     }
 
     ("jar") {
@@ -129,12 +131,11 @@ tasks {
         gradleVersion = "8.11"
     }
 
-    register<Copy>("gitHooks") {
-        from(file("./.scripts/pre-commit"))
-        into(file("./.git/hooks"))
-    }
-
-    register<Exec>("preCommitPermission") {
-        commandLine("chmod", "+x", "./.git/hooks/pre-commit")
+    register<Copy>("copyPreCommitHook") {
+        description = "Copy pre-commit hook to .git/hooks"
+        group = "git hooks"
+        outputs.upToDateWhen { false }
+        from(".scripts/pre-commit")
+        into(".git/hooks")
     }
 }
