@@ -120,7 +120,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.12"
+        gradleVersion = "8.11"
     }
 
     ("jar") {
@@ -132,9 +132,6 @@ tasks {
     }
 
     register<Copy>("copyPreCommitHook") {
-        description = "Copy pre-commit hook to .git/hooks"
-        group = "git hooks"
-        outputs.upToDateWhen { false }
         from(".scripts/pre-commit")
         into(".git/hooks")
         filePermissions {
@@ -142,5 +139,14 @@ tasks {
                 execute = true
             }
         }
+        doFirst {
+            println("Installing git hooks...")
+        }
+        doLast {
+            println("Git hooks installed successfully.")
+        }
+        description = "Copy pre-commit hook to .git/hooks"
+        group = "git hooks"
+        outputs.upToDateWhen { false }
     }
 }
