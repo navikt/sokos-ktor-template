@@ -3,8 +3,9 @@
 # Function to center text
 center_text() {
     termwidth=$(tput cols)
-    padding=$(printf '%0.1s' " "{1..500})
-    printf '%*.*s %s %*.*s\n' 0 "$(((termwidth - ${#1}) / 2))" "$padding" "$1" 0 "$(((termwidth - ${#1}) / 2))" "$padding"
+    text="$1"
+    padding=$(printf '%*s' $(( (termwidth - ${#text}) / 2 )) "")
+    echo "${padding}${text}"
 }
 
 echo ""
