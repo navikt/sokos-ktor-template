@@ -1,17 +1,7 @@
 #!/bin/bash
-
-# Function to center text
-center_text() {
-    termwidth=$(tput cols)
-    text="$1"
-    padding=$(printf '%*s' $(( (termwidth - ${#text}) / 2 )) "")
-    echo "${padding}${text}"
-}
-
-echo ""
-center_text "*********************************************************"
-center_text "Running git pre-commit hook. Running Ktlint... "
-center_text "*********************************************************"
+echo "*********************************************************"
+echo      "Running git pre-commit hook. Running Ktlint... "
+echo "*********************************************************"
 echo ""
 
 # Gather the staged files - to make sure changes are saved only for these files.
@@ -24,11 +14,11 @@ ktlintCheckStatus=$?
 
 if [ "$ktlintCheckStatus" = 0 ] ; then
     echo ""
-    center_text "*********************************************************"
-    center_text "       ********************************************      "
-    center_text "              Ktlint - no violations found"
-    center_text "       ********************************************      "
-    center_text "*********************************************************"
+    echo "*********************************************************"
+    echo "       ********************************************      "
+    echo "              Ktlint - no violations found"
+    echo "       ********************************************      "
+    echo "*********************************************************"
     echo ""
 
     # Add staged file changes to git
@@ -41,12 +31,12 @@ if [ "$ktlintCheckStatus" = 0 ] ; then
     exit 0
 else
     echo ""
-    center_text "*********************************************************"
-    center_text "       ********************************************      "
-    center_text "                  Ktlint - found violations"
-    center_text "              Running ktlintFormat to fix issues..."
-    center_text "       ********************************************      "
-    center_text "*********************************************************"
+    echo "*********************************************************"
+    echo "       ********************************************      "
+    echo                  "Ktlint - found violations"
+    echo              "Running ktlintFormat to fix issues..."
+    echo "       ********************************************      "
+    echo "*********************************************************"
     echo ""
 
     # Run ktlintFormat
@@ -59,11 +49,11 @@ else
 
     if [ "$ktlintCheckStatus" = 0 ] ; then
         echo ""
-        center_text "*********************************************************"
-        center_text "       ********************************************      "
-        center_text "                    Ktlint - issues fixed"
-        center_text "       ********************************************      "
-        center_text "*********************************************************"
+        echo "*********************************************************"
+        echo "       ********************************************      "
+        echo                    "Ktlint - issues fixed"
+        echo "       ********************************************      "
+        echo "*********************************************************"
         echo ""
 
         # Add staged file changes to git
@@ -76,12 +66,12 @@ else
         exit 0
     else
         echo ""
-        center_text "*********************************************************"
-        center_text "       ********************************************      "
-        center_text "        Ktlint - found violations it could not fix."
-        center_text "        Fix the issues before trying to commit again."
-        center_text "       ********************************************      "
-        center_text "*********************************************************"
+        echo "*********************************************************"
+        echo "       ********************************************      "
+        echo        "Ktlint - found violations it could not fix."
+        echo        "Fix the issues before trying to commit again."
+        echo "       ********************************************      "
+        echo "*********************************************************"
         echo ""
 
         #Exit
