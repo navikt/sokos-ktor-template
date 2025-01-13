@@ -1,12 +1,13 @@
 package no.nav.sokos.prosjektnavn.config
 
+import java.io.File
+
 import com.natpryce.konfig.ConfigurationMap
 import com.natpryce.konfig.ConfigurationProperties
 import com.natpryce.konfig.EnvironmentVariables
 import com.natpryce.konfig.Key
 import com.natpryce.konfig.overriding
 import com.natpryce.konfig.stringType
-import java.io.File
 
 object PropertiesConfig {
     private val defaultProperties =

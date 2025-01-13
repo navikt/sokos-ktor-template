@@ -6,6 +6,7 @@ import io.ktor.server.response.respond
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
+
 import no.nav.sokos.prosjektnavn.service.DummyService
 
 fun Route.dummyApi(dummyService: DummyService = DummyService()) {
