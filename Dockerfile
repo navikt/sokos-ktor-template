@@ -1,13 +1,13 @@
-FROM gcr.io/distroless/java21-debian12
+FROM bellsoft/liberica-openjdk-alpine:21.0.5@sha256:45083bf56e4cf13c34c6ec04356deec655638c8aa8443f9dcab7a90fb4db8fb6
 
-FROM debian:12 as BUILD
-RUN apt-get update && apt-get install -y --no-install-recommends dumb-init
+RUN apk update && apk add --no-cache \
+  dumb-init \
+  && rm -rf /var/lib/apt/lists/*
 
-FROM gcr.io/distroless/java21-debian12
-COPY --from=BUILD /usr/bin/dumb-init /usr/bin/dumb-init
+COPY build/libs/*.jar app.jar
 
 ENV TZ="Europe/Oslo"
-COPY build/libs/*.jar app.jar
 ENV JAVA_OPTS="-XX:MaxRAMPercentage=75"
+
 ENTRYPOINT ["dumb-init", "--"]
-CMD ["java","-jar", "app.jar"]
+CMD ["java", "-jar", "app.jar"]
