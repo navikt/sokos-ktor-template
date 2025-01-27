@@ -1,6 +1,6 @@
 # sokos-ktor-template
 
-Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for Team Moby (Motta og Beregne Ytelser)
+Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for Team Motta og Beregne
 
 ## Tilpass repo-et
 1. Gi rettighet for å kjøre scriptet `chmod 755 setupTemplate.sh`
