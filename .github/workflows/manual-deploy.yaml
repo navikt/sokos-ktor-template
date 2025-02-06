@@ -8,7 +8,7 @@ on:
         required: true
         type: choice
         options:
-          - q1
+          - dev
 
 env:
   TZ: Europe/Oslo
@@ -31,5 +31,5 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
       cluster: dev-fss
-      resource: .nais/naiserator-dev-${{ inputs.environment }}.yaml
+      resource: .nais/naiserator-${{ inputs.environment }}.yaml
       image: ${{ needs.build.outputs.image }}
