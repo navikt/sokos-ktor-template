@@ -1,7 +1,14 @@
-name: Deploy application manual to dev
+name: Deploy application manual
 
 on:
   workflow_dispatch:
+    inputs:
+      environment:
+        description: "Environment to deploy to"
+        required: true
+        type: choice
+        options:
+          - q1
 
 env:
   TZ: Europe/Oslo
@@ -20,9 +27,9 @@ jobs:
 
   deploy-dev:
     needs: build
-    name: Deploy to dev-gcp
+    name: Deploy to dev-fss
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
-      cluster: dev-gcp
-      resource: .nais/naiserator-dev.yaml
+      cluster: dev-fss
+      resource: .nais/naiserator-dev-${{ inputs.environment }}.yaml
       image: ${{ needs.build.outputs.image }}

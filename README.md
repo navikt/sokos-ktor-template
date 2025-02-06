@@ -20,8 +20,8 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
    1. Denne workflow kjøres kun når det opprettes pull requester
 4. [Security](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
    1. Denne kjøres når [Deploy application](.github/workflows/deploy.yaml) har kjørt ferdig
-5. [Deploy application manual to dev](.github/workflows/manual-deploy-dev.yaml) -> For å deploye applikasjonen manuelt til dev
-   1. Denne workflow trigges manuelt og utifra hvilken branch du er på vil den deploye
+5. [Deploy application manual](.github/workflows/manual-deploy.yaml) -> For å deploye applikasjonen manuelt til ulike miljøer
+   1. Denne workflow trigges manuelt basert på branch og miljø
 
 ## Bygge og kjøre prosjekt
 1. Bygg prosjektet ved å kjøre `./gradlew clean build shadowJar`
