@@ -1,11 +1,7 @@
 package no.nav.sokos.prosjektnavn.service
 
-import no.nav.sokos.prosjektnavn.domain.DummyDomain
-import no.nav.sokos.prosjektnavn.metrics.Metrics
+import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 
-class DummyService {
-    fun sayHello(): DummyDomain {
-        Metrics.exampleCounter.inc()
-        return DummyDomain("This is a template for Team Motta og Beregne")
-    }
+class DummyService(val dummyProperties: PropertiesConfig.DummyProperties) {
+    fun sayHello() = "Thea Marie har en katt som heter ${dummyProperties.dummyProperty}"
 }

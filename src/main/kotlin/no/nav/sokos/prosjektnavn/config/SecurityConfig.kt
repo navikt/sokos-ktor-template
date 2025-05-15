@@ -17,40 +17,40 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import mu.KotlinLogging
 
+import no.nav.sokos.prosjektnavn.config
+
 private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
-fun Application.securityConfig(
-    useAuthentication: Boolean,
-    azureAdProperties: PropertiesConfig.AzureAdProperties = PropertiesConfig.AzureAdProperties(),
-) {
-    logger.info("Use authentication: $useAuthentication")
-    if (useAuthentication) {
-        val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
-        val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+fun Application.securityConfig() {
+    // nødvendig fordi application ikke kan nåes inni jwt{}
+    val config = config()
+    if (!config.securityProperties.useAuthentication) return
 
-        authentication {
-            jwt(AUTHENTICATION_NAME) {
-                realm = PropertiesConfig.Configuration().naisAppName
-                verifier(
-                    jwkProvider = jwkProvider,
-                    issuer = openIdMetadata.issuer,
-                ) { acceptLeeway(1) }
-                validate { credential ->
-                    try {
-                        requireNotNull(credential.payload.audience) {
-                            logger.info("Auth: Missing audience in token")
-                            "Auth: Missing audience in token"
-                        }
-                        require(credential.payload.audience.contains(azureAdProperties.clientId)) {
-                            logger.info("Auth: Valid audience not found in claims")
-                            "Auth: Valid audience not found in claims"
-                        }
-                        JWTPrincipal(credential.payload)
-                    } catch (e: Exception) {
-                        logger.warn(e) { "Client authentication failed" }
-                        null
+    val openIdMetadata: OpenIdMetadata = wellKnowConfig(config.securityProperties.azureAdProperties.wellKnownUrl)
+    val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+
+    authentication {
+        jwt(AUTHENTICATION_NAME) {
+            realm = config.applicationProperties.naisAppName
+            verifier(
+                jwkProvider = jwkProvider,
+                issuer = openIdMetadata.issuer,
+            ) { acceptLeeway(1) }
+            validate { credential ->
+                try {
+                    requireNotNull(credential.payload.audience) {
+                        logger.info("Auth: Missing audience in token")
+                        "Auth: Missing audience in token"
                     }
+                    require(credential.payload.audience.contains(config().securityProperties.azureAdProperties.clientId)) {
+                        logger.info("Auth: Valid audience not found in claims")
+                        "Auth: Valid audience not found in claims"
+                    }
+                    JWTPrincipal(credential.payload)
+                } catch (e: Exception) {
+                    logger.warn(e) { "Client authentication failed" }
+                    null
                 }
             }
         }
