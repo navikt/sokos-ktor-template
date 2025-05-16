@@ -9,7 +9,6 @@ import io.ktor.server.config.MapApplicationConfig
 import io.ktor.server.testing.testApplication
 
 import no.nav.security.mock.oauth2.MockOAuth2Server
-import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.util.CompositeApplicationConfig
@@ -78,13 +77,6 @@ class TestApplicationEksempler : FunSpec(
         }
     },
 )
-
-private fun MockOAuth2Server.tokenFromDefaultProvider() =
-    issueToken(
-        issuerId = "default",
-        clientId = "default",
-        tokenCallback = DefaultOAuth2TokenCallback(),
-    ).serialize()
 
 private fun MockOAuth2Server.authConfig(config: ApplicationConfig) =
     MapOverridingConfigSource(
