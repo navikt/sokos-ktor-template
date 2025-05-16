@@ -43,6 +43,7 @@ class TestApplicationEksempler : FunSpec(
                             MapApplicationConfig().apply {
                                 put("AZURE_APP_WELL_KNOWN_URL", wellKnownUrl("default").toString())
                                 put("AZURE_APP_CLIENT_ID", "default")
+                                put("USE_AUTHENTICATION", "true")
                             }
 
                         config = CompositeApplicationConfig(overrides, ApplicationConfig("application.conf"))
@@ -65,6 +66,7 @@ class TestApplicationEksempler : FunSpec(
                             MapApplicationConfig().apply {
                                 put("AZURE_APP_WELL_KNOWN_URL", wellKnownUrl("default").toString())
                                 put("AZURE_APP_CLIENT_ID", "default")
+                                put("USE_AUTHENTICATION", "true")
                             }
 
                         val config = CompositeApplicationConfig(overrides, ApplicationConfig("application.conf"))
@@ -83,6 +85,7 @@ private fun MockOAuth2Server.authConfig(config: ApplicationConfig) =
         mapOf(
             "AZURE_APP_WELL_KNOWN_URL" to wellKnownUrl("default").toString(),
             "AZURE_APP_CLIENT_ID" to "default",
+            "USE_AUTHENTICATION" to "true",
         ),
         configSourceFrom(config),
     )

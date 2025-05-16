@@ -8,6 +8,7 @@ import io.ktor.server.netty.Netty
 import io.ktor.util.AttributeKey
 
 import no.nav.sokos.prosjektnavn.config.ApplicationState
+import no.nav.sokos.prosjektnavn.config.DatabaseConfig
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.applicationLifecycleConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
@@ -23,7 +24,6 @@ fun main() {
 
 fun Application.module(appConfig: ApplicationConfig = environment.config) {
     val config = resolveConfig(appConfig)
-
     val module = dependencies(config)
     val applicationState = ApplicationState()
 
@@ -36,6 +36,7 @@ fun Application.module(appConfig: ApplicationConfig = environment.config) {
 class Dependencies(val dummyService: DummyService, val someOtherService: SomeOtherService)
 
 fun dependencies(config: PropertiesConfig.Configuration): Dependencies {
+    if (config.postgresProperties.initDB) DatabaseConfig.init(config)
     return Dependencies(
         dummyService = DummyService(config.dummyProperties),
         someOtherService = SomeOtherService(config.someOtherProperties),

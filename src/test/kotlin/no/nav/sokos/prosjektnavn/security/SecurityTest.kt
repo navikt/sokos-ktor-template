@@ -7,7 +7,6 @@ import io.kotest.matchers.shouldBe
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.header
-import io.ktor.client.statement.bodyAsText
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
@@ -84,7 +83,6 @@ class SecurityTest : FunSpec({
                     }
 
                 response.status shouldBe HttpStatusCode.OK
-                println(response.bodyAsText())
 
                 val response2 =
                     client.get("$API_BASE_PATH/helloKatt2") {
@@ -92,7 +90,7 @@ class SecurityTest : FunSpec({
                         contentType(ContentType.Application.Json)
                     }
 
-                println(response2.bodyAsText())
+                response2.status shouldBe HttpStatusCode.OK
             }
         }
     }
@@ -110,6 +108,7 @@ private fun MockOAuth2Server.authConfig(config: ApplicationConfig) =
         mapOf(
             "AZURE_APP_WELL_KNOWN_URL" to wellKnownUrl("default").toString(),
             "AZURE_APP_CLIENT_ID" to "default",
+            "USE_AUTHENTICATION" to "true",
         ),
         configSourceFrom(config),
     )

@@ -10,12 +10,14 @@ object PropertiesConfig {
         val securityProperties: SecurityProperties,
         val dummyProperties: DummyProperties,
         val someOtherProperties: SomeOtherProperties,
+        val postgresProperties: PostgresProperties,
     ) {
         constructor(source: ConfigSource) : this(
             applicationProperties = ApplicationProperties(source),
             securityProperties = SecurityProperties(source),
             dummyProperties = DummyProperties(source),
             someOtherProperties = SomeOtherProperties(source),
+            postgresProperties = PostgresProperties(source),
         )
     }
 
@@ -26,6 +28,28 @@ object PropertiesConfig {
         constructor(source: ConfigSource) : this(
             naisAppName = source.get("APP_NAME"),
             profile = Profile.valueOf(source.get("APPLICATION_PROFILE")),
+        )
+    }
+
+    data class PostgresProperties(
+        val initDB: Boolean,
+        val name: String,
+        val host: String,
+        val port: String,
+        val username: String,
+        val password: String,
+        val adminUser: String,
+        val user: String,
+    ) {
+        constructor(source: ConfigSource) : this(
+            initDB = source.get("INIT_DB").toBoolean(),
+            name = source.get("POSTGRES_NAME"),
+            host = source.get("POSTGRES_HOST"),
+            port = source.get("POSTGRES_PORT"),
+            username = source.get("POSTGRES_USERNAME").trim(),
+            password = source.get("POSTGRES_PASSWORD").trim(),
+            adminUser = "${source.get("POSTGRES_NAME")}-admin",
+            user = "${source.get("POSTGRES_NAME")}-user",
         )
     }
 

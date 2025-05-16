@@ -29,7 +29,10 @@ val kotestVersion = "5.9.1"
 val kotlinxSerializationVersion = "1.8.1"
 val mockOAuth2ServerVersion = "2.1.11"
 val mockkVersion = "1.14.2"
-
+val testContainerVersion = "1.20.4"
+val kotestTestContainerExtensionVersion = "2.0.2"
+val postgresqlVersion = "42.7.3"
+val hikaricpVersion = "5.1.0"
 dependencies {
 
     // Ktor server
@@ -65,6 +68,10 @@ dependencies {
     implementation("com.natpryce:konfig:$natpryceVersion")
 
     // Test
+    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
+    implementation("org.postgresql:postgresql:$postgresqlVersion")
+    testImplementation("org.testcontainers:postgresql:$testContainerVersion")
+    testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:$kotestTestContainerExtensionVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
