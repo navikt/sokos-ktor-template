@@ -31,8 +31,6 @@ class SecurityTest : FunSpec({
 
     test("test http GET endepunkt uten token bør returnere 401") {
         withMockOAuth2Server {
-            //    val wellKnownUrl = this.wellKnownUrl("default").toString()
-
             testApplication {
                 environment {
                     config = ApplicationConfig("application.conf")
@@ -77,7 +75,7 @@ class SecurityTest : FunSpec({
                 }
 
                 application {
-                    module(environment.config) // bruker composite. Eksempel på injection
+                    module()
                 }
                 val response =
                     client.get("$API_BASE_PATH/helloKatt1") {
