@@ -28,15 +28,17 @@ import org.slf4j.event.Level
 
 import no.nav.sokos.prosjektnavn.metrics.Metrics
 
+const val TRACE_ID_HEADER = "trace_id"
+
 fun Application.commonConfig() {
     install(CallId) {
-        header(HttpHeaders.XCorrelationId)
+        header(TRACE_ID_HEADER)
         generate { UUID.randomUUID().toString() }
         verify { callId: String -> callId.isNotEmpty() }
     }
     install(CallLogging) {
         level = Level.INFO
-        callIdMdc(HttpHeaders.XCorrelationId)
+        callIdMdc(TRACE_ID_HEADER)
         filter { call -> call.request.path().startsWith("/api") }
         disableDefaultColors()
     }
