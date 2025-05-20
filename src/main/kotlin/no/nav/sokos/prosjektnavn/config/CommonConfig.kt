@@ -27,7 +27,7 @@ import org.slf4j.event.Level
 
 import no.nav.sokos.prosjektnavn.metrics.Metrics
 
-const val TRACE_ID_HEADER = "trace_id"
+private const val TRACE_ID_HEADER = "trace_id"
 
 fun Application.commonConfig() {
     install(CallId) {
