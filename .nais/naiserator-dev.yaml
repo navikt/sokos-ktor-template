@@ -34,10 +34,13 @@ spec:
   prometheus:
     enabled: true
     path: /internal/metrics
+  observability:
+    autoInstrumentation:
+      enabled: true
+      runtime: java
   azure:
     application:
       enabled: true
-      tenant: trygdeetaten.no
   accessPolicy:
     inbound:
       rules:
