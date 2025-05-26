@@ -18,9 +18,7 @@ import io.ktor.server.testing.testApplication
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.ConfigAttributeKey
 import no.nav.sokos.prosjektnavn.TestContainer
-import no.nav.sokos.prosjektnavn.config.ConfigurationUtils.toPropertiesConfig
 import no.nav.sokos.prosjektnavn.module
 
 class SecurityTest :
@@ -30,13 +28,11 @@ class SecurityTest :
             withMockOAuth2Server {
                 testApplication {
                     environment {
-                        config = ApplicationConfig("application-test.conf")
+                        config = authConfig(ApplicationConfig("application-test.conf"))
                     }
 
                     application {
-                        val config = authConfig(environment.config).toPropertiesConfig()
-                        attributes.put(ConfigAttributeKey, config)
-                        module() // will now read from application.conf
+                        module() // leser fra environment.config, som er defaultverdi i module()
                     }
                     val response = client.get("/api/v1/helloKatt1")
                     response.status shouldBe HttpStatusCode.Unauthorized
@@ -61,12 +57,10 @@ class SecurityTest :
                                 )
                             }
                         }
-                    environment {
-                        config = authConfig(ApplicationConfig("application-test.conf"))
-                    }
 
                     application {
-                        module()
+                        val newConfig = authConfig(ApplicationConfig("application-test.conf"))
+                        module(newConfig) // injection av config
                     }
                     val response =
                         client.get("/api/v1/helloKatt1") {

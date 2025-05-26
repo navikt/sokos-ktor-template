@@ -10,30 +10,12 @@ import io.ktor.server.testing.testApplication
 
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.config.ConfigurationUtils.toPropertiesConfig
 
 class TestApplicationEksempler :
     FunSpec(
         {
 
             test("metode 1") {
-                withMockOAuth2Server {
-                    testApplication {
-                        environment {
-                            config = ApplicationConfig("application-test.conf")
-                        }
-
-                        application {
-                            val config = authConfig(environment.config).toPropertiesConfig()
-                            attributes.put(ConfigAttributeKey, config)
-                            module() // leser fra attributes
-                        }
-                        val response = client.get("/api/v1/helloKatt1")
-                        response.status shouldBe HttpStatusCode.Unauthorized
-                    }
-                }
-            }
-            test("metode 2") {
                 withMockOAuth2Server {
                     testApplication {
                         environment {
@@ -48,7 +30,7 @@ class TestApplicationEksempler :
                     }
                 }
             }
-            test("metode 3") {
+            test("metode 2") {
                 withMockOAuth2Server {
                     testApplication {
 
