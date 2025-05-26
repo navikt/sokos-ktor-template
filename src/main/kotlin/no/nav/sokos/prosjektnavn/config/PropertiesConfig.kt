@@ -1,90 +1,125 @@
 package no.nav.sokos.prosjektnavn.config
 
-interface ConfigSource {
-    fun get(key: String): String
-}
+import io.ktor.server.config.ApplicationConfig
+
+import no.nav.sokos.prosjektnavn.config.ConfigurationUtils.determineRunEnv
+import no.nav.sokos.prosjektnavn.config.ConfigurationUtils.get
 
 object PropertiesConfig {
+    private var _configuration: Configuration? = null
+    private var _environment: Environment? = null
+
+    val configuration: Configuration
+        get() = _configuration ?: throw IllegalStateException("Configuration not initialized")
+
+    val environment: Environment
+        get() = _environment ?: throw IllegalStateException("Environment not initialized")
+
+    enum class Profile { LOCAL, TEST, DEV, PROD, UNKNOWN }
+
+    data class Environment(
+        val profile: Profile,
+        val environmentConfig: ApplicationConfig,
+    ) {
+        constructor(source: ApplicationConfig) : this(
+            profile = source.determineRunEnv(),
+            environmentConfig =
+                when (source.determineRunEnv()) {
+                    Profile.TEST -> ApplicationConfig("application-test.conf")
+                    Profile.LOCAL -> ApplicationConfig("application-dev-local.conf")
+                    Profile.DEV -> ApplicationConfig("application-dev.conf")
+                    Profile.PROD -> ApplicationConfig("application-prod.conf")
+                    Profile.UNKNOWN -> ApplicationConfig("application-test.conf")
+                },
+        ) {
+            _environment = this
+        }
+
+        val isLocal: Boolean = profile == Profile.LOCAL || profile == Profile.TEST
+
+        fun get(key: String): String? = environmentConfig.propertyOrNull(key)?.getString()
+    }
+
     data class Configuration(
         val applicationProperties: ApplicationProperties,
         val securityProperties: SecurityProperties,
-        val dummyProperties: DummyProperties,
-        val someOtherProperties: SomeOtherProperties,
         val postgresProperties: PostgresProperties,
+        val someOtherProperties: SomeOtherProperties,
+        val dummyProperties: DummyProperties,
     ) {
-        constructor(source: ConfigSource) : this(
+        constructor(source: ApplicationConfig) : this(
             applicationProperties = ApplicationProperties(source),
             securityProperties = SecurityProperties(source),
+            postgresProperties = PostgresProperties(source),
             dummyProperties = DummyProperties(source),
             someOtherProperties = SomeOtherProperties(source),
-            postgresProperties = PostgresProperties(source),
-        )
+        ) {
+            _configuration = this
+        }
     }
 
     data class ApplicationProperties(
         val naisAppName: String,
-        val profile: Profile,
     ) {
-        constructor(source: ConfigSource) : this(
-            naisAppName = source.get("APP_NAME"),
-            profile = Profile.valueOf(source.get("APPLICATION_PROFILE")),
+        constructor(source: ApplicationConfig) : this(
+            naisAppName = source.get("application.nais.app_name"),
         )
     }
 
     data class PostgresProperties(
-        val initDB: Boolean,
         val name: String,
         val host: String,
         val port: String,
         val username: String,
         val password: String,
-        val adminUser: String,
-        val user: String,
+        val vaultMountPath: String,
     ) {
-        constructor(source: ConfigSource) : this(
-            initDB = source.get("INIT_DB").toBoolean(),
-            name = source.get("POSTGRES_NAME"),
-            host = source.get("POSTGRES_HOST"),
-            port = source.get("POSTGRES_PORT"),
-            username = source.get("POSTGRES_USERNAME").trim(),
-            password = source.get("POSTGRES_PASSWORD").trim(),
-            adminUser = "${source.get("POSTGRES_NAME")}-admin",
-            user = "${source.get("POSTGRES_NAME")}-user",
+        constructor(source: ApplicationConfig) : this(
+            host = source.get("database.host"),
+            port = source.get("database.port"),
+            name = source.get("database.name"),
+            username = source.get("database.username").trim(),
+            password = source.get("database.password").trim(),
+            vaultMountPath = source.get("database.vault_mountpath"),
         )
+
+        val adminUser = "$name-admin"
+        val user = "$name-user"
     }
 
     data class SecurityProperties(
-        val useAuthentication: Boolean,
         val azureAdProperties: AzureAdProperties,
     ) {
-        constructor(source: ConfigSource) : this(
-            useAuthentication = source.get("USE_AUTHENTICATION").toBoolean(),
+        constructor(source: ApplicationConfig) : this(
             azureAdProperties = AzureAdProperties(source),
         )
     }
 
-    data class AzureAdProperties(val clientId: String, val wellKnownUrl: String) {
-        constructor(source: ConfigSource) : this(
-            clientId = source.get("AZURE_APP_CLIENT_ID"),
-            wellKnownUrl = source.get("AZURE_APP_WELL_KNOWN_URL"),
+    data class AzureAdProperties(
+        val clientId: String,
+        val wellKnownUrl: String,
+        val enabled: Boolean,
+    ) {
+        constructor(source: ApplicationConfig) : this(
+            clientId = source.get("security.azure.client_id"),
+            wellKnownUrl = source.get("security.azure.well_known_url"),
+            enabled = source.get("security.azure.enabled").toBoolean(),
         )
     }
 
-    data class DummyProperties(val dummyProperty: String) {
-        constructor(source: ConfigSource) : this(
-            dummyProperty = source.get("DUMMY_PROPERTY"),
+    data class DummyProperties(
+        val dummyProperty: String,
+    ) {
+        constructor(source: ApplicationConfig) : this(
+            dummyProperty = source.get("dummy_properties.katt1"),
         )
     }
 
-    data class SomeOtherProperties(val someOtherProperty: String) {
-        constructor(source: ConfigSource) : this(
-            someOtherProperty = source.get("SOME_OTHER_PROPERTY"),
+    data class SomeOtherProperties(
+        val someOtherProperty: String,
+    ) {
+        constructor(source: ApplicationConfig) : this(
+            someOtherProperty = source.get("dummy_properties.katt2"),
         )
-    }
-
-    enum class Profile {
-        LOCAL,
-        DEV,
-        PROD,
     }
 }

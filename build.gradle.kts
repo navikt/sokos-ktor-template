@@ -4,10 +4,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.1.20"
-    kotlin("plugin.serialization") version "2.1.20"
+    kotlin("jvm") version "2.1.21"
+    kotlin("plugin.serialization") version "2.1.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
@@ -21,18 +21,20 @@ repositories {
 val ktorVersion = "3.1.3"
 val logbackVersion = "1.5.18"
 val logstashVersion = "8.1"
-val micrometerVersion = "1.14.6"
+val micrometerVersion = "1.15.0"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
-val natpryceVersion = "1.6.10.0"
+val konfigVersion = "1.6.10.0"
 val kotestVersion = "5.9.1"
 val kotlinxSerializationVersion = "1.8.1"
 val mockOAuth2ServerVersion = "2.1.11"
 val mockkVersion = "1.14.2"
-val testContainerVersion = "1.20.4"
-val kotestTestContainerExtensionVersion = "2.0.2"
-val postgresqlVersion = "42.7.3"
-val hikaricpVersion = "5.1.0"
+val testContainerVersion = "1.21.0"
+val hikaricpVersion = "6.3.0"
+val vaultVersion = "1.3.10"
+
+val flywayVersion = "11.8.2"
+val postgresVersion = "42.7.5"
 dependencies {
 
     // Ktor server
@@ -45,6 +47,13 @@ dependencies {
     // Ktor client
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
+
+    // Database
+    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
+    implementation("org.postgresql:postgresql:$postgresVersion")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:$flywayVersion")
+    implementation("no.nav:vault-jdbc:$vaultVersion")
 
     // Security
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
@@ -65,13 +74,11 @@ dependencies {
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 
     // Config
-    implementation("com.natpryce:konfig:$natpryceVersion")
+    implementation("com.natpryce:konfig:$konfigVersion")
 
     // Test
-    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
-    implementation("org.postgresql:postgresql:$postgresqlVersion")
+
     testImplementation("org.testcontainers:postgresql:$testContainerVersion")
-    testImplementation("io.kotest.extensions:kotest-extensions-testcontainers:$kotestTestContainerExtensionVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")

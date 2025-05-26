@@ -10,82 +10,67 @@ import io.ktor.server.testing.testApplication
 
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.config.PropertiesConfig
-import no.nav.sokos.prosjektnavn.util.CompositeApplicationConfig
-import no.nav.sokos.prosjektnavn.util.MapOverridingConfigSource
-import no.nav.sokos.prosjektnavn.util.configSourceFrom
+import no.nav.sokos.prosjektnavn.config.ConfigurationUtils.toPropertiesConfig
 
-class TestApplicationEksempler : FunSpec(
-    {
+class TestApplicationEksempler :
+    FunSpec(
+        {
 
-        test("metode 1") {
-            withMockOAuth2Server {
-                testApplication {
-                    environment {
-                        config = ApplicationConfig("application.conf")
+            test("metode 1") {
+                withMockOAuth2Server {
+                    testApplication {
+                        environment {
+                            config = ApplicationConfig("application-test.conf")
+                        }
+
+                        application {
+                            val config = authConfig(environment.config).toPropertiesConfig()
+                            attributes.put(ConfigAttributeKey, config)
+                            module() // leser fra attributes
+                        }
+                        val response = client.get("/api/v1/helloKatt1")
+                        response.status shouldBe HttpStatusCode.Unauthorized
                     }
-
-                    application {
-                        val config = PropertiesConfig.Configuration(authConfig(environment.config))
-                        attributes.put(ConfigAttributeKey, config)
-                        module() // leser fra attributes
-                    }
-                    val response = client.get("$API_BASE_PATH/helloKatt1")
-                    response.status shouldBe HttpStatusCode.Unauthorized
                 }
             }
-        }
-        test("metode 2") {
-            withMockOAuth2Server {
-                testApplication {
-                    environment {
-                        val overrides =
-                            MapApplicationConfig().apply {
-                                put("AZURE_APP_WELL_KNOWN_URL", wellKnownUrl("default").toString())
-                                put("AZURE_APP_CLIENT_ID", "default")
-                                put("USE_AUTHENTICATION", "true")
-                            }
+            test("metode 2") {
+                withMockOAuth2Server {
+                    testApplication {
+                        environment {
+                            config = authConfig(ApplicationConfig("application-test.conf"))
+                        }
 
-                        config = CompositeApplicationConfig(overrides, ApplicationConfig("application.conf"))
+                        application {
+                            module() // leser fra environment.config, som er defaultverdi i module()
+                        }
+                        val response = client.get("/api/v1/helloKatt1")
+                        response.status shouldBe HttpStatusCode.Unauthorized
                     }
-
-                    application {
-                        module() // leser fra environment.config, som er defaultverdi i module()
-                    }
-                    val response = client.get("$API_BASE_PATH/helloKatt1")
-                    response.status shouldBe HttpStatusCode.Unauthorized
                 }
             }
-        }
-        test("metode 3") {
-            withMockOAuth2Server {
-                testApplication {
+            test("metode 3") {
+                withMockOAuth2Server {
+                    testApplication {
 
-                    application {
-                        val overrides =
-                            MapApplicationConfig().apply {
-                                put("AZURE_APP_WELL_KNOWN_URL", wellKnownUrl("default").toString())
-                                put("AZURE_APP_CLIENT_ID", "default")
-                                put("USE_AUTHENTICATION", "true")
-                            }
-
-                        val config = CompositeApplicationConfig(overrides, ApplicationConfig("application.conf"))
-                        module(config) // ren injection
+                        application {
+                            val newConfig = authConfig(ApplicationConfig("application-test.conf"))
+                            module(newConfig) // ren injection
+                        }
+                        val response = client.get("/api/v1/helloKatt1")
+                        response.status shouldBe HttpStatusCode.Unauthorized
                     }
-                    val response = client.get("$API_BASE_PATH/helloKatt1")
-                    response.status shouldBe HttpStatusCode.Unauthorized
                 }
             }
-        }
-    },
-)
-
-private fun MockOAuth2Server.authConfig(config: ApplicationConfig) =
-    MapOverridingConfigSource(
-        mapOf(
-            "AZURE_APP_WELL_KNOWN_URL" to wellKnownUrl("default").toString(),
-            "AZURE_APP_CLIENT_ID" to "default",
-            "USE_AUTHENTICATION" to "true",
-        ),
-        configSourceFrom(config),
+        },
     )
+
+private fun MockOAuth2Server.authConfig(config: ApplicationConfig): TestContainer.CompositeApplicationConfig {
+    val overrides =
+        MapApplicationConfig().apply {
+            put("security.azure.well_known_url", wellKnownUrl("default").toString())
+            put("security.azure.client_id", "default")
+            put("security.azure.enabled", "true")
+        }
+
+    return TestContainer.CompositeApplicationConfig(overrides, config)
+}

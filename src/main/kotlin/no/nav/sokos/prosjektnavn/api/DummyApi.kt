@@ -9,17 +9,14 @@ import io.ktor.server.routing.route
 import no.nav.sokos.prosjektnavn.service.DummyService
 import no.nav.sokos.prosjektnavn.service.SomeOtherService
 
-fun Route.dummyApi(
-    dummyService: DummyService,
-    someOtherService: SomeOtherService,
-) {
+fun Route.dummyApi() {
     route("/api/v1/") {
         get("helloKatt1") {
-            val response = dummyService.sayHello()
+            val response = DummyService().sayHello()
             call.respond(HttpStatusCode.OK, response)
         }
         get("helloKatt2") {
-            val response = someOtherService.sayHello()
+            val response = SomeOtherService().sayHello()
             call.respond(HttpStatusCode.OK, response)
         }
     }

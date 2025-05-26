@@ -17,22 +17,21 @@ import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
 import mu.KotlinLogging
 
-import no.nav.sokos.prosjektnavn.config
+import no.nav.sokos.prosjektnavn.config.PropertiesConfig.configuration
 
 private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
 fun Application.securityConfig() {
-    // nødvendig fordi application ikke kan nåes inni jwt{}
-    val config = config()
-    if (!config.securityProperties.useAuthentication) return
+    val azureAdProperties = configuration.securityProperties.azureAdProperties
+    if (!azureAdProperties.enabled) return
 
-    val openIdMetadata: OpenIdMetadata = wellKnowConfig(config.securityProperties.azureAdProperties.wellKnownUrl)
+    val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
     val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
 
     authentication {
         jwt(AUTHENTICATION_NAME) {
-            realm = config.applicationProperties.naisAppName
+            realm = configuration.applicationProperties.naisAppName
             verifier(
                 jwkProvider = jwkProvider,
                 issuer = openIdMetadata.issuer,
@@ -43,7 +42,7 @@ fun Application.securityConfig() {
                         logger.info("Auth: Missing audience in token")
                         "Auth: Missing audience in token"
                     }
-                    require(credential.payload.audience.contains(config().securityProperties.azureAdProperties.clientId)) {
+                    require(credential.payload.audience.contains(azureAdProperties.clientId)) {
                         logger.info("Auth: Valid audience not found in claims")
                         "Auth: Valid audience not found in claims"
                     }
@@ -57,8 +56,8 @@ fun Application.securityConfig() {
     }
 }
 
-private fun cachedJwkProvider(jwksUri: String): JwkProvider {
-    return JwkProviderBuilder(URI(jwksUri).toURL())
+private fun cachedJwkProvider(jwksUri: String): JwkProvider =
+    JwkProviderBuilder(URI(jwksUri).toURL())
         .cached(10, 24, TimeUnit.HOURS) // cache up to 10 JWKs for 24 hours
         .rateLimited(
             10,
@@ -66,7 +65,6 @@ private fun cachedJwkProvider(jwksUri: String): JwkProvider {
             TimeUnit.MINUTES,
         ) // if not cached, only allow max 10 different keys per minute to be fetched from external provider
         .build()
-}
 
 @Serializable
 data class OpenIdMetadata(
