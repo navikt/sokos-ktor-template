@@ -7,7 +7,7 @@ plugins {
     kotlin("jvm") version "2.1.21"
     kotlin("plugin.serialization") version "2.1.21"
     id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jlleitschuh.gradle.ktlint") version "12.2.0"
+    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
@@ -71,7 +71,7 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
-// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") version "12.1.2"
+// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
 configurations.ktlint {
     resolutionStrategy.force("ch.qos.logback:logback-classic:$logbackVersion")
 }
