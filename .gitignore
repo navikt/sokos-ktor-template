@@ -39,5 +39,5 @@ out/
 .DS_Store
 
 ### Custom ###
-defaults.properties
+defaults.conf
 .kotlin

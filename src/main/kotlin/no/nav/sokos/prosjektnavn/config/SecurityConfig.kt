@@ -20,45 +20,42 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
-fun Application.securityConfig(
-    useAuthentication: Boolean,
-    azureAdProperties: PropertiesConfig.AzureAdProperties = PropertiesConfig.AzureAdProperties(),
-) {
-    logger.info("Use authentication: $useAuthentication")
-    if (useAuthentication) {
-        val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
-        val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+fun Application.securityConfig(applicationProperties: ApplicationProperties) {
+    val azureAdProperties = applicationProperties.configuration.security.azure
+    if (!azureAdProperties.enabled) return
 
-        authentication {
-            jwt(AUTHENTICATION_NAME) {
-                realm = PropertiesConfig.Configuration().naisAppName
-                verifier(
-                    jwkProvider = jwkProvider,
-                    issuer = openIdMetadata.issuer,
-                ) { acceptLeeway(1) }
-                validate { credential ->
-                    try {
-                        requireNotNull(credential.payload.audience) {
-                            logger.info("Auth: Missing audience in token")
-                            "Auth: Missing audience in token"
-                        }
-                        require(credential.payload.audience.contains(azureAdProperties.clientId)) {
-                            logger.info("Auth: Valid audience not found in claims")
-                            "Auth: Valid audience not found in claims"
-                        }
-                        JWTPrincipal(credential.payload)
-                    } catch (e: Exception) {
-                        logger.warn(e) { "Client authentication failed" }
-                        null
+    val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
+    val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+
+    authentication {
+        jwt(AUTHENTICATION_NAME) {
+            realm = applicationProperties.appName
+            verifier(
+                jwkProvider = jwkProvider,
+                issuer = openIdMetadata.issuer,
+            ) { acceptLeeway(1) }
+            validate { credential ->
+                try {
+                    requireNotNull(credential.payload.audience) {
+                        logger.info("Auth: Missing audience in token")
+                        "Auth: Missing audience in token"
                     }
+                    require(credential.payload.audience.contains(azureAdProperties.clientId)) {
+                        logger.info("Auth: Valid audience not found in claims")
+                        "Auth: Valid audience not found in claims"
+                    }
+                    JWTPrincipal(credential.payload)
+                } catch (e: Exception) {
+                    logger.warn(e) { "Client authentication failed" }
+                    null
                 }
             }
         }
     }
 }
 
-private fun cachedJwkProvider(jwksUri: String): JwkProvider {
-    return JwkProviderBuilder(URI(jwksUri).toURL())
+private fun cachedJwkProvider(jwksUri: String): JwkProvider =
+    JwkProviderBuilder(URI(jwksUri).toURL())
         .cached(10, 24, TimeUnit.HOURS) // cache up to 10 JWKs for 24 hours
         .rateLimited(
             10,
@@ -66,7 +63,6 @@ private fun cachedJwkProvider(jwksUri: String): JwkProvider {
             TimeUnit.MINUTES,
         ) // if not cached, only allow max 10 different keys per minute to be fetched from external provider
         .build()
-}
 
 @Serializable
 data class OpenIdMetadata(
