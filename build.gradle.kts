@@ -103,6 +103,9 @@ tasks {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
         finalizedBy(koverHtmlReport)
+        // See TOB-5012 or https://github.com/flyway/flyway/issues/3811
+        mergeServiceFiles()
+        // end TOB-5012
     }
 
     withType<Test>().configureEach {
