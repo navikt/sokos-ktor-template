@@ -20,8 +20,8 @@ import mu.KotlinLogging
 private val logger = KotlinLogging.logger {}
 const val AUTHENTICATION_NAME = "azureAd"
 
-fun Application.securityConfig(applicationProperties: ApplicationProperties) {
-    val azureAdProperties = applicationProperties.configuration.security.azure
+fun Application.securityConfig(appConfig: AppConfig) {
+    val azureAdProperties = appConfig.properties.security.azure
     if (!azureAdProperties.enabled) return
 
     val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
@@ -29,7 +29,7 @@ fun Application.securityConfig(applicationProperties: ApplicationProperties) {
 
     authentication {
         jwt(AUTHENTICATION_NAME) {
-            realm = applicationProperties.appName
+            realm = appConfig.appName
             verifier(
                 jwkProvider = jwkProvider,
                 issuer = openIdMetadata.issuer,

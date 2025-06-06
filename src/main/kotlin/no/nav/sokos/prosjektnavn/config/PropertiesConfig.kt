@@ -8,30 +8,24 @@ import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.config.withFallback
 
 @Serializable
-data class ApplicationProperties(
+data class AppConfig(
     val profile: String,
     val appName: String,
     val namespace: String,
-    val configuration: AppConfig,
+    val properties: ApplicationProperties,
 ) {
     val currentProfile: Profile = Profile.from(profile)
 }
 
 @Serializable
-data class AppConfig(
+data class ApplicationProperties(
     val security: SecurityProperties,
-    val database: PostgresProperties,
+    val database: DatabaseProperties,
 )
 
 @Serializable
 data class SecurityProperties(
     val azure: AzureAdProperties,
-    val vault: VaultProperties,
-)
-
-@Serializable
-data class VaultProperties(
-    val mountpath: String,
 )
 
 @Serializable
@@ -42,13 +36,17 @@ data class AzureAdProperties(
 )
 
 @Serializable
-data class PostgresProperties(
+data class DatabaseProperties(
     val name: String,
     val host: String,
     val port: String,
     val username: String,
     val password: String,
-)
+    val vaultMountPath: String,
+) {
+    val adminUser = "$name-admin"
+    val user = "$name-user"
+}
 
 enum class Profile(
     val isLocal: Boolean = false,
@@ -77,7 +75,7 @@ fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
             ?: hoconConfig.propertyOrNull("ktor.environment")?.getString()
             ?: "test"
 
-    return this overriding ApplicationConfig("application-$environment.conf") overriding hoconConfig
+    return this overriding ApplicationConfig("application-$environment.conf")
 }
 
 infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)

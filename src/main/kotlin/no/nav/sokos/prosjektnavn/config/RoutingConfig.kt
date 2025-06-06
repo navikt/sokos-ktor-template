@@ -5,18 +5,15 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 
+import no.nav.sokos.prosjektnavn.ApplicationDependencies
 import no.nav.sokos.prosjektnavn.api.catApi
-import no.nav.sokos.prosjektnavn.service.LilyService
-import no.nav.sokos.prosjektnavn.service.LucyService
+import no.nav.sokos.prosjektnavn.api.databaseServiceApi
 
-fun Application.routingConfig(
-    useAuthentication: Boolean,
-    lucyService: LucyService,
-    lilyService: LilyService,
-) {
+fun Application.routingConfig(dependencies: ApplicationDependencies) {
     routing {
-        authenticate(useAuthentication, AUTHENTICATION_NAME) {
-            catApi(lucyService, lilyService)
+        authenticate(dependencies.applicationConfig.properties.security.azure.enabled, AUTHENTICATION_NAME) {
+            catApi(dependencies.cats)
+            databaseServiceApi(dependencies.databaseService)
         }
     }
 }
