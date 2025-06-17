@@ -2,7 +2,10 @@ package no.nav.sokos.prosjektnavn.security
 
 import io.kotest.matchers.shouldBe
 import io.ktor.client.request.get
+import io.ktor.client.request.header
+import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
+import io.ktor.http.contentType
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.config.MapApplicationConfig
 import io.ktor.server.testing.testApplication
@@ -11,6 +14,7 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
 import no.nav.sokos.prosjektnavn.IntegrationSpec
+import no.nav.sokos.prosjektnavn.config.overriding
 import no.nav.sokos.prosjektnavn.module
 
 class SecurityTest : IntegrationSpec() {
@@ -19,7 +23,7 @@ class SecurityTest : IntegrationSpec() {
             withMockOAuth2Server {
                 testApplication {
                     environment {
-                        config = dbContainer.getMapAppConfig()
+                        config = authConfig() overriding dbContainer.getMapAppConfig()
                     }
                     application {
                         module()
@@ -29,21 +33,13 @@ class SecurityTest : IntegrationSpec() {
                     response.status shouldBe HttpStatusCode.Unauthorized
                 }
             }
-        /*    withOauthServer { client ->
-                val response = client.get("/getLucy")
-                response.status shouldBe HttpStatusCode.Unauthorized
-            }*/
         }
 
-/*        test("test http GET endepunkt med token bør returnere 200") {
+        test("test http GET endepunkt med token bør returnere 200") {
             withMockOAuth2Server {
                 val mockOAuth2Server = this
-                testApplication {
-
-                    application {
-                        val newConfig = authConfig(ApplicationConfig("application-test.conf"))
-                        module(newConfig) // injection av config
-                    }
+                // For å kunne injecte custom configobjekt i module() må vi bruke withServer
+                withConfig(authConfig()).withServer { client ->
                     val response =
                         client.get("/getLucy") {
                             header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
@@ -61,7 +57,7 @@ class SecurityTest : IntegrationSpec() {
                     response2.status shouldBe HttpStatusCode.OK
                 }
             }
-        }*/
+        }
     }
 }
 

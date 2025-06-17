@@ -16,6 +16,7 @@ import org.testcontainers.utility.DockerImageName
 
 import no.nav.sokos.prosjektnavn.config.overriding
 
+// Usikker på om dette er den beste måten å gjøre det
 abstract class IntegrationSpec(
     val initScript: String = "",
 ) : FunSpec() {
@@ -66,9 +67,6 @@ class MyContainer {
             put("application.properties.database.name", container.databaseName)
             put("application.properties.database.port", container.firstMappedPort.toString())
             put("application.properties.database.host", host)
-            put("application.properties.security.azure.wellKnownUrl", "=http://localhost:45225/default/.well-known/openid-configuration")
-            put("application.properties.security.clientId", "default")
-            put("application.properties.security.enabled", "true")
         }
 
     fun migrate(script: String) = loadInitScript(script)

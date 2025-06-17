@@ -12,7 +12,7 @@ import io.ktor.server.config.MapApplicationConfig
 class TestApplicationEksempler : IntegrationSpec() {
     init {
 
-        test("Test conf blir automatisk lastet fra fil") {
+        test("Test conf blir lastet fra fil") {
             withServer { client ->
                 val response = client.get("/getLucy")
                 response.status shouldBe HttpStatusCode.OK

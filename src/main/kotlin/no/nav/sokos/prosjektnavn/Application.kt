@@ -24,6 +24,7 @@ fun main() {
     embeddedServer(Netty, port = 8080, module = Application::module).start(true)
 }
 
+// For å tvinge at vi kun har EN datasource i applikasjonen må dette enten injectes her eller settes opp i embeddedServer
 fun Application.module(dependencies: ApplicationDependencies = setUpDependencies()) {
     val applicationConfig = dependencies.applicationConfig
     serverConfig()
@@ -33,7 +34,6 @@ fun Application.module(dependencies: ApplicationDependencies = setUpDependencies
 
 fun Application.setUpDependencies(): ApplicationDependencies {
     val appConfig = environment.config.mergeWithEnv()
-    appConfig.keys().forEach { key -> println("$key = ${appConfig.property(key).getString()}") }
     val cats = appConfig.property("cats").getAs<Cats>()
     val applicationConfig = appConfig.property("application").getAs<AppConfig>()
     val databaseService = DatabaseService(setUpDatabase(applicationConfig))
