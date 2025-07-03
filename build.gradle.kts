@@ -6,7 +6,7 @@ import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 plugins {
     kotlin("jvm") version "2.2.0"
     kotlin("plugin.serialization") version "2.2.0"
-    id("com.gradleup.shadow") version "9.0.0-rc1"
+    id("com.gradleup.shadow") version "8.3.8"
     id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
@@ -98,7 +98,6 @@ tasks {
 
     withType<ShadowJar>().configureEach {
         enabled = true
-        minimizeJar = true
         archiveFileName.set("app.jar")
         manifest {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
