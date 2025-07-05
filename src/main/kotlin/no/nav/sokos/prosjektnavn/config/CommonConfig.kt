@@ -19,9 +19,13 @@ import io.micrometer.core.instrument.binder.jvm.JvmMemoryMetrics
 import io.micrometer.core.instrument.binder.jvm.JvmThreadMetrics
 import io.micrometer.core.instrument.binder.system.ProcessorMetrics
 import io.micrometer.core.instrument.binder.system.UptimeMetrics
+import org.slf4j.Marker
+import org.slf4j.MarkerFactory
 import org.slf4j.event.Level
 
 import no.nav.sokos.prosjektnavn.metrics.Metrics
+
+val TEAM_LOGS_MARKER: Marker? = MarkerFactory.getMarker("TEAM_LOGS")
 
 fun Application.commonConfig() {
     install(CallLogging) {
