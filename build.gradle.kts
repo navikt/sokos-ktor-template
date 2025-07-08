@@ -1,13 +1,12 @@
 import com.github.jengelman.gradle.plugins.shadow.tasks.ShadowJar
 import org.gradle.api.tasks.testing.logging.TestExceptionFormat.FULL
 import org.gradle.api.tasks.testing.logging.TestLogEvent
-import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
     kotlin("jvm") version "2.2.0"
     kotlin("plugin.serialization") version "2.2.0"
     id("com.gradleup.shadow") version "8.3.8"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    id("com.diffplug.spotless") version "7.0.4"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
@@ -71,11 +70,6 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
-// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") uses ch.qos.logback:logback-classic:1.3.5
-configurations.ktlint {
-    resolutionStrategy.force("ch.qos.logback:logback-classic:$logbackVersion")
-}
-
 sourceSets {
     main {
         java {
@@ -91,10 +85,6 @@ kotlin {
 }
 
 tasks {
-
-    withType<KotlinCompile>().configureEach {
-        dependsOn("ktlintFormat")
-    }
 
     withType<ShadowJar>().configureEach {
         enabled = true
@@ -147,5 +137,17 @@ tasks {
         description = "Copy pre-commit hook to .git/hooks"
         group = "git hooks"
         outputs.upToDateWhen { false }
+    }
+}
+
+spotless {
+    kotlin {
+        targetExclude("src/main/java/**/*")
+        targetExclude("build/generated/**/*")
+        ktfmt().kotlinlangStyle().configure {
+            it.setMaxWidth(140)
+            it.setRemoveUnusedImports(true)
+            it.setManageTrailingCommas(true)
+        }
     }
 }
