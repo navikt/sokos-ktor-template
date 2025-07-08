@@ -17,13 +17,12 @@ repositories {
     maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
 }
 
-val ktorVersion = "3.2.0"
+val ktorVersion = "3.2.1"
 val logbackVersion = "1.5.18"
 val logstashVersion = "8.1"
 val micrometerVersion = "1.15.1"
 val kotlinLoggingVersion = "3.0.5"
-val janionVersion = "3.1.12"
-val natpryceVersion = "1.6.10.0"
+val konfigVersion = "1.6.10.0"
 val kotestVersion = "5.9.1"
 val kotlinxSerializationVersion = "1.9.0"
 val mockOAuth2ServerVersion = "2.2.1"
@@ -55,12 +54,11 @@ dependencies {
 
     // Logging
     implementation("io.github.microutils:kotlin-logging-jvm:$kotlinLoggingVersion")
-    runtimeOnly("org.codehaus.janino:janino:$janionVersion")
     runtimeOnly("ch.qos.logback:logback-classic:$logbackVersion")
     runtimeOnly("net.logstash.logback:logstash-logback-encoder:$logstashVersion")
 
     // Config
-    implementation("com.natpryce:konfig:$natpryceVersion")
+    implementation("com.natpryce:konfig:$konfigVersion")
 
     // Test
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
