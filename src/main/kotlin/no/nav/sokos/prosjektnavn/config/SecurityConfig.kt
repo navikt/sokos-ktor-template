@@ -1,12 +1,5 @@
 package no.nav.sokos.prosjektnavn.config
 
-import java.net.URI
-import java.util.concurrent.TimeUnit
-
-import kotlinx.coroutines.runBlocking
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-
 import com.auth0.jwk.JwkProvider
 import com.auth0.jwk.JwkProviderBuilder
 import io.ktor.client.call.body
@@ -15,6 +8,11 @@ import io.ktor.server.application.Application
 import io.ktor.server.auth.authentication
 import io.ktor.server.auth.jwt.JWTPrincipal
 import io.ktor.server.auth.jwt.jwt
+import java.net.URI
+import java.util.concurrent.TimeUnit
+import kotlinx.coroutines.runBlocking
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
 import mu.KotlinLogging
 
 private val logger = KotlinLogging.logger {}
@@ -32,10 +30,7 @@ fun Application.securityConfig(
         authentication {
             jwt(AUTHENTICATION_NAME) {
                 realm = PropertiesConfig.Configuration().naisAppName
-                verifier(
-                    jwkProvider = jwkProvider,
-                    issuer = openIdMetadata.issuer,
-                ) { acceptLeeway(1) }
+                verifier(jwkProvider = jwkProvider, issuer = openIdMetadata.issuer) { acceptLeeway(1) }
                 validate { credential ->
                     try {
                         requireNotNull(credential.payload.audience) {
@@ -76,8 +71,6 @@ data class OpenIdMetadata(
 )
 
 private fun wellKnowConfig(wellKnownUrl: String): OpenIdMetadata {
-    val openIdMetadata: OpenIdMetadata by lazy {
-        runBlocking { httpClient.get(wellKnownUrl).body() }
-    }
+    val openIdMetadata: OpenIdMetadata by lazy { runBlocking { httpClient.get(wellKnownUrl).body() } }
     return openIdMetadata
 }

@@ -12,8 +12,8 @@ object Metrics {
     val prometheusMeterRegistry = PrometheusMeterRegistry(PrometheusConfig.DEFAULT)
 
     /**
-     * This is an example counter. It is used to demonstrate how to create a counter metric.
-     * To use this counter metric, you can call `exampleCounter.inc()` to increment the counter by 1.
+     * This is an example counter. It is used to demonstrate how to create a counter metric. To use this counter metric, you can call
+     * `exampleCounter.inc()` to increment the counter by 1.
      */
     val exampleCounter: Counter =
         Counter.builder()

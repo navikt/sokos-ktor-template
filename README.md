@@ -86,7 +86,7 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
 https://logs.adeo.no.
 
 Feilmeldinger og infomeldinger som ikke innheholder sensitive data logges til data view `Applikasjonslogger`.  
-Sensetive meldinger logges til data view `Securelogs` [sikker-utvikling/logging](https://sikkerhet.nav.no/docs/sikker-utvikling/logging)).
+Sensitive meldinger logges til [Team Logs](https://doc.nais.io/observability/logging/how-to/team-logs/)).
 
 - Filter for Produksjon
     * application:sokos-ktor-template AND envclass:p
@@ -123,4 +123,3 @@ Hva er url til Lokal, dev og prod?
 # 8. Henvendelser og tilgang
    Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
    Interne henvendelser kan sendes via Slack i kanalen [#utbetaling](https://nav-it.slack.com/archives/CKZADNFBP)
-

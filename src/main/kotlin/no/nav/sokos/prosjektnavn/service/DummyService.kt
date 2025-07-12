@@ -1,7 +1,6 @@
 package no.nav.sokos.prosjektnavn.service
 
 import mu.KotlinLogging
-
 import no.nav.sokos.prosjektnavn.config.TEAM_LOGS_MARKER
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.metrics.Metrics
