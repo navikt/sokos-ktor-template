@@ -16,7 +16,8 @@ object Metrics {
      * To use this counter metric, you can call `exampleCounter.inc()` to increment the counter by 1.
      */
     val exampleCounter: Counter =
-        Counter.builder()
+        Counter
+            .builder()
             .name(EXAMPLE_COUNTER)
             .help("Example counter")
             .withoutExemplars()

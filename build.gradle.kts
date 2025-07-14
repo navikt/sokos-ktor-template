@@ -7,7 +7,7 @@ plugins {
     kotlin("jvm") version "2.2.0"
     kotlin("plugin.serialization") version "2.2.0"
     id("com.gradleup.shadow") version "8.3.8"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
@@ -21,7 +21,7 @@ repositories {
 val ktorVersion = "3.2.1"
 val logbackVersion = "1.5.18"
 val logstashVersion = "8.1"
-val micrometerVersion = "1.15.1"
+val micrometerVersion = "1.15.2"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"

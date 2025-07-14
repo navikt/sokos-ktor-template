@@ -31,65 +31,66 @@ import no.nav.sokos.prosjektnavn.service.DummyService
 
 val dummyService: DummyService = mockk()
 
-class SecurityTest : FunSpec({
+class SecurityTest :
+    FunSpec({
 
-    test("test http GET endepunkt uten token bør returnere 401") {
-        withMockOAuth2Server {
-            testApplication {
-                application {
-                    securityConfig(true, authConfig())
-                    routing {
-                        authenticate(true, AUTHENTICATION_NAME) {
-                            dummyApi(dummyService)
+        test("test http GET endepunkt uten token bør returnere 401") {
+            withMockOAuth2Server {
+                testApplication {
+                    application {
+                        securityConfig(true, authConfig())
+                        routing {
+                            authenticate(true, AUTHENTICATION_NAME) {
+                                dummyApi(dummyService)
+                            }
                         }
                     }
+                    val response = client.get("$API_BASE_PATH/hello")
+                    response.status shouldBe HttpStatusCode.Unauthorized
                 }
-                val response = client.get("$API_BASE_PATH/hello")
-                response.status shouldBe HttpStatusCode.Unauthorized
             }
         }
-    }
 
-    test("test http GET endepunkt med token bør returnere 200") {
-        withMockOAuth2Server {
-            val mockOAuth2Server = this
-            testApplication {
-                val client =
-                    createClient {
-                        install(ContentNegotiation) {
-                            json(
-                                Json {
-                                    prettyPrint = true
-                                    ignoreUnknownKeys = true
-                                    encodeDefaults = true
-                                    explicitNulls = false
-                                },
-                            )
+        test("test http GET endepunkt med token bør returnere 200") {
+            withMockOAuth2Server {
+                val mockOAuth2Server = this
+                testApplication {
+                    val client =
+                        createClient {
+                            install(ContentNegotiation) {
+                                json(
+                                    Json {
+                                        prettyPrint = true
+                                        ignoreUnknownKeys = true
+                                        encodeDefaults = true
+                                        explicitNulls = false
+                                    },
+                                )
+                            }
+                        }
+                    application {
+                        commonConfig()
+                        securityConfig(true, authConfig())
+                        routing {
+                            authenticate(true, AUTHENTICATION_NAME) {
+                                dummyApi(dummyService)
+                            }
                         }
                     }
-                application {
-                    commonConfig()
-                    securityConfig(true, authConfig())
-                    routing {
-                        authenticate(true, AUTHENTICATION_NAME) {
-                            dummyApi(dummyService)
+
+                    every { dummyService.sayHello() } returns DummyDomain("Hello")
+
+                    val response =
+                        client.get("$API_BASE_PATH/hello") {
+                            header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
+                            contentType(ContentType.Application.Json)
                         }
-                    }
+
+                    response.status shouldBe HttpStatusCode.OK
                 }
-
-                every { dummyService.sayHello() } returns DummyDomain("Hello")
-
-                val response =
-                    client.get("$API_BASE_PATH/hello") {
-                        header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
-                        contentType(ContentType.Application.Json)
-                    }
-
-                response.status shouldBe HttpStatusCode.OK
             }
         }
-    }
-})
+    })
 
 private fun MockOAuth2Server.authConfig() =
     PropertiesConfig.AzureAdProperties(
