@@ -11,3 +11,18 @@ updates:
       gradle:
         patterns:
           - "*"
+
+  - package-ecosystem: docker
+    directory: "/"
+    schedule:
+      interval: weekly
+      day: "monday"
+      time: "06:00"
+      timezone: "Europe/Oslo"
+    ignore:
+      - dependency-name: "bellsoft/liberica-openjdk-alpine"
+        update-types: [ "version-update:semver-major" ]
+    groups:
+      java21:
+        patterns:
+          - "bellsoft/liberica-openjdk-alpine:21*"
