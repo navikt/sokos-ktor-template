@@ -2,7 +2,6 @@ package no.nav.sokos.prosjektnavn.security
 
 import kotlinx.serialization.json.Json
 
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
@@ -26,75 +25,74 @@ import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.authenticate
+import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.securityConfig
-import no.nav.sokos.prosjektnavn.config.serverConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
 
-class SecurityTest : FunSpec({
-    isolationMode = IsolationMode.InstancePerTest
+class SecurityTest :
+    FunSpec({
+        val dummyService: DummyService = mockk()
 
-    val dummyService: DummyService = mockk()
-
-    test("test http GET endepunkt uten token bør returnere 401") {
-        withMockOAuth2Server {
-            testApplication {
-                configureTestEnvironment()
-                application {
-                    securityConfig(true, authConfig())
-                    routing {
-                        authenticate(true, AUTHENTICATION_NAME) {
-                            dummyApi(dummyService)
+        test("test http GET endepunkt uten token bør returnere 401") {
+            withMockOAuth2Server {
+                testApplication {
+                    configureTestEnvironment()
+                    application {
+                        securityConfig(true, authConfig())
+                        routing {
+                            authenticate(true, AUTHENTICATION_NAME) {
+                                dummyApi(dummyService)
+                            }
                         }
                     }
+                    val response = client.get("$API_BASE_PATH/hello")
+                    response.status shouldBe HttpStatusCode.Unauthorized
                 }
-                val response = client.get("$API_BASE_PATH/hello")
-                response.status shouldBe HttpStatusCode.Unauthorized
             }
         }
-    }
 
-    test("test http GET endepunkt med token bør returnere 200") {
-        withMockOAuth2Server {
-            val mockOAuth2Server = this
-            testApplication {
-                configureTestEnvironment()
-                val client =
-                    createClient {
-                        install(ContentNegotiation) {
-                            json(
-                                Json {
-                                    prettyPrint = true
-                                    ignoreUnknownKeys = true
-                                    encodeDefaults = true
-                                    explicitNulls = false
-                                },
-                            )
+        test("test http GET endepunkt med token bør returnere 200") {
+            withMockOAuth2Server {
+                val mockOAuth2Server = this
+                testApplication {
+                    configureTestEnvironment()
+                    val client =
+                        createClient {
+                            install(ContentNegotiation) {
+                                json(
+                                    Json {
+                                        prettyPrint = true
+                                        ignoreUnknownKeys = true
+                                        encodeDefaults = true
+                                        explicitNulls = false
+                                    },
+                                )
+                            }
+                        }
+                    application {
+                        commonConfig()
+                        securityConfig(true, authConfig())
+                        routing {
+                            authenticate(true, AUTHENTICATION_NAME) {
+                                dummyApi(dummyService)
+                            }
                         }
                     }
-                application {
-                    serverConfig()
-                    securityConfig(true, authConfig())
-                    routing {
-                        authenticate(true, AUTHENTICATION_NAME) {
-                            dummyApi(dummyService)
+
+                    every { dummyService.sayHello() } returns DummyDomain("Hello")
+
+                    val response =
+                        client.get("$API_BASE_PATH/hello") {
+                            header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
+                            contentType(ContentType.Application.Json)
                         }
-                    }
+
+                    response.status shouldBe HttpStatusCode.OK
                 }
-
-                every { dummyService.sayHello() } returns DummyDomain("Hello")
-
-                val response =
-                    client.get("$API_BASE_PATH/hello") {
-                        header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
-                        contentType(ContentType.Application.Json)
-                    }
-
-                response.status shouldBe HttpStatusCode.OK
             }
         }
-    }
-})
+    })
 
 private fun MockOAuth2Server.authConfig() =
     PropertiesConfig.AzureAdProperties(

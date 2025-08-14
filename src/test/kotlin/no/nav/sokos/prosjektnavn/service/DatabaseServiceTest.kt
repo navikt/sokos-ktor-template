@@ -1,6 +1,5 @@
 package no.nav.sokos.prosjektnavn.service
 
-import io.kotest.core.spec.IsolationMode
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.ktor.server.testing.testApplication
@@ -9,24 +8,23 @@ import no.nav.sokos.prosjektnavn.TestUtil.configureTestApplication
 import no.nav.sokos.prosjektnavn.TestUtil.configureTestEnvironment
 import no.nav.sokos.prosjektnavn.listener.PostgresListener
 
-class DatabaseServiceTest : FunSpec({
-    isolationMode = IsolationMode.InstancePerTest
+class DatabaseServiceTest :
+    FunSpec({
+        extensions(PostgresListener)
 
-    extensions(PostgresListener)
-
-    val databaseService: DatabaseService by lazy {
-        DatabaseService()
-    }
-
-    testApplication {
-        configureTestEnvironment()
-        configureTestApplication("init.sql")
-
-        // Add your tests here
-        test("Database connection should be established") {
-            val result = databaseService.read()
-            result.first shouldBe 1
-            result.second shouldBe "Thea Marie var her i går"
+        val databaseService: DatabaseService by lazy {
+            DatabaseService()
         }
-    }
-})
+
+        testApplication {
+            configureTestEnvironment()
+            configureTestApplication("init.sql")
+
+            // Add your tests here
+            test("Database connection should be established") {
+                val result = databaseService.read()
+                result.first shouldBe 1
+                result.second shouldBe "Thea Marie var her i går"
+            }
+        }
+    })

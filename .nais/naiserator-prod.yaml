@@ -27,8 +27,8 @@ spec:
     limits:
       memory: 4096Mi
     requests:
-      cpu: 2000m
-      memory: 4096Mi
+      cpu: 100m
+      memory: 512Mi
   ingresses:
     - https://sokos-ktor-template.intern.nav.no
   prometheus:
@@ -41,3 +41,12 @@ spec:
   azure:
     application:
       enabled: true
+  accessPolicy:
+    outbound:
+      rules:
+        - application: logging
+          namespace: nais-system
+
+  env:
+    - name: USE_AUTHENTICATION
+      value: "true"

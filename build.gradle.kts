@@ -4,10 +4,10 @@ import org.gradle.api.tasks.testing.logging.TestLogEvent
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
 plugins {
-    kotlin("jvm") version "2.1.21"
-    kotlin("plugin.serialization") version "2.1.21"
-    id("com.github.johnrengelman.shadow") version "8.1.1"
-    id("org.jlleitschuh.gradle.ktlint") version "12.3.0"
+    kotlin("jvm") version "2.2.0"
+    kotlin("plugin.serialization") version "2.2.0"
+    id("com.gradleup.shadow") version "9.0.0"
+    id("org.jlleitschuh.gradle.ktlint") version "13.0.0"
     id("org.jetbrains.kotlinx.kover") version "0.9.1"
 }
 
@@ -15,24 +15,23 @@ group = "no.nav.sokos"
 
 repositories {
     mavenCentral()
-    maven { url = uri("https://maven.pkg.jetbrains.space/public/p/ktor/eap") }
 }
 
-val ktorVersion = "3.2.0"
+val ktorVersion = "3.2.3"
 val logbackVersion = "1.5.18"
 val logstashVersion = "8.1"
-val micrometerVersion = "1.15.0"
+val micrometerVersion = "1.15.2"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "5.9.1"
-val kotlinxSerializationVersion = "1.8.1"
-val mockOAuth2ServerVersion = "2.2.1"
-val mockkVersion = "1.14.2"
 val testContainerVersion = "1.21.0"
 val hikaricpVersion = "6.3.0"
 val vaultVersion = "1.3.10"
 val h2Version = "2.3.232"
+val kotlinxSerializationVersion = "1.9.0"
+val mockOAuth2ServerVersion = "2.2.1"
+val mockkVersion = "1.14.5"
 
 val flywayVersion = "11.8.2"
 val postgresVersion = "42.7.5"
@@ -107,6 +106,7 @@ kotlin {
 }
 
 tasks {
+
     withType<KotlinCompile>().configureEach {
         dependsOn("ktlintFormat")
     }
@@ -125,6 +125,7 @@ tasks {
 
     withType<Test>().configureEach {
         useJUnitPlatform()
+
         testLogging {
             showExceptions = true
             showStackTraces = true
@@ -136,7 +137,7 @@ tasks {
     }
 
     withType<Wrapper> {
-        gradleVersion = "8.14"
+        gradleVersion = "9.0.0"
     }
 
     ("jar") {
