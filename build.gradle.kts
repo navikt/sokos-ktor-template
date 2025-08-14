@@ -32,6 +32,7 @@ val mockkVersion = "1.14.2"
 val testContainerVersion = "1.21.0"
 val hikaricpVersion = "6.3.0"
 val vaultVersion = "1.3.10"
+val h2Version = "2.3.232"
 
 val flywayVersion = "11.8.2"
 val postgresVersion = "42.7.5"
@@ -49,6 +50,7 @@ dependencies {
 
     // Database
     implementation("com.zaxxer:HikariCP:$hikaricpVersion")
+    implementation("com.h2database:h2:$h2Version")
     implementation("org.postgresql:postgresql:$postgresVersion")
     implementation("org.flywaydb:flyway-core:$flywayVersion")
     runtimeOnly("org.flywaydb:flyway-database-postgresql:$flywayVersion")
@@ -105,7 +107,6 @@ kotlin {
 }
 
 tasks {
-
     withType<KotlinCompile>().configureEach {
         dependsOn("ktlintFormat")
     }

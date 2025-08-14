@@ -1,65 +1,106 @@
 package no.nav.sokos.prosjektnavn.security
 
+import kotlinx.serialization.json.Json
+
+import io.kotest.core.spec.IsolationMode
+import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
+import io.ktor.client.plugins.contentnegotiation.ContentNegotiation
 import io.ktor.client.request.get
 import io.ktor.client.request.header
 import io.ktor.http.ContentType
 import io.ktor.http.HttpStatusCode
 import io.ktor.http.contentType
-import io.ktor.server.config.ApplicationConfig
-import io.ktor.server.config.MapApplicationConfig
+import io.ktor.serialization.kotlinx.json.json
+import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
+import io.mockk.every
+import io.mockk.mockk
 
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.IntegrationSpec
-import no.nav.sokos.prosjektnavn.config.overriding
-import no.nav.sokos.prosjektnavn.module
+import no.nav.sokos.prosjektnavn.API_BASE_PATH
+import no.nav.sokos.prosjektnavn.TestUtil.configureTestEnvironment
+import no.nav.sokos.prosjektnavn.api.dummyApi
+import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
+import no.nav.sokos.prosjektnavn.config.PropertiesConfig
+import no.nav.sokos.prosjektnavn.config.authenticate
+import no.nav.sokos.prosjektnavn.config.securityConfig
+import no.nav.sokos.prosjektnavn.config.serverConfig
+import no.nav.sokos.prosjektnavn.domain.DummyDomain
+import no.nav.sokos.prosjektnavn.service.DummyService
 
-class SecurityTest : IntegrationSpec() {
-    init {
-        test("test http GET endepunkt uten token bør returnere 401") {
-            withMockOAuth2Server {
-                testApplication {
-                    environment {
-                        config = authConfig() overriding dbContainer.getMapAppConfig()
-                    }
-                    application {
-                        module()
-                    }
-                    startApplication()
-                    val response = client.get("/getLucy")
-                    response.status shouldBe HttpStatusCode.Unauthorized
-                }
-            }
-        }
+class SecurityTest : FunSpec({
+    isolationMode = IsolationMode.InstancePerTest
 
-        test("test http GET endepunkt med token bør returnere 200") {
-            withMockOAuth2Server {
-                val mockOAuth2Server = this
-                // For å kunne injecte custom configobjekt i module() må vi bruke withServer
-                withConfig(authConfig()).withServer { client ->
-                    val response =
-                        client.get("/getLucy") {
-                            header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
-                            contentType(ContentType.Application.Json)
+    val dummyService: DummyService = mockk()
+
+    test("test http GET endepunkt uten token bør returnere 401") {
+        withMockOAuth2Server {
+            testApplication {
+                configureTestEnvironment()
+                application {
+                    securityConfig(true, authConfig())
+                    routing {
+                        authenticate(true, AUTHENTICATION_NAME) {
+                            dummyApi(dummyService)
                         }
-
-                    response.status shouldBe HttpStatusCode.OK
-
-                    val response2 =
-                        client.get("/getLily") {
-                            header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
-                            contentType(ContentType.Application.Json)
-                        }
-
-                    response2.status shouldBe HttpStatusCode.OK
+                    }
                 }
+                val response = client.get("$API_BASE_PATH/hello")
+                response.status shouldBe HttpStatusCode.Unauthorized
             }
         }
     }
-}
+
+    test("test http GET endepunkt med token bør returnere 200") {
+        withMockOAuth2Server {
+            val mockOAuth2Server = this
+            testApplication {
+                configureTestEnvironment()
+                val client =
+                    createClient {
+                        install(ContentNegotiation) {
+                            json(
+                                Json {
+                                    prettyPrint = true
+                                    ignoreUnknownKeys = true
+                                    encodeDefaults = true
+                                    explicitNulls = false
+                                },
+                            )
+                        }
+                    }
+                application {
+                    serverConfig()
+                    securityConfig(true, authConfig())
+                    routing {
+                        authenticate(true, AUTHENTICATION_NAME) {
+                            dummyApi(dummyService)
+                        }
+                    }
+                }
+
+                every { dummyService.sayHello() } returns DummyDomain("Hello")
+
+                val response =
+                    client.get("$API_BASE_PATH/hello") {
+                        header("Authorization", "Bearer ${mockOAuth2Server.tokenFromDefaultProvider()}")
+                        contentType(ContentType.Application.Json)
+                    }
+
+                response.status shouldBe HttpStatusCode.OK
+            }
+        }
+    }
+})
+
+private fun MockOAuth2Server.authConfig() =
+    PropertiesConfig.AzureAdProperties(
+        wellKnownUrl = wellKnownUrl("default").toString(),
+        clientId = "default",
+    )
 
 private fun MockOAuth2Server.tokenFromDefaultProvider() =
     issueToken(
@@ -67,11 +108,3 @@ private fun MockOAuth2Server.tokenFromDefaultProvider() =
         clientId = "default",
         tokenCallback = DefaultOAuth2TokenCallback(),
     ).serialize()
-
-private fun MockOAuth2Server.authConfig(): ApplicationConfig =
-    MapApplicationConfig().apply {
-        put("ktor.environment", "test")
-        put("application.properties.security.azure.wellKnownUrl", wellKnownUrl("default").toString())
-        put("application.properties.security.azure.clientId", "default")
-        put("application.properties.security.azure.enabled", "true")
-    }

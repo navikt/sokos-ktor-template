@@ -1,81 +1,80 @@
 package no.nav.sokos.prosjektnavn.config
 
+import java.io.File
+
 import kotlinx.serialization.Serializable
 
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.config.HoconApplicationConfig
-import io.ktor.server.config.withFallback
+import io.ktor.server.config.getAs
 
-@Serializable
-data class AppConfig(
-    val profile: String,
-    val appName: String,
-    val namespace: String,
-    val properties: ApplicationProperties,
-) {
-    val currentProfile: Profile = Profile.from(profile)
-}
+object PropertiesConfig {
+    var externalConfig: ApplicationConfig? = null
 
-@Serializable
-data class ApplicationProperties(
-    val security: SecurityProperties,
-    val database: DatabaseProperties,
-)
+    private val config: HoconApplicationConfig by lazy {
+        val environment = System.getenv("APPLICATION_ENV") ?: System.getProperty("APPLICATION_ENV")
+        val envConfig =
+            when {
+                environment == null || environment.lowercase() == "local" -> {
+                    val defaultConfig = ConfigFactory.parseFile(File("defaults.properties"))
+                    ConfigFactory.parseResources("application-local.conf").withFallback(defaultConfig)
+                }
 
-@Serializable
-data class SecurityProperties(
-    val azure: AzureAdProperties,
-)
+                else -> ConfigFactory.parseResources("application-${environment.lowercase()}.conf")
+            }
 
-@Serializable
-data class AzureAdProperties(
-    val clientId: String,
-    val wellKnownUrl: String,
-    val enabled: Boolean,
-)
+        externalConfig?.let { external ->
+            HoconApplicationConfig(envConfig.withFallback(ConfigFactory.parseMap(external.toMap())).resolve())
+        } ?: HoconApplicationConfig(envConfig.resolve())
+    }
 
-@Serializable
-data class DatabaseProperties(
-    val name: String,
-    val host: String,
-    val port: String,
-    val username: String,
-    val password: String,
-    val vaultMountPath: String,
-) {
-    val adminUser = "$name-admin"
-    val user = "$name-user"
-}
+    private fun getOrEmpty(key: String): String = config.propertyOrNull(key)?.getString() ?: ""
 
-enum class Profile(
-    val isLocal: Boolean = false,
-) {
-    LOCAL(true),
-    TEST(true),
-    DEV(false),
-    ;
+    val applicationProperties: ApplicationProperties by lazy { config.property("application").getAs<ApplicationProperties>() }
+    val h2Properties: H2Properties? by lazy { config.propertyOrNull("application.h2")?.getAs<H2Properties>() }
+    val postgresProperties: PostgresProperties? by lazy { config.propertyOrNull("application.postgres")?.getAs<PostgresProperties>() }
 
-    companion object {
-        private val profilesByName = Profile.entries.associateBy { it.name.lowercase() }
+    data class AzureAdProperties(
+        val clientId: String = getOrEmpty("AZURE_APP_CLIENT_ID"),
+        val wellKnownUrl: String = getOrEmpty("AZURE_APP_WELL_KNOWN_URL"),
+        val tenantId: String = getOrEmpty("AZURE_APP_TENANT_ID"),
+        val clientSecret: String = getOrEmpty("AZURE_APP_CLIENT_SECRET"),
+    )
 
-        fun from(env: String): Profile =
-            profilesByName[env.lowercase()]
-                ?: throw IllegalArgumentException("Unknown environment profile: $env")
+    @Serializable
+    data class ApplicationProperties(
+        val appName: String,
+        val environment: Environment,
+        val useAuthentication: Boolean,
+        val databaseType: DatabaseType,
+    )
+
+    @Serializable
+    data class PostgresProperties(
+        val host: String,
+        val port: String,
+        val name: String,
+        val username: String,
+        val password: String,
+    )
+
+    @Serializable
+    data class H2Properties(
+        val jdbcUrl: String,
+        val username: String,
+        val password: String,
+    )
+
+    enum class Environment {
+        LOCAL,
+        DEV,
+        TEST,
+        PROD,
+    }
+
+    enum class DatabaseType {
+        H2,
+        POSTGRES,
     }
 }
-
-fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
-    val hoconConfig = HoconApplicationConfig(ConfigFactory.load())
-    val environment =
-        (System.getenv("CLUSTER_NAME") ?: System.getProperty("CLUSTER_NAME"))
-            ?.lowercase()
-            ?.substringBefore("-")
-            ?: propertyOrNull("ktor.environment")?.getString()
-            ?: hoconConfig.propertyOrNull("ktor.environment")?.getString()
-            ?: "test"
-
-    return this overriding ApplicationConfig("application-$environment.conf")
-}
-
-infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)

@@ -5,15 +5,20 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 
-import no.nav.sokos.prosjektnavn.ApplicationDependencies
-import no.nav.sokos.prosjektnavn.api.catApi
 import no.nav.sokos.prosjektnavn.api.databaseServiceApi
+import no.nav.sokos.prosjektnavn.api.dummyApi
+import no.nav.sokos.prosjektnavn.service.DatabaseService
+import no.nav.sokos.prosjektnavn.service.DummyService
 
-fun Application.routingConfig(dependencies: ApplicationDependencies) {
+fun Application.routingConfig(
+    useAuthentication: Boolean,
+    applicationState: ApplicationState,
+) {
     routing {
-        authenticate(dependencies.applicationConfig.properties.security.azure.enabled, AUTHENTICATION_NAME) {
-            catApi(dependencies.cats)
-            databaseServiceApi(dependencies.databaseService)
+        internalNaisRoutes(applicationState)
+        authenticate(useAuthentication, AUTHENTICATION_NAME) {
+            dummyApi(dummyService = DummyService())
+            databaseServiceApi(databaseService = DatabaseService())
         }
     }
 }
