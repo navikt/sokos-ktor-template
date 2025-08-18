@@ -101,6 +101,9 @@ tasks {
         manifest {
             attributes["Main-Class"] = "no.nav.sokos.prosjektnavn.ApplicationKt"
         }
+        duplicatesStrategy = DuplicatesStrategy.INCLUDE
+        mergeServiceFiles()
+
         finalizedBy(koverHtmlReport)
     }
 
