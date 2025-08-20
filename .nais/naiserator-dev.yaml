@@ -51,6 +51,7 @@ spec:
       rules:
         - application: logging
           namespace: nais-system
+  webproxy: true
 
   env:
     - name: USE_AUTHENTICATION
