@@ -32,18 +32,18 @@ jobs:
 
   deploy-dev:
     needs: build
-    name: Deploy to dev-gcp
+    name: Deploy to dev-fss
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
-      cluster: dev-gcp
+      cluster: dev-fss
       resource: .nais/naiserator-dev.yaml
       image: ${{ needs.build.outputs.image }}
 
 #  deploy-prod:
 #    needs: [build, deploy-dev]
-#    name: Deploy to prod-gcp
+#    name: Deploy to prod-fss
 #    uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
 #    with:
-#      cluster: prod-gcp
+#      cluster: prod-fss
 #      resource: .nais/naiserator-prod.yaml
 #      image: ${{ needs.build.outputs.image }}
