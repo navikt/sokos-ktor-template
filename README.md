@@ -103,7 +103,7 @@ Sensitive meldinger logges til [Team Logs](https://doc.nais.io/observability/log
 For dev-gcp:
 
 ```shell script
-kubectl config use-context dev-gcp
+kubectl config use-context dev-fss
 kubectl get pods -n okonomi | grep sokos-ktor-template
 kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
 ```
@@ -111,7 +111,7 @@ kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-t
 For prod-gcp:
 
 ```shell script
-kubectl config use-context prod-gcp
+kubectl config use-context prod-fss
 kubectl get pods -n okonomi | grep sokos-ktor-template
 kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
 ```
