@@ -2,64 +2,79 @@ package no.nav.sokos.prosjektnavn.config
 
 import java.io.File
 
-import com.natpryce.konfig.ConfigurationMap
-import com.natpryce.konfig.ConfigurationProperties
-import com.natpryce.konfig.EnvironmentVariables
-import com.natpryce.konfig.Key
-import com.natpryce.konfig.overriding
-import com.natpryce.konfig.stringType
+import kotlinx.serialization.Serializable
+
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.config.HoconApplicationConfig
+import io.ktor.server.config.getAs
 
 object PropertiesConfig {
-    private val defaultProperties =
-        ConfigurationMap(
-            mapOf(
-                "NAIS_APP_NAME" to "sokos-ktor-template",
-                "NAIS_NAMESPACE" to "okonomi",
-                "USE_AUTHENTICATION" to "true",
-            ),
-        )
+    var externalConfig: ApplicationConfig? = null
 
-    private val localDevProperties =
-        ConfigurationMap(
-            mapOf(
-                "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
-                "USE_AUTHENTICATION" to "false",
-            ),
-        )
+    private val config: HoconApplicationConfig by lazy {
+        val environment = System.getenv("APPLICATION_ENV") ?: System.getProperty("APPLICATION_ENV")
+        val envConfig =
+            when {
+                environment == null || environment.lowercase() == "local" -> {
+                    val defaultConfig = ConfigFactory.parseFile(File("defaults.properties"))
+                    ConfigFactory.parseResources("application-local.conf").withFallback(defaultConfig)
+                }
 
-    private val devProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.DEV.toString()))
-    private val prodProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.PROD.toString()))
+                else -> ConfigFactory.parseResources("application-${environment.lowercase()}.conf")
+            }
 
-    private val config =
-        when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
-            "dev-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding devProperties overriding defaultProperties
-            "prod-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding prodProperties overriding defaultProperties
-            else ->
-                ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding
-                    ConfigurationProperties.fromOptionalFile(
-                        File("defaults.properties"),
-                    ) overriding localDevProperties overriding defaultProperties
-        }
+        externalConfig?.let { external ->
+            HoconApplicationConfig(envConfig.withFallback(ConfigFactory.parseMap(external.toMap())).resolve())
+        } ?: HoconApplicationConfig(envConfig.resolve())
+    }
 
-    operator fun get(key: String): String = config[Key(key, stringType)]
+    private fun getOrEmpty(key: String): String = config.propertyOrNull(key)?.getString() ?: ""
 
-    fun getOrEmpty(key: String): String = config.getOrElse(Key(key, stringType), "")
+    val applicationProperties: ApplicationProperties by lazy { config.property("application").getAs<ApplicationProperties>() }
+    val h2Properties: H2Properties? by lazy { config.propertyOrNull("application.h2")?.getAs<H2Properties>() }
+    val postgresProperties: PostgresProperties? by lazy { config.propertyOrNull("application.postgres")?.getAs<PostgresProperties>() }
 
-    data class Configuration(
-        val naisAppName: String = get("NAIS_APP_NAME"),
-        val profile: Profile = Profile.valueOf(get("APPLICATION_PROFILE")),
-        val useAuthentication: Boolean = get("USE_AUTHENTICATION").toBoolean(),
-        val azureAdProperties: AzureAdProperties = AzureAdProperties(),
-    )
-
-    class AzureAdProperties(
+    data class AzureAdProperties(
         val clientId: String = getOrEmpty("AZURE_APP_CLIENT_ID"),
         val wellKnownUrl: String = getOrEmpty("AZURE_APP_WELL_KNOWN_URL"),
+        val tenantId: String = getOrEmpty("AZURE_APP_TENANT_ID"),
+        val clientSecret: String = getOrEmpty("AZURE_APP_CLIENT_SECRET"),
     )
 
-    enum class Profile {
+    @Serializable
+    data class ApplicationProperties(
+        val appName: String,
+        val environment: Environment,
+        val useAuthentication: Boolean,
+        val databaseType: DatabaseType,
+    )
+
+    @Serializable
+    data class PostgresProperties(
+        val host: String,
+        val port: String,
+        val name: String,
+        val username: String,
+        val password: String,
+    )
+
+    @Serializable
+    data class H2Properties(
+        val jdbcUrl: String,
+        val username: String,
+        val password: String,
+    )
+
+    enum class Environment {
         LOCAL,
         DEV,
+        TEST,
         PROD,
+    }
+
+    enum class DatabaseType {
+        H2,
+        POSTGRES,
     }
 }
