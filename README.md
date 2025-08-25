@@ -63,7 +63,7 @@ Hva er oppgaven til denne applikasjonen
 ### Forutsetninger
 
 * Java 21
-* [Gradle >= 8.9](https://gradle.org/)
+* [Gradle](https://gradle.org/)
 * [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
 ### Bygge prosjekt
@@ -92,8 +92,6 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
 # 6. Drift og støtte
 
 ### Logging
-
-https://logs.adeo.no.
 
 Feilmeldinger og infomeldinger som ikke innheholder sensitive data logges til [Grafana Loki](https://docs.nais.io/observability/logging/#grafana-loki).  
 Sensitive meldinger logges til [Team Logs](https://doc.nais.io/observability/logging/how-to/team-logs/).
@@ -124,6 +122,11 @@ Alarmene overvåker metrics som:
 
 - HTTP-feilrater
 - JVM-metrikker
+
+Varsler blir sendt til følgende Slack-kanaler:
+
+- Dev-miljø: [#team-mob-alerts-dev](https://nav-it.slack.com/archives/C042SF2FEQM)
+- Prod-miljø: [#team-mob-alerts-prod](https://nav-it.slack.com/archives/C042ESY71GX)
 
 ### Grafana
 
