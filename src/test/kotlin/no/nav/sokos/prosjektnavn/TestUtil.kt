@@ -13,6 +13,12 @@ object TestUtil {
     fun TestApplicationBuilder.configureTestEnvironment() {
         environment {
             System.setProperty("APPLICATION_ENV", "TEST")
+
+            // Ensure container is started before accessing its properties
+            if (!PostgresListener.dbContainer.isRunning) {
+                PostgresListener.dbContainer.start()
+            }
+
             config =
                 MapApplicationConfig().apply {
                     // Database properties
