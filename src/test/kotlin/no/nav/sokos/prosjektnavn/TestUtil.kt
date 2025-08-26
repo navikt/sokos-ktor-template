@@ -3,7 +3,6 @@ package no.nav.sokos.prosjektnavn
 import io.ktor.server.config.MapApplicationConfig
 import io.ktor.server.testing.TestApplicationBuilder
 
-import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.listener.PostgresListener
 
 internal const val API_BASE_PATH = "/api/v1"
@@ -14,7 +13,7 @@ object TestUtil {
     fun TestApplicationBuilder.configureTestEnvironment() {
         environment {
             System.setProperty("APPLICATION_ENV", "TEST")
-            val dbConfig =
+            config =
                 MapApplicationConfig().apply {
                     // Database properties
                     put("application.databaseType", "POSTGRES")
@@ -24,11 +23,10 @@ object TestUtil {
                     put("application.postgres.port", PostgresListener.dbContainer.firstMappedPort.toString())
                     put("application.postgres.host", PostgresListener.dbContainer.host)
                 }
-            PropertiesConfig.externalConfig = dbConfig
         }
     }
 
-    fun TestApplicationBuilder.configureTestApplication(migrationScript: String = "init.sql") {
+    fun TestApplicationBuilder.configureTestApplication(migrationScript: String) {
         application {
             PostgresListener.migrate(migrationScript)
             module()

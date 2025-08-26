@@ -1,6 +1,7 @@
 package no.nav.sokos.prosjektnavn
 
 import io.ktor.server.application.Application
+import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.engine.embeddedServer
 import io.ktor.server.netty.Netty
 
@@ -19,8 +20,9 @@ fun main() {
 private val logger = mu.KotlinLogging.logger {}
 
 // For å tvinge at vi kun har EN datasource i applikasjonen må dette enten injectes her eller settes opp i embeddedServer
-fun Application.module() {
-    val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
+fun Application.module(applicationConfig: ApplicationConfig = environment.config) {
+    PropertiesConfig.initEnvConfig(applicationConfig)
+    val useAuthentication = PropertiesConfig.getApplicationProperties().useAuthentication
     val applicationState = ApplicationState()
 
     commonConfig()
@@ -29,5 +31,5 @@ fun Application.module() {
     databaseMigrate()
     applicationLifecycleConfig(applicationState)
 
-    logger.info { "Application started with environment: ${PropertiesConfig.applicationProperties.environment}, useAuthentication: $useAuthentication" }
+    logger.info { "Application started with environment: ${PropertiesConfig.getApplicationProperties().environment}, useAuthentication: $useAuthentication" }
 }

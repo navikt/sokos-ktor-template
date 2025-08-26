@@ -31,7 +31,7 @@ fun Application.securityConfig(
 
     authentication {
         jwt(AUTHENTICATION_NAME) {
-            realm = PropertiesConfig.applicationProperties.appName
+            realm = PropertiesConfig.getApplicationProperties().appName
             verifier(
                 jwkProvider = jwkProvider,
                 issuer = openIdMetadata.issuer,

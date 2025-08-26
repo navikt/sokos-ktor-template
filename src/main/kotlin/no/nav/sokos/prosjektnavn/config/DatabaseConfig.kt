@@ -13,10 +13,10 @@ import no.nav.sokos.prosjektnavn.config.PropertiesConfig.DatabaseType
 private val logger = KotlinLogging.logger {}
 
 object DatabaseConfig {
-    fun hikariConfig(properties: PropertiesConfig.ApplicationProperties = PropertiesConfig.applicationProperties) =
+    fun hikariConfig(properties: PropertiesConfig.ApplicationProperties = PropertiesConfig.getApplicationProperties()) =
         when (properties.databaseType) {
-            DatabaseType.H2 -> h2Config(PropertiesConfig.h2Properties!!)
-            else -> postgresqlConfig(PropertiesConfig.postgresProperties!!)
+            DatabaseType.H2 -> h2Config(PropertiesConfig.getH2Properties()!!)
+            else -> postgresqlConfig(PropertiesConfig.getPostgresProperties()!!)
         }
 
     fun databaseMigrate(dataSource: HikariDataSource = HikariDataSource(hikariConfig())) {

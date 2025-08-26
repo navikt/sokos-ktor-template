@@ -12,16 +12,32 @@ class DatabaseServiceTest :
     FunSpec({
         extensions(PostgresListener)
 
-        val databaseService: DatabaseService by lazy {
-            DatabaseService()
+        test("Database connection should be established") {
+
+            testApplication {
+                configureTestEnvironment()
+                configureTestApplication("init.sql")
+
+                startApplication()
+
+                // Add your tests here
+                val databaseService = DatabaseService()
+                val result = databaseService.read()
+                result.first shouldBe 1
+                result.second shouldBe "Thea Marie var her i går"
+            }
         }
 
-        testApplication {
-            configureTestEnvironment()
-            configureTestApplication("init.sql")
+        test("Database connection should be established 2") {
 
-            // Add your tests here
-            test("Database connection should be established") {
+            testApplication {
+                configureTestEnvironment()
+                configureTestApplication("init.sql")
+
+                startApplication()
+
+                // Add your tests here
+                val databaseService = DatabaseService()
                 val result = databaseService.read()
                 result.first shouldBe 1
                 result.second shouldBe "Thea Marie var her i går"

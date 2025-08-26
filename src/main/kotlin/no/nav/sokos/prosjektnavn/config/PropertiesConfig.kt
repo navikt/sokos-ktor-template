@@ -10,11 +10,11 @@ import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.config.getAs
 
 object PropertiesConfig {
-    var externalConfig: ApplicationConfig? = null
+    private var envConfig: HoconApplicationConfig = HoconApplicationConfig(ConfigFactory.empty())
 
-    private val config: HoconApplicationConfig by lazy {
+    fun initEnvConfig(applicationConfig: ApplicationConfig? = null) {
         val environment = System.getenv("APPLICATION_ENV") ?: System.getProperty("APPLICATION_ENV")
-        val envConfig =
+        val config =
             when {
                 environment == null || environment.lowercase() == "local" -> {
                     val defaultConfig = ConfigFactory.parseFile(File("defaults.properties"))
@@ -24,16 +24,18 @@ object PropertiesConfig {
                 else -> ConfigFactory.parseResources("application-${environment.lowercase()}.conf")
             }
 
-        externalConfig?.let { external ->
-            HoconApplicationConfig(envConfig.withFallback(ConfigFactory.parseMap(external.toMap())).resolve())
-        } ?: HoconApplicationConfig(envConfig.resolve())
+        envConfig = applicationConfig?.let { external ->
+            HoconApplicationConfig(config.withFallback(ConfigFactory.parseMap(external.toMap())).resolve())
+        } ?: HoconApplicationConfig(config.resolve())
     }
 
-    private fun getOrEmpty(key: String): String = config.propertyOrNull(key)?.getString() ?: ""
+    fun getApplicationProperties(): ApplicationProperties = envConfig.property("application").getAs<ApplicationProperties>()
 
-    val applicationProperties: ApplicationProperties by lazy { config.property("application").getAs<ApplicationProperties>() }
-    val h2Properties: H2Properties? by lazy { config.propertyOrNull("application.h2")?.getAs<H2Properties>() }
-    val postgresProperties: PostgresProperties? by lazy { config.propertyOrNull("application.postgres")?.getAs<PostgresProperties>() }
+    fun getH2Properties(): H2Properties? = envConfig.propertyOrNull("application.h2")?.getAs<H2Properties>()
+
+    fun getPostgresProperties(): PostgresProperties? = envConfig.propertyOrNull("application.postgres")?.getAs<PostgresProperties>()
+
+    fun getOrEmpty(key: String): String = envConfig.propertyOrNull(key)?.getString() ?: ""
 
     data class AzureAdProperties(
         val clientId: String = getOrEmpty("AZURE_APP_CLIENT_ID"),
