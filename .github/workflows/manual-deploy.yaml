@@ -32,4 +32,5 @@ jobs:
     secrets: inherit
     with:
       image-tag: snapshot
-      dockerfile-path: './nais/Dockerfile.dev'
+      docker-context: '.nais'
+      dockerfile: './nais/dev/Dockerfile'

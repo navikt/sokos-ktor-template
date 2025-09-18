@@ -38,7 +38,7 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/gar-image-push.yaml@new_workflow_release
     secrets: inherit
     with:
-      dockerfile-path: './nais/Dockerfile.dev'
+      dockerfile-path: './nais/Dockerfile'
 
   deploy-dev:
     needs: [ build-app, build-image-dev ]
@@ -56,7 +56,7 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/gar-image-push.yaml@new_workflow_release
     secrets: inherit
     with:
-      dockerfile-path: '.nais/Dockerfile.prod'
+      dockerfile-path: '.nais/Dockerfile'
 
   deploy-prod:
     needs: [build-app, build-image-prod]
