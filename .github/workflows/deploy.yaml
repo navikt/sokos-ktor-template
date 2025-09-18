@@ -47,19 +47,19 @@ jobs:
       resource: .nais/dev/naiserator.yaml
       image: ${{ needs.assemble-build-push-image-dev.outputs.image }}
 
-  assemble-build-push-image-prod:
-    needs: [ deploy-dev ]
-    name: Assemble application & build/push prod image
-    uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@new_workflow_release
-    secrets: inherit
-    with:
-      dockerfile: './.nais/prod/Dockerfile'
-
-  deploy-prod:
-    needs: [ assemble-build-push-image-prod ]
-    name: Deploy to prod-fss
-    uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
-    with:
-      cluster: prod-fss
-      resource: .nais/prod/naiserator.yaml
-      image: ${{ needs.assemble-build-push-image-prod.outputs.image }}
+#  assemble-build-push-image-prod:
+#    needs: [ deploy-dev ]
+#    name: Assemble application & build/push prod image
+#    uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@new_workflow_release
+#    secrets: inherit
+#    with:
+#      dockerfile: './.nais/prod/Dockerfile'
+#
+#  deploy-prod:
+#    needs: [ assemble-build-push-image-prod ]
+#    name: Deploy to prod-fss
+#    uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
+#    with:
+#      cluster: prod-fss
+#      resource: .nais/prod/naiserator.yaml
+#      image: ${{ needs.assemble-build-push-image-prod.outputs.image }}
