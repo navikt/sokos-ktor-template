@@ -24,7 +24,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
 
 ## Bygge og kjøre prosjekt
 
-1. Bygg prosjektet ved å kjøre `./gradlew clean build shadowJar`
+1. Bygg prosjektet ved å kjøre `./gradlew build installDist`
 2. Start appen lokalt ved å kjøre main metoden i ***Application.kt***
 3. For å kjøre tester i IntelliJ IDEA trenger du [Kotest IntelliJ Plugin](https://plugins.jetbrains.com/plugin/14080-kotest)
 
@@ -68,7 +68,7 @@ Hva er oppgaven til denne applikasjonen
 
 ### Bygge prosjekt
 
-Hvordan bygger jeg prosjektet.
+`./gradlew build installDist`
 
 ### Lokal utvikling
 
