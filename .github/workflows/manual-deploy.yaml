@@ -23,7 +23,7 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/gradle-run-test.yaml@new_workflow_release
 
   assemble-build-push-image-dev:
-    needs: run-application-tests
+    needs: [ run-application-tests ]
     name: Assemble application & build/push image dev
     uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@new_workflow_release
     secrets: inherit
@@ -32,7 +32,7 @@ jobs:
       image-tag: 'snapshot'
 
   deploy-dev:
-    needs: assemble-build-push-image-dev
+    needs: [ assemble-build-push-image-dev ]
     name: Deploy to dev-fss
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
