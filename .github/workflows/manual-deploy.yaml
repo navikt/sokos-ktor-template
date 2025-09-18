@@ -37,5 +37,5 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
       cluster: dev-fss
-      resource: .nais/dev/naiserator.yaml
+      resource: .nais/dev/naiserator-dev.yaml
       image: ${{ needs.assemble-build-push-image-dev.outputs.image }}
