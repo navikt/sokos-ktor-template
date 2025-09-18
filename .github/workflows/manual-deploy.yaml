@@ -29,6 +29,7 @@ jobs:
     secrets: inherit
     with:
       dockerfile: './.nais/dev/Dockerfile'
+      image-tag: 'snapshot'
 
   deploy-dev:
     needs: assemble-build-push-image-dev
@@ -37,4 +38,4 @@ jobs:
     with:
       cluster: dev-fss
       resource: .nais/dev/naiserator.yaml
-      image: ${{ needs.build-and-push-dev-image.outputs.image }}
+      image: ${{ needs.assemble-build-push-image-dev.outputs.image }}
