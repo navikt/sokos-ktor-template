@@ -25,7 +25,7 @@ jobs:
     with:
       gradle-task: './gradlew build installDist --configuration-cache'
 
-  build-image-dev:
+  build-dev-image:
     needs: build-app
     name: Build & push image for dev
     uses: navikt/mob-gha-workflows/.github/workflows/gar-image-push.yaml@new_workflow_release
@@ -34,3 +34,12 @@ jobs:
       image-tag: snapshot
       dockerfile: './.nais/dev/Dockerfile'
       docker-context: './.nais/dev'
+
+  deploy-dev:
+    needs: [ build-app, build-dev-image ]
+    name: Deploy to dev-fss
+    uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
+    with:
+      cluster: dev-fss
+      resource: .nais/dev/naiserator.yaml
+      image: ${{ needs.build-dev-image.outputs.image }}

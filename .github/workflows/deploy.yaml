@@ -46,7 +46,7 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
       cluster: dev-fss
-      resource: .nais/naiserator-dev.yaml
+      resource: .nais/naiserator.yaml
       image: ${{ needs.build.outputs.image }}
 
 
@@ -64,5 +64,5 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
     with:
       cluster: prod-fss
-      resource: .nais/naiserator-prod.yaml
+      resource: .nais/naiserator.yaml
       image: ${{ needs.build.outputs.image }}
