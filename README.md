@@ -13,12 +13,12 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
 
 ## Workflows
 
-1. [Deploy application](.github/workflows/deploy.yaml) -> For å bygge/teste prosjektet, bygge/pushe Docker image og deploy til dev og prod
+1. [Deploy application](.github/workflows/deploy.yaml) -> Kjører tester og bygger (assembler) distribution, bygger og pusher Docker image og deploy til dev og prod
     1. Denne workflow trigges når kode pushes i `main` branch
-2. [Build/test PR](.github/workflows/build-pr.yaml) -> For å bygge og teste alle PR som blir opprettet og gjør en sjekk på branch prefix og title
+2. [Build/test PR](.github/workflows/build-pr.yaml) -> Kjører tester og bygger (assembler) distribution alle PR som blir opprettet
     1. Denne workflow kjøres kun når det opprettes pull requester
 3. [Security](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
-    1. Denne kjøres når [Deploy application](.github/workflows/deploy.yaml) har kjørt ferdig
+    1. Denne kjøres hver mandag klokka 06.00
 4. [Deploy application manual](.github/workflows/manual-deploy.yaml) -> For å deploye applikasjonen manuelt til ulike miljøer
     1. Denne workflow trigges manuelt basert på branch og miljø
 
