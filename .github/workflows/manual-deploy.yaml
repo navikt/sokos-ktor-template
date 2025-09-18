@@ -29,7 +29,6 @@ jobs:
     secrets: inherit
     with:
       dockerfile: './.nais/dev/Dockerfile'
-      docker-context: './.nais/dev'
 
   deploy-dev:
     needs: assemble-build-push-image-dev
