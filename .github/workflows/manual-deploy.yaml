@@ -28,13 +28,13 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@main
     secrets: inherit
     with:
-      dockerfile: './.nais/dev/Dockerfile'
       image-suffix: 'dev'
+      dockerfile: './.nais/dev/Dockerfile'
 
   deploy-dev:
     needs: [ assemble-build-push-image-dev ]
     name: Deploy to dev-fss
-    uses: navikt/mob-gha-workflows/.github/workflows/nais-app-deploy.yaml@main
+    uses: navikt/mob-gha-workflows/.github/workflows/nais-deploy.yaml@main
     with:
       cluster: dev-fss
       resource: .nais/dev/naiserator-dev.yaml
