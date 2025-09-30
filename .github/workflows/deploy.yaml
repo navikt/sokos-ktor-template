@@ -35,7 +35,7 @@ jobs:
     uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@new_workflow_release
     secrets: inherit
     with:
-      image-tag: 'dev'
+      image-suffix: 'dev'
       dockerfile: './.nais/dev/Dockerfile'
 
   assemble-build-push-image-prod:
