@@ -17,7 +17,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
     1. Denne workflow trigges når kode pushes i `main` branch
 2. [Build/test PR](.github/workflows/build-pr.yaml) -> Kjører tester og bygger (assembler) distribution alle PR som blir opprettet
     1. Denne workflow kjøres kun når det opprettes pull requester
-3. [Security](.github/workflows/security.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
+3. [Security](.github/workflows/codeql-trivy-scan.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
     1. Denne kjøres hver mandag klokka 06.00
 4. [Deploy application manual](.github/workflows/manual-deploy.yaml) -> For å deploye applikasjonen manuelt til ulike miljøer
     1. Denne workflow trigges manuelt basert på branch og miljø
