@@ -14,7 +14,7 @@ jobs:
   security-analyze-code:
     name: Security analyze
     if: success() || github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
-    uses: navikt/mob-gha-workflows/.github/workflows/security.yaml@new_workflow_release
+    uses: navikt/mob-gha-workflows/.github/workflows/security.yaml@main
     secrets: inherit
     with:
       language: 'kotlin'

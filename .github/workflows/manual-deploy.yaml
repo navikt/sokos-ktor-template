@@ -20,12 +20,12 @@ permissions:
 jobs:
   run-application-tests:
     name: Run tests
-    uses: navikt/mob-gha-workflows/.github/workflows/gradle-run-test.yaml@new_workflow_release
+    uses: navikt/mob-gha-workflows/.github/workflows/gradle-run-test.yaml@main
 
   assemble-build-push-image-dev:
     needs: [ run-application-tests ]
     name: Assemble application & build/push image dev
-    uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@new_workflow_release
+    uses: navikt/mob-gha-workflows/.github/workflows/gradle-assemble-build-push-image.yaml@main
     secrets: inherit
     with:
       dockerfile: './.nais/dev/Dockerfile'
