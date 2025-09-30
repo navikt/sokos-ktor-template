@@ -29,6 +29,7 @@ jobs:
     secrets: inherit
     with:
       image-suffix: 'dev'
+      image-tag: 'snapshot'
       dockerfile: './.nais/dev/Dockerfile'
 
   deploy-dev:
