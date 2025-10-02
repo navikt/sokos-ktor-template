@@ -19,8 +19,8 @@ fun Application.module() {
     val useAuthentication = PropertiesConfig.Configuration().useAuthentication
     val applicationState = ApplicationState()
 
-    commonConfig()
     applicationLifecycleConfig(applicationState)
+    commonConfig()
     securityConfig(useAuthentication)
     routingConfig(useAuthentication, applicationState)
 }
