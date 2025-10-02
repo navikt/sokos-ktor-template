@@ -14,6 +14,12 @@ import no.nav.sokos.prosjektnavn.config.securityConfig
 private val embeddedServer = embeddedServer(Netty, port = 8080, module = Application::module)
 
 fun main() {
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            embeddedServer.stop(gracePeriodMillis = 3000, timeoutMillis = 5000)
+        },
+    )
+
     embeddedServer.start(true)
 }
 
@@ -25,10 +31,4 @@ fun Application.module() {
     applicationLifecycleConfig(applicationState)
     securityConfig(useAuthentication)
     routingConfig(useAuthentication, applicationState)
-
-    Runtime.getRuntime().addShutdownHook(
-        Thread {
-            embeddedServer.stop(gracePeriodMillis = 3000, timeoutMillis = 5000)
-        },
-    )
 }
