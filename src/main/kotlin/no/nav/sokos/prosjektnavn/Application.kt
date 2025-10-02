@@ -11,8 +11,10 @@ import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.config.securityConfig
 
+private val embeddedServer = embeddedServer(Netty, port = 8080, module = Application::module)
+
 fun main() {
-    embeddedServer(Netty, port = 8080, module = Application::module).start(true)
+    embeddedServer.start(true)
 }
 
 fun Application.module() {
@@ -23,4 +25,10 @@ fun Application.module() {
     applicationLifecycleConfig(applicationState)
     securityConfig(useAuthentication)
     routingConfig(useAuthentication, applicationState)
+
+    Runtime.getRuntime().addShutdownHook(
+        Thread {
+            embeddedServer.stop(gracePeriodMillis = 3000, timeoutMillis = 5000)
+        },
+    )
 }
