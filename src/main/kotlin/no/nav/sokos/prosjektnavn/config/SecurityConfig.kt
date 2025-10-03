@@ -24,33 +24,32 @@ fun Application.securityConfig(
     useAuthentication: Boolean,
     azureAdProperties: PropertiesConfig.AzureAdProperties = PropertiesConfig.AzureAdProperties(),
 ) {
-    logger.info("Use authentication: $useAuthentication")
-    if (useAuthentication) {
-        val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
-        val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+    if (!useAuthentication) return
 
-        authentication {
-            jwt(AUTHENTICATION_NAME) {
-                realm = PropertiesConfig.Configuration().naisAppName
-                verifier(
-                    jwkProvider = jwkProvider,
-                    issuer = openIdMetadata.issuer,
-                ) { acceptLeeway(1) }
-                validate { credential ->
-                    try {
-                        requireNotNull(credential.payload.audience) {
-                            logger.info("Auth: Missing audience in token")
-                            "Auth: Missing audience in token"
-                        }
-                        require(credential.payload.audience.contains(azureAdProperties.clientId)) {
-                            logger.info("Auth: Valid audience not found in claims")
-                            "Auth: Valid audience not found in claims"
-                        }
-                        JWTPrincipal(credential.payload)
-                    } catch (e: Exception) {
-                        logger.warn(e) { "Client authentication failed" }
-                        null
+    val openIdMetadata: OpenIdMetadata = wellKnowConfig(azureAdProperties.wellKnownUrl)
+    val jwkProvider = cachedJwkProvider(openIdMetadata.jwksUri)
+
+    authentication {
+        jwt(AUTHENTICATION_NAME) {
+            realm = PropertiesConfig.getApplicationProperties().appName
+            verifier(
+                jwkProvider = jwkProvider,
+                issuer = openIdMetadata.issuer,
+            ) { acceptLeeway(1) }
+            validate { credential ->
+                try {
+                    requireNotNull(credential.payload.audience) {
+                        logger.info("Auth: Missing audience in token")
+                        "Auth: Missing audience in token"
                     }
+                    require(credential.payload.audience.contains(azureAdProperties.clientId)) {
+                        logger.info("Auth: Valid audience not found in claims")
+                        "Auth: Valid audience not found in claims"
+                    }
+                    JWTPrincipal(credential.payload)
+                } catch (e: Exception) {
+                    logger.warn(e) { "Client authentication failed" }
+                    null
                 }
             }
         }
