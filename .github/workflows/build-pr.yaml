@@ -1,4 +1,4 @@
-name: Build/test PR
+name: Build & test PR
 
 on:
   pull_request:
@@ -10,16 +10,15 @@ on:
       - '.editorconfig'
       - 'setupLocalEnvironment.sh'
       - 'dokumentasjon/**'
+      - '.github/workflows/codeql-trivy-scan.yaml'
       - '.github/workflows/deploy.yaml'
       - '.github/workflows/manual-deploy.yaml'
-      - '.github/workflows/security.yaml'
-      - '.github/workflows/alerts.yaml'
-      - '.nais/alerts-dev.yaml'
-      - '.nais/alerts-prod.yaml'
       - '.github/dependabot.yaml'
 
 jobs:
-  build-pr:
-    name: Build and test
-    uses: navikt/mob-gha-workflows/.github/workflows/gradle-build-pr.yaml@main
+  build-test-pr:
+    name: Build & test application
+    uses: navikt/mob-gha-workflows/.github/workflows/gradle-run-test.yaml@main
+    with:
+      gradle-task: './gradlew build installDist --configuration-cache'
 

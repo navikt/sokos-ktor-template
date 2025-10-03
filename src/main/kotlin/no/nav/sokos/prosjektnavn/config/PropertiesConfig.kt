@@ -14,7 +14,7 @@ object PropertiesConfig {
 
     fun initEnvConfig(applicationConfig: ApplicationConfig? = null) {
         val environment = System.getenv("APPLICATION_ENV") ?: System.getProperty("APPLICATION_ENV")
-        val config =
+        val fileConfig =
             when {
                 environment == null || environment.lowercase() == "local" -> {
                     val defaultConfig = ConfigFactory.parseFile(File("defaults.properties"))
@@ -24,9 +24,22 @@ object PropertiesConfig {
                 else -> ConfigFactory.parseResources("application-${environment.lowercase()}.conf")
             }
 
-        envConfig = applicationConfig?.let { external ->
-            HoconApplicationConfig(config.withFallback(ConfigFactory.parseMap(external.toMap())).resolve())
-        } ?: HoconApplicationConfig(config.resolve())
+        // Precedence (highest -> lowest):
+        // 1. system environment
+        // 2. system properties
+        // 3. fileConfig (resource/local + defaults)
+        // 4. applicationConfig (if provided)
+        val base =
+            ConfigFactory
+                .systemEnvironment()
+                .withFallback(ConfigFactory.systemProperties())
+                .withFallback(fileConfig)
+
+        envConfig =
+            applicationConfig?.let { external ->
+                val externalConfig = ConfigFactory.parseMap(external.toMap())
+                HoconApplicationConfig(base.withFallback(externalConfig).resolve())
+            } ?: HoconApplicationConfig(base.resolve())
     }
 
     fun getApplicationProperties(): ApplicationProperties = envConfig.property("application").getAs<ApplicationProperties>()

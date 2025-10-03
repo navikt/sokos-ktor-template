@@ -40,7 +40,7 @@ mkdir -p "src/main/kotlin/no/nav/sokos/$artifactNamePath"
 mkdir -p "src/test/kotlin/no/nav/sokos/$artifactNamePath"
 
 # Combine grep commands
-grep -rl --exclude=setupTemplate.sh -e $default -e $defaultArtifactName -e "sokos_ktor_template" -e "sokos_ktor_template_type" | xargs -I@ sed -i '' -e "s|$default|$projectName|g" -e "s|$defaultArtifactName|$artifactName|g" -e "s|sokos_ktor_template|$projectNameWithUnderScore|g" -e "s|sokos_ktor_template_type|${projectNameWithUnderScore}_type|g" @
+grep -rl --exclude=setupTemplate.sh --exclude-dir=.git -e $default -e $defaultArtifactName -e "sokos_ktor_template" -e "sokos_ktor_template_type" | xargs -I@ sed -i '' -e "s|$default|$projectName|g" -e "s|$defaultArtifactName|$artifactName|g" -e "s|sokos_ktor_template|$projectNameWithUnderScore|g" -e "s|sokos_ktor_template_type|${projectNameWithUnderScore}_type|g" @
 
 # Move files from the old directory to the new one
 mv src/main/kotlin/no/nav/sokos/prosjektnavn/* "src/main/kotlin/no/nav/sokos/$artifactNamePath"

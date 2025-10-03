@@ -39,6 +39,7 @@ class SecurityTest :
                 testApplication {
                     configureTestEnvironment()
                     application {
+                        PropertiesConfig.initEnvConfig()
                         securityConfig(true, authConfig())
                         routing {
                             authenticate(true, AUTHENTICATION_NAME) {
@@ -71,6 +72,7 @@ class SecurityTest :
                             }
                         }
                     application {
+                        PropertiesConfig.initEnvConfig()
                         commonConfig()
                         securityConfig(true, authConfig())
                         routing {

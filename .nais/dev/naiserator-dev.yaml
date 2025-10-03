@@ -9,7 +9,7 @@ spec:
   image: "{{{ image }}}"
   port: 8080
   replicas:
-    min: 2
+    min: 1
     max: 2
     cpuThresholdPercentage: 75
   liveness:
@@ -30,7 +30,8 @@ spec:
       cpu: 100m
       memory: 512Mi
   ingresses:
-    - https://sokos-ktor-template.intern.nav.no
+    - https://sokos-ktor-template.intern.dev.nav.no
+    - https://sokos-ktor-template.dev-fss-pub.nais.io
   prometheus:
     enabled: true
     path: /internal/metrics
@@ -42,10 +43,16 @@ spec:
     application:
       enabled: true
   accessPolicy:
+    inbound:
+      rules:
+        - application: azure-token-generator
+          namespace: nais
+          cluster: dev-gcp
     outbound:
       rules:
         - application: logging
           namespace: nais-system
+  webproxy: true
 
   env:
     - name: USE_AUTHENTICATION
