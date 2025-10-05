@@ -29,7 +29,7 @@ jobs:
 
   assemble-build-push-image-dev:
     permissions:
-      contents: write
+      contents: read
       id-token: write
     needs: [ run-application-tests ]
     name: Assemble application & build/push dev image
