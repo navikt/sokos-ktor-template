@@ -9,18 +9,18 @@ import io.ktor.server.application.log
 fun Application.applicationLifecycleConfig(applicationState: ApplicationState) {
     monitor.subscribe(ApplicationStarted) {
         applicationState.alive = true
-        it.log.info("ApplicationStarted. ApplicationState: alive(${applicationState.alive}, ready(${applicationState.ready})")
+        it.log.info("Application is started")
     }
 
     monitor.subscribe(ServerReady) {
         applicationState.ready = true
-        it.log.info("ServerReady. ApplicationState: alive(${applicationState.alive}, ready(${applicationState.ready})")
+        it.log.info("Server is ready")
     }
 
     monitor.subscribe(ApplicationStopped) {
         applicationState.alive = false
         applicationState.ready = false
-        it.log.info("ApplicationStopped. ApplicationState: alive(${applicationState.alive}, ready(${applicationState.ready})")
+        it.log.info("Application is stopped")
     }
 }
 
