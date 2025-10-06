@@ -20,6 +20,7 @@ import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
 import no.nav.sokos.prosjektnavn.API_BASE_PATH
+import no.nav.sokos.prosjektnavn.TestUtil.configureTestEnvironment
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
@@ -29,15 +30,16 @@ import no.nav.sokos.prosjektnavn.config.securityConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
 
-val dummyService: DummyService = mockk()
-
 class SecurityTest :
     FunSpec({
+        val dummyService: DummyService = mockk()
 
         test("test http GET endepunkt uten token bør returnere 401") {
             withMockOAuth2Server {
                 testApplication {
+                    configureTestEnvironment()
                     application {
+                        PropertiesConfig.initEnvConfig()
                         securityConfig(true, authConfig())
                         routing {
                             authenticate(true, AUTHENTICATION_NAME) {
@@ -55,6 +57,7 @@ class SecurityTest :
             withMockOAuth2Server {
                 val mockOAuth2Server = this
                 testApplication {
+                    configureTestEnvironment()
                     val client =
                         createClient {
                             install(ContentNegotiation) {
@@ -69,6 +72,7 @@ class SecurityTest :
                             }
                         }
                     application {
+                        PropertiesConfig.initEnvConfig()
                         commonConfig()
                         securityConfig(true, authConfig())
                         routing {

@@ -6,12 +6,12 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.get
 import io.ktor.server.routing.route
 
-import no.nav.sokos.prosjektnavn.service.DummyService
+import no.nav.sokos.prosjektnavn.service.DatabaseService
 
-fun Route.dummyApi(dummyService: DummyService) {
+fun Route.databaseServiceApi(databaseService: DatabaseService) {
     route("/api/v1/") {
-        get("hello") {
-            val response = dummyService.sayHello()
+        get("read") {
+            val response = databaseService.read()
             call.respond(HttpStatusCode.OK, response)
         }
     }

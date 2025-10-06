@@ -5,7 +5,10 @@ import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 
+import no.nav.sokos.prosjektnavn.api.databaseServiceApi
 import no.nav.sokos.prosjektnavn.api.dummyApi
+import no.nav.sokos.prosjektnavn.service.DatabaseService
+import no.nav.sokos.prosjektnavn.service.DummyService
 
 fun Application.routingConfig(
     useAuthentication: Boolean,
@@ -14,7 +17,8 @@ fun Application.routingConfig(
     routing {
         internalNaisRoutes(applicationState)
         authenticate(useAuthentication, AUTHENTICATION_NAME) {
-            dummyApi()
+            dummyApi(dummyService = DummyService())
+            databaseServiceApi(databaseService = DatabaseService())
         }
     }
 }
