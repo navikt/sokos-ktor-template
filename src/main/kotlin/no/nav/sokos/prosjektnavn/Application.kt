@@ -19,17 +19,17 @@ fun main() {
 
 private val logger = mu.KotlinLogging.logger {}
 
-// For å tvinge at vi kun har EN datasource i applikasjonen må dette enten injectes her eller settes opp i embeddedServer
 fun Application.module(applicationConfig: ApplicationConfig = environment.config) {
     PropertiesConfig.initEnvConfig(applicationConfig)
+
     val useAuthentication = PropertiesConfig.getApplicationProperties().useAuthentication
     val applicationState = ApplicationState()
 
+    applicationLifecycleConfig(applicationState)
     commonConfig()
     securityConfig(useAuthentication)
     routingConfig(useAuthentication, applicationState)
     databaseMigrate()
-    applicationLifecycleConfig(applicationState)
 
     logger.info { "Application started with environment: ${PropertiesConfig.getApplicationProperties().environment}, useAuthentication: $useAuthentication" }
 }
