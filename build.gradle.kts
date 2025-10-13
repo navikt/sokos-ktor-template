@@ -25,9 +25,16 @@ val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "6.0.3"
+val testContainerVersion = "1.21.0"
+val hikaricpVersion = "6.3.0"
+val vaultVersion = "1.3.10"
+val h2Version = "2.3.232"
 val kotlinxSerializationVersion = "1.9.0"
 val mockOAuth2ServerVersion = "3.0.0"
 val mockkVersion = "1.14.6"
+
+val flywayVersion = "11.8.2"
+val postgresVersion = "42.7.5"
 
 dependencies {
 
@@ -40,6 +47,14 @@ dependencies {
     // Ktor client
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-client-apache-jvm:$ktorVersion")
+
+    // Database
+    implementation("com.zaxxer:HikariCP:$hikaricpVersion")
+    implementation("com.h2database:h2:$h2Version")
+    implementation("org.postgresql:postgresql:$postgresVersion")
+    implementation("org.flywaydb:flyway-core:$flywayVersion")
+    runtimeOnly("org.flywaydb:flyway-database-postgresql:$flywayVersion")
+    implementation("no.nav:vault-jdbc:$vaultVersion")
 
     // Security
     implementation("io.ktor:ktor-server-auth-jvm:$ktorVersion")
@@ -63,6 +78,7 @@ dependencies {
     implementation("com.natpryce:konfig:$natpryceVersion")
 
     // Test
+    testImplementation("org.testcontainers:postgresql:$testContainerVersion")
     testImplementation("io.ktor:ktor-server-test-host-jvm:$ktorVersion")
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
