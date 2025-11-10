@@ -17,16 +17,16 @@ repositories {
     mavenCentral()
 }
 
-val ktorVersion = "3.3.1"
+val ktorVersion = "3.3.2"
 val logbackVersion = "1.5.20"
 val logstashVersion = "9.0"
-val micrometerVersion = "1.15.5"
+val micrometerVersion = "1.16.0"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "6.0.4"
 val kotlinxSerializationVersion = "1.9.0"
-val mockOAuth2ServerVersion = "3.0.0"
+val mockOAuth2ServerVersion = "3.0.1"
 val mockkVersion = "1.14.6"
 
 dependencies {
