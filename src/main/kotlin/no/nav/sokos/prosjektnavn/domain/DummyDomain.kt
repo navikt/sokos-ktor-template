@@ -4,8 +4,8 @@ import kotlinx.serialization.Serializable
 
 @Serializable
 data class Cats(
-    val lucy: Lucy,
     val lily: Lily,
+    val lucy: Lucy,
 )
 
 @Serializable
@@ -16,4 +16,11 @@ data class Lucy(
 @Serializable
 data class Lily(
     val name: String,
+)
+
+@Serializable
+data class NullableCats(
+    val nullableLily: Lily? = null,
+    // Move nullableLucy to above nullableLily and the test will pass
+    val nullableLucy: Lucy? = null,
 )

@@ -13,9 +13,7 @@ data class ApplicationProperties(
     val appName: String,
     val namespace: String,
     val configuration: AppConfig,
-) {
-    val currentProfile: Profile = Profile.from(profile)
-}
+)
 
 @Serializable
 data class AppConfig(
