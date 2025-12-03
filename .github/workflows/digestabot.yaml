@@ -1,12 +1,10 @@
-name: "Check for newer image versions"
+name: Check for newer chainguard-image
 
 on:
   workflow_dispatch:
   schedule:
-    - cron: "0 0 * * *"
+    - cron: "*/5 * * * *"
 
 jobs:
   check-digests:
     uses: navikt/mob-gha-workflows/.github/workflows/digestabot.yaml@main
-    with:
-      team: myteam
