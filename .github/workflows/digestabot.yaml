@@ -1,0 +1,12 @@
+name: "Check for newer image versions"
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: "0 0 * * *"
+
+jobs:
+  check-digests:
+    uses: navikt/mob-gha-workflows/.github/workflows/digestabot.yaml@main
+    with:
+      team: myteam
