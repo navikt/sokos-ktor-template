@@ -12,6 +12,7 @@ on:
       - 'dokumentasjon/**'
       - '.github/workflows/codeql-trivy-scan.yaml'
       - '.github/workflows/deploy.yaml'
+      - '.github/workflows/digestabot.yaml'
       - '.github/workflows/manual-deploy.yaml'
       - '.github/dependabot.yaml'
 
