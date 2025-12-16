@@ -20,14 +20,14 @@ repositories {
 val ktorVersion = "3.3.3"
 val logbackVersion = "1.5.21"
 val logstashVersion = "9.0"
-val micrometerVersion = "1.16.0"
+val micrometerVersion = "1.16.1"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
 val kotestVersion = "6.0.7"
 val kotlinxSerializationVersion = "1.9.0"
 val mockOAuth2ServerVersion = "3.0.1"
-val mockkVersion = "1.14.6"
+val mockkVersion = "1.14.7"
 
 dependencies {
 
