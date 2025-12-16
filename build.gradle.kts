@@ -70,11 +70,6 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
-// Vulnerability fix because of id("org.jlleitschuh.gradle.ktlint") uses ch.qos.logback:logback-classic:1.3.5
-configurations.ktlint {
-    resolutionStrategy.force("ch.qos.logback:logback-classic:$logbackVersion")
-}
-
 application {
     mainClass.set("no.nav.sokos.prosjektnavn.ApplicationKt")
 }
