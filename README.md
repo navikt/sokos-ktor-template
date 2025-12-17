@@ -36,29 +36,28 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
 - Interne henvendelser kan sendes via Slack i kanalen [#utbetaling](https://nav-it.slack.com/archives/CKZADNFBP)
 
 ```
-Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere.
+‼️ Alt under her skal beholdes som en standard dokumentasjon som må fylles ut av utviklere. Vi prøver å ha standard mal for alle våre applikasjoner ‼️
 ```
 
 # Prosjektnavn
 
-# Innholdsoversikt
-
-* [1. Funksjonelle krav](#1-funksjonelle-krav)
-* [2. Utviklingsmiljø](#2-utviklingsmiljø)
-* [3. Programvarearkitektur](#3-programvarearkitektur)
-* [4. Deployment](#4-deployment)
-* [5. Autentisering](#5-autentisering)
-* [6. Drift og støtte](#6-drift-og-støtte)
-* [7. Swagger](#7-swagger)
-* [8. Henvendelser](#8-henvendelser)
+* [1. Dokumentasjon](dokumentasjon/dokumentasjon.md)
+* [2. Funksjonelle krav](#2-funksjonelle-krav)
+* [3. Utviklingsmiljø](#3-utviklingsmiljø)
+* [4. Programvarearkitektur](#4-programvarearkitektur)
+* [5. Deployment](#5-deployment)
+* [6. Autentisering](#6-autentisering)
+* [7. Drift og støtte](#7-drift-og-støtte)
+* [8. Swagger](#8-swagger)
+* [9. Henvendelser](#9-henvendelser)
 
 ---
 
-# 1. Funksjonelle Krav
+# 2. Funksjonelle Krav
 
 Hva er oppgaven til denne applikasjonen
 
-# 2. Utviklingsmiljø
+# 3. Utviklingsmiljø
 
 ### Forutsetninger
 
@@ -74,22 +73,24 @@ Hva er oppgaven til denne applikasjonen
 
 Hvordan kan jeg kjøre lokalt og hva trenger jeg?
 
-# 3. Programvarearkitektur
+# 4. Programvarearkitektur
 
 Legg ved skissediagram for hvordan arkitekturen er bygget
 
-# 4. Deployment
+# 5. Deployment
 
 Distribusjon av tjenesten er gjort med bruk av Github Actions.
 [sokos-ktor-template CI / CD](https://github.com/navikt/sokos-ktor-template/actions)
 
 Push/merge til main branche vil teste, bygge og deploye til produksjonsmiljø og testmiljø.
 
-# 7. Autentisering
+# 6. Autentisering
 
-Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering
+Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) autentisering.
+- Bruk https://azure-token-generator.intern.dev.nav.no/api/obo?aud=cluster:namespace:app for å generere obo-token testing mot dev.
+- Bruk https://azure-token-generator.intern.dev.nav.no/api/m2m?aud=cluster:namespace:app for å generere m2m-token testing mot dev.
 
-# 6. Drift og støtte
+# 7. Drift og støtte
 
 ### Logging
 
@@ -101,7 +102,7 @@ Sensitive meldinger logges til [Team Logs](https://doc.nais.io/observability/log
 For dev-gcp:
 
 ```shell script
-kubectl config use-context dev-fss
+kubectl config use-context dev-gcp
 kubectl get pods -n okonomi | grep sokos-ktor-template
 kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
 ```
@@ -109,7 +110,7 @@ kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-t
 For prod-gcp:
 
 ```shell script
-kubectl config use-context prod-fss
+kubectl config use-context prod-gcp
 kubectl get pods -n okonomi | grep sokos-ktor-template
 kubectl logs -f sokos-ktor-template-<POD-ID> --namespace okonomi -c sokos-ktor-template
 ```
@@ -134,11 +135,13 @@ Varsler blir sendt til følgende Slack-kanaler:
 
 ---
 
-# 7. Swagger
+# 8. Swagger
 
-Hva er url til Lokal, dev og prod?
+- Url Lokal
+- Url Dev 
+- Url Prod
 
-# 8. Henvendelser og tilgang
+# 9. Henvendelser og tilgang
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
 Interne henvendelser kan sendes via Slack i kanalen [#utbetaling](https://nav-it.slack.com/archives/CKZADNFBP)
