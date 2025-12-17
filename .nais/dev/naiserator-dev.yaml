@@ -31,7 +31,6 @@ spec:
       memory: 512Mi
   ingresses:
     - https://sokos-ktor-template.intern.dev.nav.no
-    - https://sokos-ktor-template.dev-fss-pub.nais.io
   prometheus:
     enabled: true
     path: /internal/metrics
@@ -47,12 +46,10 @@ spec:
       rules:
         - application: azure-token-generator
           namespace: nais
-          cluster: dev-gcp
     outbound:
       rules:
         - application: logging
           namespace: nais-system
-  webproxy: true
 
   env:
     - name: USE_AUTHENTICATION

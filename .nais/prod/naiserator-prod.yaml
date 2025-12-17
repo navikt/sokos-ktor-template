@@ -31,7 +31,6 @@ spec:
       memory: 512Mi
   ingresses:
     - https://sokos-ktor-template.intern.nav.no
-    - https://sokos-ktor-template.prod-fss-pub.nais.io
   prometheus:
     enabled: true
     path: /internal/metrics
@@ -47,7 +46,6 @@ spec:
       rules:
         - application: logging
           namespace: nais-system
-  webproxy: true
 
   env:
     - name: USE_AUTHENTICATION
