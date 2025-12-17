@@ -3,6 +3,7 @@ FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jre:openjdk-25-dev
 COPY build/install/*/lib /lib
 
 ENV TZ="Europe/Oslo"
+ENV JVM_OPTS="--enable-native-access=ALL-UNNAMED"
 ENV JDK_JAVA_OPTIONS="-XX:MaxRAMPercentage=75"
 
 ENTRYPOINT ["java", "-cp", "/lib/*", "no.nav.sokos.prosjektnavn.ApplicationKt"]
