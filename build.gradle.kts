@@ -18,7 +18,7 @@ repositories {
 }
 
 val ktorVersion = "3.3.3"
-val logbackVersion = "1.5.22"
+val logbackVersion = "1.5.23"
 val logstashVersion = "9.0"
 val micrometerVersion = "1.16.1"
 val kotlinLoggingVersion = "3.0.5"
@@ -67,7 +67,7 @@ dependencies {
     testImplementation("io.kotest:kotest-assertions-core-jvm:$kotestVersion")
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
-    testImplementation("net.bytebuddy:byte-buddy:1.18.2") // TEMP: Needed for mockk 1.14.6 with java25. Remove when Mockk is updated and bytebuddy is no longer needed.
+    testImplementation("net.bytebuddy:byte-buddy:1.18.3") // TEMP: Needed for mockk 1.14.6 with java25. Remove when Mockk is updated and bytebuddy is no longer needed.
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
