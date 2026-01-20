@@ -5,13 +5,25 @@ gcloud auth print-identity-token &> /dev/null
 if [ $? -gt 0 ]; then
     gcloud auth login
 fi
+
+# Suppress kubectl config output
 kubectl config use-context dev-gcp
 kubectl config set-context --current --namespace=okonomi
 
-# Get AZURE system variables
-envValue=$(kubectl exec -it $(kubectl get pods | grep sokos-ktor-template | cut -f1 -d' ') -c sokos-ktor-template -- env | egrep "^AZURE"| sort)
+# Get pod name
+POD_NAME=$(kubectl get pods --no-headers | grep sokos-ktor-template | head -n1 | awk '{print $1}')
 
-# Set AZURE as local environment variables
+if [ -z "$POD_NAME" ]; then
+    echo "Error: No sokos-ktor-template pod found" >&2
+    exit 1
+fi
+
+echo "Fetching environment variables from pod: $POD_NAME"
+
+# Get system variables
+envValue=$(kubectl exec "$POD_NAME" -c sokos-ktor-template -- env | egrep "^AZURE"| sort)
+
+# Set local environment variables
 rm -f defaults.properties
 echo "$envValue" > defaults.properties
-echo "AZURE stores as defaults.properties"
+echo "Environment variables saved to defaults.properties"
