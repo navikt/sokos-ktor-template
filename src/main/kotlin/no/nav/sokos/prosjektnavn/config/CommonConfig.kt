@@ -30,6 +30,14 @@ val TEAM_LOGS_MARKER: Marker? = MarkerFactory.getMarker("TEAM_LOGS")
 
 private val logger = KotlinLogging.logger {}
 
+val jsonConfig =
+    Json {
+        prettyPrint = true
+        ignoreUnknownKeys = true
+        encodeDefaults = true
+        explicitNulls = false
+    }
+
 fun Application.commonConfig() {
     install(CallLogging) {
         logger = no.nav.sokos.prosjektnavn.config.logger
@@ -38,14 +46,7 @@ fun Application.commonConfig() {
         disableDefaultColors()
     }
     install(ContentNegotiation) {
-        json(
-            Json {
-                prettyPrint = true
-                ignoreUnknownKeys = true
-                encodeDefaults = true
-                explicitNulls = false
-            },
-        )
+        json(jsonConfig)
     }
     install(MicrometerMetrics) {
         registry = Metrics.prometheusMeterRegistry
