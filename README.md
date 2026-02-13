@@ -1,4 +1,4 @@
-## sokos-ktor-template
+# sokos-ktor-template
 
 Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for Team Motta og Beregne
 
