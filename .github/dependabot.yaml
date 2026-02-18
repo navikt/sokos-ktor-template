@@ -4,13 +4,13 @@ updates:
     directory: "/"
     schedule:
       interval: daily
-      time: "16:45"
-      timezone: "Europe/London"
+    cooldown:
+      default-days: 7
     groups:
       kotlin-core-plugins:
         patterns:
-          - "org.jetbrains.kotlin.jvm"
-          - "org.jetbrains.kotlin.plugin.serialization"
+          - "jvm"
+          - "plugin.serialization"
         update-types:
           - minor
           - patch
@@ -19,5 +19,5 @@ updates:
           - minor
           - patch
         exclude-patterns:
-          - "org.jetbrains.kotlin.jvm"
-          - "org.jetbrains.kotlin.plugin.serialization"
+          - "jvm"
+          - "plugin.serialization"
