@@ -11,6 +11,8 @@ updates:
         update-types:
           - minor
           - patch
+        exclude-patterns:
+          - "org.jetbrains.kotlin*"
       kotlin-plugins:
         patterns:
           - "org.jetbrains.kotlin*"
