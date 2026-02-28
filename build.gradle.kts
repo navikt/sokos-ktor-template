@@ -70,6 +70,20 @@ dependencies {
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
 }
 
+// CVE fixes for vulnerable transitive dependencies from io.ktor:ktor-server-auth-jwt-jvm, no.nav.security:mock-oauth2-server, and net.logstash.logback:logstash-logback-encoder
+configurations.all {
+    resolutionStrategy.eachDependency {
+        if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-core") {
+            useVersion("2.21.1")
+            because("CVE fix: Number Length Constraint Bypass in Async Parser Leads to Potential DoS in versions >= 2.19.0, < 2.21.1")
+        }
+        if (requested.group == "tools.jackson.core" && requested.name == "jackson-core") {
+            useVersion("3.1.0")
+            because("CVE fix: Number Length Constraint Bypass in Async Parser Leads to Potential DoS in versions >= 3.0.0, < 3.1.0")
+        }
+    }
+}
+
 application {
     mainClass.set("no.nav.sokos.prosjektnavn.ApplicationKt")
 }
