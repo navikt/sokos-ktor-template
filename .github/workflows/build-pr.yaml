@@ -32,6 +32,7 @@ jobs:
       generate-dependency-graph: true
 
   dependency-review:
+    needs: build-and-test
     permissions:
       contents: read
       pull-requests: write
