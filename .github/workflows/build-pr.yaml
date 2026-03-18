@@ -28,3 +28,9 @@ jobs:
       contents: read
     uses: navikt/mob-gha-workflows/.github/workflows/gradle-build-test-app.yaml@main
 
+  dependency-review:
+    permissions:
+      contents: read
+      pull-requests: write
+    uses: navikt/mob-gha-workflows/.github/workflows/gradle-dependency-review.yaml@feature/gradle_dependencies_review
+
