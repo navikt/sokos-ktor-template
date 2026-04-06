@@ -6,7 +6,7 @@ plugins {
     kotlin("jvm") version "2.3.10"
     kotlin("plugin.serialization") version "2.3.10"
     id("org.jlleitschuh.gradle.ktlint") version "14.2.0"
-    id("org.jetbrains.kotlinx.kover") version "0.9.7"
+    id("org.jetbrains.kotlinx.kover") version "0.9.8"
 
     application
 }
@@ -24,7 +24,7 @@ val micrometerVersion = "1.16.4"
 val kotlinLoggingVersion = "3.0.5"
 val janionVersion = "3.1.12"
 val natpryceVersion = "1.6.10.0"
-val kotestVersion = "6.1.7"
+val kotestVersion = "6.1.9"
 val kotlinxSerializationVersion = "1.10.0"
 val mockOAuth2ServerVersion = "3.0.1"
 val mockkVersion = "1.14.9"
