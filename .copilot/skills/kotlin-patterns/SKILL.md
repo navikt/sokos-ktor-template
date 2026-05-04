@@ -40,8 +40,11 @@ Idiomatic conventions for this codebase. Detailed examples live in the sub-files
 - `sealed` for modeled state
 - `suspend` + structured concurrency for async
 - Run `ktlintFormat` before committing
+- [navikt/kotliquery](https://github.com/navikt/kotliquery) for database access — our fork of Kotliquery
 
 ### 🚫 Never
+- ORM frameworks (Exposed, Spring Data, Hibernate, etc.) unless explicitly specified — use navikt/kotliquery
+- IOC/DI frameworks (Koin, Spring, Dagger, etc.) unless explicitly specified — use manual constructor injection
 - `runBlocking` in production code
 - `GlobalScope.launch`
 - `!!` without a preceding null check

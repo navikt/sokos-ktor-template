@@ -30,6 +30,7 @@ Default spec style: **`BehaviorSpec`** (Given/When/Then/And) with Norwegian scen
 ## Boundaries
 
 ### ✅ Always
+- `testApplication { }` exclusively for testing API endpoints (routes) — never for services, repositories, or other non-HTTP logic
 - `BehaviorSpec` as default; Norwegian scenario text
 - Reset circuit breaker in `beforeEach` when tests reach an external HTTP client
 - Clear database state before loading fixtures in each `Given`
@@ -42,6 +43,7 @@ Default spec style: **`BehaviorSpec`** (Given/When/Then/And) with Norwegian scen
 - Tests requiring real network or real SFTP
 
 ### 🚫 Never
+- `testApplication { }` for anything other than API endpoint tests (use direct class instantiation + mocks for services, repositories, etc.)
 - JUnit
 - `runBlocking { ... }` in test blocks
 - Real HTTP calls to external services

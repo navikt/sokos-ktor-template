@@ -154,3 +154,22 @@ user?.let { u ->
 val city = user?.address?.city
 city?.let { println(it) }
 ```
+
+## Naming Convention
+
+All naming (functions, variables, classes, etc.) must be in **English**, except for **domain words** which stay in Norwegian.
+
+Domain words are business/domain-specific terms from NAV's vocabulary (e.g. `krav`, `utbetaling`, `oppdrag`, `attestasjon`). These are kept in Norwegian because translating them loses precision.
+
+```kotlin
+// Good: English naming with Norwegian domain words
+fun getKrav(kravId: String): Krav
+fun updateUtbetaling(utbetaling: Utbetaling): Utbetaling
+fun processOppdrag(oppdragList: List<Oppdrag>): List<Result>
+data class Attestasjon(val id: String, val status: AttestasjonStatus)
+
+// Bad: Norwegian verbs/structure
+fun hentKrav(kravId: String): Krav        // "hent" → "get"
+fun oppdaterUtbetaling(...): Utbetaling   // "oppdater" → "update"
+fun behandleOppdrag(...): List<Result>    // "behandle" → "process"
+```
