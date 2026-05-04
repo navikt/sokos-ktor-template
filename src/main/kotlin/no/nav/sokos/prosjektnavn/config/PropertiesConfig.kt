@@ -1,65 +1,67 @@
 package no.nav.sokos.prosjektnavn.config
 
-import java.io.File
+import kotlinx.serialization.Serializable
 
-import com.natpryce.konfig.ConfigurationMap
-import com.natpryce.konfig.ConfigurationProperties
-import com.natpryce.konfig.EnvironmentVariables
-import com.natpryce.konfig.Key
-import com.natpryce.konfig.overriding
-import com.natpryce.konfig.stringType
+import com.typesafe.config.ConfigFactory
+import io.ktor.server.config.ApplicationConfig
+import io.ktor.server.config.HoconApplicationConfig
+import io.ktor.server.config.getAs
+import io.ktor.server.config.withFallback
 
 object PropertiesConfig {
-    private val defaultProperties =
-        ConfigurationMap(
-            mapOf(
-                "NAIS_APP_NAME" to "sokos-ktor-template",
-                "NAIS_NAMESPACE" to "okonomi",
-                "USE_AUTHENTICATION" to "true",
-            ),
-        )
+    lateinit var config: ApplicationConfig
+        private set
 
-    private val localDevProperties =
-        ConfigurationMap(
-            mapOf(
-                "APPLICATION_PROFILE" to Profile.LOCAL.toString(),
-                "USE_AUTHENTICATION" to "false",
-            ),
-        )
+    val applicationProperties by lazy {
+        config.property("application").getAs<ApplicationProperties>()
+    }
 
-    private val devProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.DEV.toString()))
-    private val prodProperties = ConfigurationMap(mapOf("APPLICATION_PROFILE" to Profile.PROD.toString()))
+    val azureAdProperties by lazy {
+        config.property("azureAd").getAs<AzureAdProperties>()
+    }
 
-    private val config =
-        when (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")) {
-            "dev-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding devProperties overriding defaultProperties
-            "prod-gcp" -> ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding prodProperties overriding defaultProperties
-            else ->
-                ConfigurationProperties.systemProperties() overriding EnvironmentVariables() overriding
-                    ConfigurationProperties.fromOptionalFile(
-                        File("defaults.properties"),
-                    ) overriding localDevProperties overriding defaultProperties
+    val isLocal: Boolean
+        get() = applicationProperties.isLocal
+
+    fun load(applicationConfig: ApplicationConfig) {
+        if (!::config.isInitialized) {
+            config = applicationConfig
         }
-
-    operator fun get(key: String): String = config[Key(key, stringType)]
-
-    fun getOrEmpty(key: String): String = config.getOrElse(Key(key, stringType), "")
-
-    data class Configuration(
-        val naisAppName: String = get("NAIS_APP_NAME"),
-        val profile: Profile = Profile.valueOf(get("APPLICATION_PROFILE")),
-        val useAuthentication: Boolean = get("USE_AUTHENTICATION").toBoolean(),
-        val azureAdProperties: AzureAdProperties = AzureAdProperties(),
-    )
-
-    class AzureAdProperties(
-        val clientId: String = getOrEmpty("AZURE_APP_CLIENT_ID"),
-        val wellKnownUrl: String = getOrEmpty("AZURE_APP_WELL_KNOWN_URL"),
-    )
-
-    enum class Profile {
-        LOCAL,
-        DEV,
-        PROD,
     }
 }
+
+fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
+    val hoconConfig = HoconApplicationConfig(ConfigFactory.load())
+    val environment =
+        (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME"))
+            ?.lowercase()
+            ?.substringBefore("-")
+            ?: propertyOrNull("ktor.environment")?.getString()
+            ?: "local"
+    val environmentConfig = ApplicationConfig("application-$environment.conf")
+    return this overriding environmentConfig overriding hoconConfig
+}
+
+infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)
+
+enum class Profile {
+    LOCAL,
+    DEV,
+    PROD,
+}
+
+@Serializable
+data class ApplicationProperties(
+    val profile: Profile,
+    val appName: String,
+    val namespace: String,
+    val useAuthentication: Boolean,
+) {
+    val isLocal = profile == Profile.LOCAL
+}
+
+@Serializable
+data class AzureAdProperties(
+    val clientId: String,
+    val wellKnownUrl: String,
+)

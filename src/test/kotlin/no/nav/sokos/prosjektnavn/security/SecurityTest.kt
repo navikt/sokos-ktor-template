@@ -1,5 +1,6 @@
 package no.nav.sokos.prosjektnavn.security
 
+import com.typesafe.config.ConfigFactory
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.matchers.shouldNotBe
@@ -8,6 +9,7 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
 import io.mockk.every
@@ -19,9 +21,11 @@ import no.nav.security.mock.oauth2.withMockOAuth2Server
 import no.nav.sokos.prosjektnavn.api.API_BASE_PATH
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
+import no.nav.sokos.prosjektnavn.config.AzureAdProperties
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.config.commonConfig
+import no.nav.sokos.prosjektnavn.config.mergeWithEnv
 import no.nav.sokos.prosjektnavn.config.securityConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
@@ -37,6 +41,10 @@ val dummyService: DummyService = mockk()
 
 internal class SecurityTest :
     FunSpec({
+
+        beforeSpec {
+            PropertiesConfig.load(HoconApplicationConfig(ConfigFactory.load()).mergeWithEnv())
+        }
 
         test("forespørsel uten token skal returnere 401") {
             withMockOAuth2Server {
@@ -203,7 +211,7 @@ private fun MockOAuth2Server.tokenWithoutAudience() =
     ).serialize()
 
 private fun MockOAuth2Server.mockAuthConfig() =
-    PropertiesConfig.AzureAdProperties(
+    AzureAdProperties(
         wellKnownUrl = wellKnownUrl("default").toString(),
         clientId = "default",
     )

@@ -19,7 +19,7 @@ fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
             ?: propertyOrNull("ktor.environment")?.getString()
             ?: "local"
     val environmentConfig = ApplicationConfig("application-$environment.conf")
-    return environmentConfig overriding this overriding hoconConfig
+    return this overriding environmentConfig overriding hoconConfig
 }
 
 infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig =
