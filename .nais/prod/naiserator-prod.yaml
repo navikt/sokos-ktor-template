@@ -46,7 +46,3 @@ spec:
       rules:
         - application: logging
           namespace: nais-system
-
-  env:
-    - name: USE_AUTHENTICATION
-      value: "true"
