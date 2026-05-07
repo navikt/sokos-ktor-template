@@ -11,8 +11,6 @@ For full patterns, examples, and MockK/matchers cheat sheets, invoke the **`kote
 ## Hard rules
 
 - Integration tests with DB → use a database test listener with TestContainers; clear state before loading fixtures in each `Given`.
-- Integration tests with SFTP → use an SFTP test listener.
-- Any test that reaches an external HTTP client with a circuit breaker → `beforeEach { CircuitBreakerManager.circuitBreaker.reset() }`.
 - Mock HTTP clients for external service calls — never make real HTTP calls in tests.
 - For suspend functions use `coEvery` / `coVerify`; never `runBlocking` inside test blocks.
 
