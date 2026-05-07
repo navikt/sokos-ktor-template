@@ -30,7 +30,7 @@ Idiomatic conventions for this codebase. Detailed examples live in the sub-files
 - [core-patterns.md](core-patterns.md) — null safety, immutability, expression bodies, scope functions
 - [type-modeling.md](type-modeling.md) — sealed types, extensions, delegation
 - [coroutines.md](coroutines.md) — structured concurrency, Flow, cancellation
-- [dsl-and-gradle.md](dsl-and-gradle.md) — DSL builders (`@DslMarker`), Gradle Kotlin DSL
+- [gradle-build-configuration.md](gradle-build-configuration.md) — Gradle Build Configuration
 - [error-handling.md](error-handling.md) — error patterns, collection operations, anti-patterns
 
 ## Boundaries
