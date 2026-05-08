@@ -1,0 +1,23 @@
+{
+	"description": "Skriv og endre tester for Ktor-tjenester med Kotest FunSpec, MockK og mock-oauth2-server.",
+	"domain": "backend",
+	"tags": ["kotest", "funspec", "mockk", "testing", "ktor", "mock-oauth2-server"],
+	"examples": [
+		{
+			"prompt": "Skriv en FunSpec-test for GET /api/v1/hello som verifiserer 200 OK",
+			"scenario": "Grunnleggende API-test med testApplication"
+		},
+		{
+			"prompt": "Lag en sikkerhetstest som verifiserer 401 uten token og 200 med gyldig token",
+			"scenario": "JWT-sikkerhetstesting med MockOAuth2Server"
+		},
+		{
+			"prompt": "Hvordan mocker jeg en suspend-funksjon i MockK?",
+			"scenario": "coEvery / coVerify for suspend-funksjoner"
+		},
+		{
+			"prompt": "Skriv en RBAC-test som sjekker at feil scope gir 403",
+			"scenario": "RBAC-testing med OBO- og M2M-tokens"
+		}
+	]
+}

@@ -1,0 +1,23 @@
+{
+	"description": "Idiomatiske Kotlin-mønstre: null-sikkerhet, immutabilitet, sealed types, strukturert concurrency og Gradle Kotlin DSL.",
+	"domain": "backend",
+	"tags": ["kotlin", "coroutines", "sealed-class", "null-safety", "gradle", "idioms"],
+	"examples": [
+		{
+			"prompt": "Hvordan modellerer jeg en API-respons som kan være success eller error?",
+			"scenario": "Sealed interface for Result-type"
+		},
+		{
+			"prompt": "Skriv om denne Java-koden til idiomatisk Kotlin",
+			"scenario": "Java-til-Kotlin-konvertering med null-sikkerhet og expression bodies"
+		},
+		{
+			"prompt": "Hva er riktig måte å kjøre parallelle kall i Ktor med coroutines?",
+			"scenario": "Strukturert concurrency med async/await og coroutineScope"
+		},
+		{
+			"prompt": "Hvordan setter jeg opp Gradle med ktlint og kover?",
+			"scenario": "Gradle Kotlin DSL-konfigurasjon for sokos-ktor-template"
+		}
+	]
+}

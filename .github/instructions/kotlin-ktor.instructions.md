@@ -1,43 +1,68 @@
 ---
-applyTo: "**/config/**/*.kt,**/api/**/*.kt,**/security/**/*.kt,**/metrics/**/*.kt,**/frontend/**/*.kt,**/dto/**/*.kt,**/domain/**/*.kt,**/util/**/*.kt"
+applyTo: "src/main/**/*.kt"
 ---
 
-# Kotlin/Ktor general patterns
+# Kotlin/Ktor — mønstre og regler
 
-Ktor backend service on NAIS (not Rapids & Rivers, not Spring Boot). For tests see `testing.instructions.md` and the `kotest` skill.
+Ktor backend-tjeneste på NAIS (ikke Spring Boot, ikke Rapids & Rivers). For tester, se `testing.instructions.md` og `kotest`-skillen.
 
-## Configuration
+## Konfig — PropertiesConfig
 
-All config access via `PropertiesConfig` singleton. See the `kotlin-app-config` skill for full HOCON layering and `@Serializable` data-class pattern.
+All konfig via `PropertiesConfig`-singleton. Aldri `System.getenv()` i forretningslogikk.
 
 ```kotlin
-val appName = PropertiesConfig.Configuration().naisAppName
+val appName = PropertiesConfig.applicationProperties.appName
+val azureConfig = PropertiesConfig.azureAdProperties
 ```
 
-## Ktor routing
-
-Health/metrics endpoints are unauthenticated; domain routes sit behind `authenticate(AUTHENTICATION_NAME)`. Expose: `/internal/isAlive`, `/internal/isReady`, `/internal/metrics`.
+Nye seksjoner legges til som `lazy`-property med `@Serializable data class`. Se `kotlin-app-config`-skillen.
 
 ## Logging
 
-- Regular messages → Logback → Grafana Loki.
-- Sensitive data (PII, case numbers, request/response bodies, tokens) → **must** use `TEAM_LOGS_MARKER`:
+- Vanlige meldinger: `private val logger = KotlinLogging.logger {}`
+- Sensitiv data (PII, saksnummer, tokens, request/response bodies): **alltid** `TEAM_LOGS_MARKER`
 
 ```kotlin
-logger.error(marker = TEAM_LOGS_MARKER) { "Error for case: $caseId" }
+logger.error(marker = TEAM_LOGS_MARKER) { "Feil for sak: $sakId" }
 ```
+
+## Ktor-routes og auth
+
+- Interne endepunkter (`/internal/isAlive`, `/internal/isReady`, `/internal/metrics`): **uautentiserte**
+- Alle domene-routes: `authenticate(useAuthentication, AUTHENTICATION_NAME)`
+- RBAC med roller/scopes: bruk `azure-rbac-ktor`-skillen
 
 ## Metrics
 
-Use the `Metrics` object (Micrometer `PrometheusMeterRegistry`). Define a namespace constant matching the app name (e.g. `sokos_my_app`). Register counters via `Counter.builder()`.
+Bruk `Metrics`-objektet (`PrometheusMeterRegistry`). Definer namespace som matcher appnavnet (f.eks. `sokos_my_app`). Registrer tellere via `Counter.builder()`.
+
+## Kotlin-idiomer
+
+- `val` fremfor `var` — immutabilitet som standard
+- `?.` / `?:` / `requireNotNull` — aldri `!!` uten null-sjekk
+- `sealed class/interface` for domenefeil og resultattyper
+- `suspend` + `coroutineScope`/`async` for strukturert concurrency — aldri `runBlocking` eller `GlobalScope`
+- Manuell konstruktørinjektion — aldri DI-rammeverk (Koin, Spring)
+- navikt/kotliquery for databasetilgang — aldri ORM (Exposed, Hibernate)
+
+## Nais
+
+- Aldri `resources.limits.cpu` — kun `requests.cpu`
+- `accessPolicy.inbound` og `accessPolicy.outbound` alltid eksplisitt
+- Hemmeligheter via Nais secrets — aldri hardkodet
 
 ## Boundaries
 
 ### ✅ Always
-- `PropertiesConfig` for config — never `System.getenv()` in business logic
-- `TEAM_LOGS_MARKER` for sensitive data
+- `PropertiesConfig` for all konfig
+- `TEAM_LOGS_MARKER` for sensitiv data
+- `suspend` + strukturert concurrency for async
 
 ### 🚫 Never
-- Commit `defaults.properties`
-- Log PII/request bodies without `TEAM_LOGS_MARKER`
-- Use `!!` without a preceding null check
+- `System.getenv()` i forretningslogikk
+- `!!` uten forutgående null-sjekk
+- `runBlocking` eller `GlobalScope.launch`
+- ORM-rammeverk eller DI-rammeverk
+- PII i logger uten `TEAM_LOGS_MARKER`
+- Hardkodede hemmeligheter eller `defaults.properties` i commits
+

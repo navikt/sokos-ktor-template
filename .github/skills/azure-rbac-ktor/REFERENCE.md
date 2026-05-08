@@ -1,5 +1,8 @@
 # Reference: Azure RBAC in Ktor
 
+> **Implementeringsmønster** — disse filene finnes ikke i templaten som standard.
+> Opprett dem i `src/main/kotlin/.../security/` når tjenesten din trenger RBAC.
+
 ## Code structure
 
 ```

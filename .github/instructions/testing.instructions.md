@@ -4,21 +4,25 @@ applyTo: "**/test/**/*.kt"
 
 # Testing essentials
 
-Framework: **Kotest** (never JUnit) + **MockK**. Default spec style is `BehaviorSpec` (Given/When/Then/And) with Norwegian scenario text — both for unit and integration tests. Use `FunSpec` only for trivial, purely technical unit tests.
+Framework: **Kotest** (never JUnit) + **MockK**. Tester i dette prosjektet bruker `FunSpec`. Bruk `BehaviorSpec` (Given/When/Then/And) med norsk scenariotekst for komplekse integrasjonstester med mange kontekster.
 
 For full patterns, examples, and MockK/matchers cheat sheets, invoke the **`kotest` skill**.
 
 ## Hard rules
 
-- Integration tests with DB → use a database test listener with TestContainers; clear state before loading fixtures in each `Given`.
 - Mock HTTP clients for external service calls — never make real HTTP calls in tests.
 - For suspend functions use `coEvery` / `coVerify`; never `runBlocking` inside test blocks.
+- Load `PropertiesConfig` in `beforeSpec` when tests need config: `PropertiesConfig.load(ApplicationConfig("application-test.conf"))`
+
+## Supplementary patterns (add when needed)
+
+- **Database tests**: use a database test listener with TestContainers; clear state before loading fixtures in each `Given`.
+- **SQL fixtures**: `src/test/resources/SQLscript/*.sql`
 
 ## File conventions
 
 - Unit tests: `.../service/unit/*Test.kt`
 - Integration tests: `.../service/integration/*IntegrationTest.kt`, `.../database/*Test.kt`
-- SQL fixtures: `src/test/resources/SQLscript/*.sql`
 
 ## Coverage audit — do this before drawing conclusions
 
@@ -34,8 +38,8 @@ find src/test -type f -name "*.kt" | sort
 ## Boundaries
 
 ### ✅ Always
-- `BehaviorSpec` as default; Norwegian Given/When/Then text
-- Reset circuit breaker in `beforeEach` for tests reaching external services
+- `FunSpec` som standard; bruk `BehaviorSpec` for komplekse integrasjonstester
+- Last `PropertiesConfig` i `beforeSpec` for tester som trenger konfig
 - Kotest matchers (`shouldBe`, `shouldHaveSize`, `shouldBeEmpty`, `with { ... }`)
 
 ### 🚫 Never

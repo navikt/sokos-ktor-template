@@ -17,6 +17,8 @@ on:
       - '.github/workflows/digestabot-update.yaml'
       - '.github/workflows/manual-deploy.yaml'
       - '.github/dependabot.yaml'
+      - '.github/instructions/**'
+      - '.github/skills/**'
       - '.nais/**'
 
 env:

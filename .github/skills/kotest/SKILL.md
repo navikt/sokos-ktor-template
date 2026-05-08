@@ -1,50 +1,83 @@
 ---
 name: kotest
-description: "Kotest BehaviorSpec and MockK patterns for sokos Ktor services: scenario structure, test listeners, HTTP mocking, circuit-breaker reset, and matchers. Accepts prompts in Norwegian and English. (Testmønstre, teststruktur, integrasjonstester, enhetstester, MockK)"
+description: "Skriv og endre tester for Ktor-tjenester med Kotest FunSpec, MockK og mock-oauth2-server. Bruk for BehaviorSpec-mønstre, testApplication-oppsett, JWT-testing og RBAC-testing. Aksepterer spørsmål på norsk og engelsk. (Tester, Kotest, FunSpec, BehaviorSpec, MockK, testApplication)"
 ---
 
-# Kotest patterns
+# Kotest — testmønstre for sokos-ktor-template
 
-## Coverage audit — ALWAYS do this first
+Bruk denne skillen når du skal skrive tester for Ktor-tjenester i dette prosjektet.
 
-Before concluding that an area lacks tests, **always list all test files**:
+## Stack
 
-```bash
-find src/test -type f -name "*.kt" | sort
+```
+io.kotest:kotest-runner-junit5          // test-runner
+io.kotest:kotest-assertions-core-jvm   // shouldBe, shouldNotBe osv.
+io.ktor:ktor-server-test-host-jvm      // testApplication { }
+io.mockk:mockk                          // mock av services
+no.nav.security:mock-oauth2-server      // JWT-tokens i test
 ```
 
-Tests may be organized in subcategories — never use `| head` which truncates output.
+## Teststil: FunSpec
 
-Do not assume missing coverage without seeing the full file list first.
+Alle tester i dette prosjektet bruker `FunSpec` — ikke `BehaviorSpec`:
 
----
+```kotlin
+internal class DummyApiTest : FunSpec({
 
-Default spec style: **`BehaviorSpec`** (Given/When/Then/And) with Norwegian scenario text. Use `FunSpec` only for trivial, non-scenario-based unit tests.
+    beforeSpec {
+        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+    }
 
-## Sub-files
+    test("GET /api/v1/hello skal returnere 200 OK") {
+        testApplication {
+            application {
+                commonConfig()
+                routing { dummyApi() }
+            }
+            val response = client.get("$API_BASE_PATH/hello")
+            response.status shouldBe HttpStatusCode.OK
+        }
+    }
+})
+```
 
-- [behaviorspec-patterns.md](behaviorspec-patterns.md) — canonical BehaviorSpec structure, conventions, and Norwegian scenario text
-- [integration-testing.md](integration-testing.md) — database test listeners, SFTP listeners, mock HTTP clients, and circuit breaker reset
-- [mockk-assertions.md](mockk-assertions.md) — MockK cheat sheet, Kotest matchers, `with { ... }` grouping
+## Ktor-konfig i tester
+
+Tester må laste `PropertiesConfig` manuelt — det skjer ikke automatisk i testmiljøet:
+
+```kotlin
+beforeSpec {
+    PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+}
+```
+
+`application-test.conf` setter:
+- `profile = TEST`
+- `useAuthentication = false`
+- `azureAd.clientId = "test-client-id"`
+
+> **Viktig:** `PropertiesConfig.load()` er idempotent — kaller du den igjen med samme config skjer ingenting (guard `if (!::config.isInitialized)`).
+
+## Sub-filer
+
+| Fil | Innhold |
+|-----|---------|
+| [security-testing.md](security-testing.md) | Autentisering og JWT-testing med `withMockOAuth2Server` |
+| [rbac-testing.md](rbac-testing.md) | RBAC-tester med `context()`-blokker: OBO (scope), M2M (role), cross-contamination |
+| [unit-testing.md](unit-testing.md) | Enhetstester, konfig-tester og MockK-mønstre |
 
 ## Boundaries
 
 ### ✅ Always
-- `testApplication { }` exclusively for testing API endpoints (routes) — never for services, repositories, or other non-HTTP logic
-- `BehaviorSpec` as default; Norwegian scenario text
-- Reset circuit breaker in `beforeEach` when tests reach an external HTTP client
-- Clear database state before loading fixtures in each `Given`
-- Mock HTTP clients for external service calls — never make real HTTP calls in tests
-- Kotest matchers (`shouldBe`, `shouldHaveSize`, …)
-- `coEvery` / `coVerify` for suspend functions
+- Bruk `FunSpec` (ikke `BehaviorSpec`)
+- Last `PropertiesConfig` i `beforeSpec` for tester som trenger konfig
+- Bruk `internal class` for testklasser
+- Bruk `mockk<T>()` for avhengigheter, ikke `spyk`
 
-### ⚠️ Ask first
-- New global test listeners or base specs
-- Tests requiring real network or real SFTP
+### ⚠️ Ask First
+- `BehaviorSpec` (akseptabelt for komplekse scenarier med mange kontekster)
 
 ### 🚫 Never
-- `testApplication { }` for anything other than API endpoint tests (use direct class instantiation + mocks for services, repositories, etc.)
-- JUnit
-- `runBlocking { ... }` in test blocks
-- Real HTTP calls to external services
-- Share mutable state between scenarios without explicit reset
+- Hard-kode tokens eller secrets i tester
+- Bruk `@Autowired` eller Spring-annotasjoner (dette er Ktor, ikke Spring)
+- Start ekte HTTP-server i tester — bruk `testApplication { }`

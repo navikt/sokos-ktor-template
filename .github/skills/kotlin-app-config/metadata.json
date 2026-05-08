@@ -1,0 +1,19 @@
+{
+	"description": "HOCON-basert konfigurasjon med PropertiesConfig-singleton for Ktor-tjenester på Nais.",
+	"domain": "backend",
+	"tags": ["konfig", "hocon", "propertiesconfig", "nais", "miljøvariabler", "ktor"],
+	"examples": [
+		{
+			"prompt": "Legg til en ny konfig-seksjon for PostgreSQL i PropertiesConfig",
+			"scenario": "Ny @Serializable data class og lazy property i PropertiesConfig"
+		},
+		{
+			"prompt": "Hvordan lager jeg miljø-spesifikk konfig for dev og prod?",
+			"scenario": "HOCON-lagdeling med application-dev.conf og application-prod.conf"
+		},
+		{
+			"prompt": "Hvordan henter jeg konfig i en service-klasse?",
+			"scenario": "PropertiesConfig-tilgang i forretningslogikk"
+		}
+	]
+}

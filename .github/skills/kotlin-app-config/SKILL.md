@@ -25,11 +25,15 @@ object PropertiesConfig {
         config.property("application").getAs<ApplicationProperties>()
     }
 
-    val postgresConfig by lazy {
-        config.property("postgres").getAs<PostgresConfig>()
+    val azureAdProperties by lazy {
+        config.property("azureAd").getAs<AzureAdProperties>()
     }
 
     // Add new config sections here as lazy properties
+    // Example when adding a database:
+    // val postgresConfig by lazy {
+    //     config.property("postgres").getAs<PostgresConfig>()
+    // }
 
     fun load(applicationConfig: ApplicationConfig) {
         if (!::config.isInitialized) {

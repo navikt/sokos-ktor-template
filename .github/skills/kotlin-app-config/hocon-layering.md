@@ -43,10 +43,9 @@ application {
   useAuthentication = true
 }
 
-postgres {
-  name = "my-app"
-  username = ${?POSTGRES_USERNAME}
-  password = ${?POSTGRES_PASSWORD}
+azureAd {
+  clientId = ${?AZURE_APP_CLIENT_ID}
+  wellKnownUrl = ${?AZURE_APP_WELL_KNOWN_URL}
 }
 ```
 
@@ -57,5 +56,20 @@ include file("application.conf")
 application {
   profile = LOCAL
   useAuthentication = false
+}
+
+azureAd {
+  clientId = "local-client-id"
+  wellKnownUrl = "http://localhost:8080/default/.well-known/openid-configuration"
+}
+```
+
+When adding a database, add a `postgres` section on the same pattern:
+
+```hocon
+postgres {
+  name = "my-app"
+  username = ${?POSTGRES_USERNAME}
+  password = ${?POSTGRES_PASSWORD}
 }
 ```

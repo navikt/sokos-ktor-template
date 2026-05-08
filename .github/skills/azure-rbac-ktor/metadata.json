@@ -1,0 +1,19 @@
+{
+	"description": "Rollebasert tilgangsstyring (RBAC) med Azure AD i Ktor-tjenester på Nais — scopes, roles og accessPolicy.",
+	"domain": "backend",
+	"tags": ["rbac", "azure-ad", "ktor", "auth", "tilgangskontroll", "nais"],
+	"examples": [
+		{
+			"prompt": "Legg til RBAC på et endepunkt slik at kun saksbehandlere med riktig scope kan kalle det",
+			"scenario": "OBO-token med scope-sjekk på Ktor-route"
+		},
+		{
+			"prompt": "En annen tjeneste skal kalle min API med M2M-token — hvordan setter jeg opp roller?",
+			"scenario": "M2M (machine-to-machine) med Azure AD role i accessPolicy"
+		},
+		{
+			"prompt": "Hvordan konfigurerer jeg accessPolicy.inbound i Nais-manifest for RBAC?",
+			"scenario": "Nais-manifest med permissions.scopes og permissions.roles"
+		}
+	]
+}

@@ -4,6 +4,8 @@
 
 Each config section is a `@Serializable data class` deserialized via Ktor's `getAs<T>()` extension.
 
+The actual config classes in this project:
+
 ```kotlin
 enum class Profile { LOCAL, DEV, TEST, PROD }
 
@@ -18,6 +20,16 @@ data class ApplicationProperties(
 }
 
 @Serializable
+data class AzureAdProperties(
+    val clientId: String,
+    val wellKnownUrl: String,
+)
+```
+
+When adding a database, add a `PostgresConfig` on the same pattern:
+
+```kotlin
+@Serializable
 data class PostgresConfig(
     val host: String,
     val port: String,
@@ -30,22 +42,23 @@ data class PostgresConfig(
 }
 ```
 
-Add new `@Serializable data class` config sections as your service needs them (e.g. external API credentials, SFTP settings, scheduler config). Register each one as a `by lazy` property in `PropertiesConfig`.
+Register each new section as a `by lazy` property in `PropertiesConfig`.
 
-## In Tests
+## I tester
 
-Load a fixed test config directly from `application-test.conf`:
+Last konfig i `beforeSpec`:
 
 ```kotlin
-object DBListener : TestListener {
-    init {
-        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
-    }
-    // ...
+beforeSpec {
+    PropertiesConfig.load(ApplicationConfig("application-test.conf"))
 }
 ```
 
-Mock `PropertiesConfig` with MockK when needed:
+> **NB:** `load()` er idempotent — kaller du den igjen skjer ingenting (guard `if (!::config.isInitialized)`).
+
+### Tilleggsmønster: MockK av PropertiesConfig (nyttig ved DB/Kafka-tester)
+
+Når du trenger full kontroll over konfig-verdier i en enkelt test:
 
 ```kotlin
 beforeSpec {
@@ -54,5 +67,16 @@ beforeSpec {
 }
 afterSpec {
     unmockkObject(PropertiesConfig)
+}
+```
+
+### Tilleggsmønster: DatabaseListener (legg til når DB introduseres)
+
+```kotlin
+object DBListener : TestListener {
+    init {
+        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+    }
+    // Start TestContainers, sett opp Flyway, etc.
 }
 ```

@@ -5,7 +5,11 @@ description: "Role-based access control (RBAC) with Azure AD in Ktor services on
 
 # Azure RBAC in Ktor
 
-## Overview
+> **Dette er et implementeringsmønster, ikke eksisterende kode.**
+> Templaten har grunnleggende Azure AD JWT-autentisering i `SecurityConfig.kt`.
+> Bruk denne skillen når din tjeneste trenger finkornet tilgangskontroll med roller og scopes.
+> Du må opprette `security/AccessPolicy.kt`, `AuthorizationGuard.kt` og `TokenUtils.kt` selv
+> — se [REFERENCE.md](REFERENCE.md) for kodestruktur og flytbeskrivelse.
 
 Access control distinguishes between two token types:
 
