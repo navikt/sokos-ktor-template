@@ -18,9 +18,6 @@ object PropertiesConfig {
     lateinit var config: ApplicationConfig
         private set
 
-    val isLocal: Boolean
-        get() = applicationProperties.isLocal
-
     val applicationProperties by lazy {
         config.property("application").getAs<ApplicationProperties>()
     }
@@ -47,19 +44,17 @@ object PropertiesConfig {
 
 ```kotlin
 private fun Application.module() {
-    PropertiesConfig.load(environment.config.mergeWithEnv())
+    PropertiesConfig.load(loadEnv())
 
     val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
 
-    if (!PropertiesConfig.isLocal) {
-        // Run migrations, start scheduled jobs, etc.
-    }
+    // ...
 }
 ```
 
 ## Sub-files
 
-- See [hocon-layering.md](hocon-layering.md) for the layered HOCON pattern (`mergeWithEnv()`) and example HOCON config files.
+- See [hocon-layering.md](hocon-layering.md) for the layered HOCON pattern (`loadEnv()`) and example HOCON config files.
 - See [config-classes.md](config-classes.md) for typed config section data classes (`@Serializable`) and testing configuration with MockK.
 
 ## Benefits

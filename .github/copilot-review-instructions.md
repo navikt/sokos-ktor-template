@@ -27,10 +27,13 @@ Instruksjoner for hva Copilot skal fokusere på ved gjennomgang av pull requests
 
 ### Konfig
 - `PropertiesConfig` brukt riktig? Nye seksjoner bør følge `lazy`-property + `@Serializable data class`-mønsteret
+- Ny HOCON-konfig lastes via `loadEnv()` i `Application.module()` — ikke via `environment.config` eller `System.getenv()` direkte
 - Nye HOCON-felter uten tilhørende `@Serializable data class` — konfig bør være typesikker
 
 ### Testing
 - `testApplication { }` brukt på service/repository i stedet for API-routes — bruk direkte instansiering med MockK
+- API-tester (DummyApiTest) skal bruke `embeddedServer(Netty, PORT)` + RestAssured + `OpenApiValidationFilter` — ikke `testApplication { }` for dette formålet
+- Sikkerhetstester (SecurityTest) skal bruke `testApplication { }` med `withMockOAuth2Server`
 - Manglende `coEvery`/`coVerify` for suspend-funksjoner — `every`/`verify` fungerer ikke korrekt her
 - Delt muterbar state mellom test-scenarier — legg til reset i `beforeEach`
 - `FunSpec` er standard — `BehaviorSpec` kun for komplekse integrasjonstester med mange kontekster

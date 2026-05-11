@@ -29,7 +29,7 @@ internal class SecurityTest : FunSpec({
 
     beforeSpec {
         // Last Ktor-konfig manuelt — skjer ikke automatisk i testmiljøet
-        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
     }
 
     context("Authentication - Token Validation (401 Unauthorized)") {
@@ -38,7 +38,7 @@ internal class SecurityTest : FunSpec({
             withMockOAuth2Server {
                 testApplication {
                     application {
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/resource")
@@ -51,7 +51,7 @@ internal class SecurityTest : FunSpec({
             withMockOAuth2Server {
                 testApplication {
                     application {
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/resource") {
@@ -76,7 +76,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/resource") {
@@ -101,7 +101,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/resource") {
@@ -127,7 +127,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/m2m-resource") {
@@ -152,7 +152,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/m2m-resource") {
@@ -178,7 +178,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/m2m-resource") {
@@ -199,7 +199,7 @@ internal class SecurityTest : FunSpec({
                     }
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing { myApi(myService) }
                     }
                     val response = client.get("$API_BASE_PATH/resource") {

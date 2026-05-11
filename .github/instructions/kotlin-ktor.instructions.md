@@ -26,6 +26,21 @@ Nye seksjoner legges til som `lazy`-property med `@Serializable data class`. Se 
 logger.error(marker = TEAM_LOGS_MARKER) { "Feil for sak: $sakId" }
 ```
 
+## Swagger / OpenAPI
+
+Swagger UI eksponeres via `swaggerUI()` på en uautentisert route. OpenAPI-spesifikasjonen ligger i `src/main/resources/openapi/`.
+
+```kotlin
+fun Routing.dummySwaggerApi() {
+    swaggerUI(
+        path = "api/v1/docs",
+        swaggerFile = "openapi/sokos-ktor-template-v1-swagger.yaml",
+    )
+}
+```
+
+Swagger-routes registreres **utenfor** `authenticate`-blokken i `RoutingConfig.kt`.
+
 ## Ktor-routes og auth
 
 - Interne endepunkter (`/internal/isAlive`, `/internal/isReady`, `/internal/metrics`): **uautentiserte**

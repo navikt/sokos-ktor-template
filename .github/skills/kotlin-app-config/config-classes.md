@@ -14,10 +14,8 @@ data class ApplicationProperties(
     val profile: Profile,
     val appName: String,
     val namespace: String,
-    val useAuthentication: Boolean,
-) {
-    val isLocal = profile == Profile.LOCAL
-}
+    val useAuthentication: Boolean = true, // DO NOT CHANGE!
+)
 
 @Serializable
 data class AzureAdProperties(
@@ -50,7 +48,7 @@ Last konfig i `beforeSpec`:
 
 ```kotlin
 beforeSpec {
-    PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+    PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
 }
 ```
 
@@ -63,7 +61,7 @@ Når du trenger full kontroll over konfig-verdier i en enkelt test:
 ```kotlin
 beforeSpec {
     mockkObject(PropertiesConfig)
-    every { PropertiesConfig.config } returns ApplicationConfig("application-test.conf")
+    every { PropertiesConfig.config } returns ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG)
 }
 afterSpec {
     unmockkObject(PropertiesConfig)
@@ -75,7 +73,7 @@ afterSpec {
 ```kotlin
 object DBListener : TestListener {
     init {
-        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
     }
     // Start TestContainers, sett opp Flyway, etc.
 }

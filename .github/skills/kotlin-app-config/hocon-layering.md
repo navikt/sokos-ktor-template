@@ -2,65 +2,100 @@
 
 ## Layered HOCON Pattern
 
-Config files are layered at startup via `mergeWithEnv()`:
-1. `application.conf` – base defaults, references `defaults.properties`
-2. `application-{local|dev|prod}.conf` – environment overrides
-3. `defaults.properties` – local secrets (**never commit this file**)
+Config files are layered at startup via the top-level `loadEnv()` function in `PropertiesConfig.kt`:
+1. `application.conf` – base defaults (shared across all environments)
+2. `application-{local|dev|prod}.conf` – environment overrides (include `application.conf`)
+3. `defaults.properties` – local secrets for the LOCAL profile (**never commit this file**)
 
-Environment is detected via `NAIS_CLUSTER_NAME`:
+Environment is detected via `NAIS_CLUSTER_NAME`. Use `loadEnv()` — not `environment.config`:
 
 ```kotlin
-fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
-    val hoconConfig = HoconApplicationConfig(ConfigFactory.load())
+fun loadEnv(): ApplicationConfig {
     val environment =
         (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME"))
             ?.lowercase()
-            ?.substringBefore("-")
-            ?: propertyOrNull("ktor.environment")?.getString()
-            ?: "local"
-    val environmentConfig = ApplicationConfig("application-$environment.conf")
-    return this overriding environmentConfig overriding hoconConfig
-}
+            ?.substringBefore("-") ?: "local"
 
-infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig =
-    this.withFallback(other)
+    val fileConfig =
+        when {
+            environment == "local" -> {
+                val defaultPropertiesConfig = ConfigFactory.parseFile(File("defaults.properties"))
+                ConfigFactory.parseResources("application-local.conf").withFallback(defaultPropertiesConfig)
+            }
+            else -> {
+                ConfigFactory.parseResources("application-$environment.conf")
+            }
+        }
+
+    val base =
+        ConfigFactory
+            .systemEnvironment()
+            .withFallback(ConfigFactory.systemProperties())
+            .withFallback(fileConfig)
+
+    return HoconApplicationConfig(base.resolve())
+}
+```
+
+Call once at startup — never in business logic:
+
+```kotlin
+private fun Application.module() {
+    PropertiesConfig.load(loadEnv())
+    // ...
+}
 ```
 
 ## Example HOCON Files
 
-**`application.conf`** (base):
+**`application.conf`** (base — shared values, env vars via `${?ENV_VAR}`):
 ```hocon
-include file("defaults.properties")
-
-ktor {
-  environment = local
-}
-
 application {
   appName = "my-app"
   appName = ${?NAIS_APP_NAME}
   namespace = "okonomi"
+  namespace = ${?NAIS_NAMESPACE}
   useAuthentication = true
 }
 
 azureAd {
+  clientId = ""
   clientId = ${?AZURE_APP_CLIENT_ID}
+  wellKnownUrl = ""
   wellKnownUrl = ${?AZURE_APP_WELL_KNOWN_URL}
 }
 ```
 
-**`application-local.conf`** (local overrides):
+**`application-dev.conf`** (dev environment):
 ```hocon
-include file("application.conf")
+include "application.conf"
+
+application {
+  profile = DEV
+}
+```
+
+**`application-local.conf`** (local development — includes dev, overrides profile and auth):
+```hocon
+include "application-dev.conf"
 
 application {
   profile = LOCAL
   useAuthentication = false
 }
+```
+
+**`application-test.conf`** (used in tests — includes base, overrides profile):
+```hocon
+include "application.conf"
+
+application {
+  profile = TEST
+}
 
 azureAd {
-  clientId = "local-client-id"
-  wellKnownUrl = "http://localhost:8080/default/.well-known/openid-configuration"
+  clientId = "default"
+  wellKnownUrl = ""
 }
 ```
 

@@ -2,32 +2,27 @@
 
 ## PropertiesConfig-tester
 
-Test at HOCON-konfig lastes korrekt fra `application-test.conf`:
+Test at HOCON-konfig lastes korrekt via `TestUtil.APPLICATION_TEST_CONFIG`:
 
 ```kotlin
 internal class PropertiesConfigTest : FunSpec({
 
     beforeSpec {
-        PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
     }
 
-    test("applicationProperties skal lastes fra application-test.conf") {
+    test("applicationProperties skal lastes fra application-test.conf via TestUtil") {
         val props = PropertiesConfig.applicationProperties
         props.profile shouldBe Profile.TEST
         props.appName shouldBe "sokos-ktor-template"
-        props.namespace shouldBe "okonomi-test"
-        props.useAuthentication shouldBe false
-        props.isLocal shouldBe false
+        props.namespace shouldBe "okonomi"
+        props.useAuthentication shouldBe true
     }
 
-    test("azureAdProperties skal lastes fra application-test.conf") {
+    test("azureAdProperties skal lastes fra application-test.conf via TestUtil") {
         val props = PropertiesConfig.azureAdProperties
-        props.clientId shouldBe "test-client-id"
-        props.wellKnownUrl shouldBe "test-well-known-url"
-    }
-
-    test("isLocal skal være false for TEST-profil") {
-        PropertiesConfig.isLocal shouldBe false
+        props.clientId shouldBe "default"
+        props.wellKnownUrl shouldBe ""
     }
 })
 ```
@@ -57,23 +52,18 @@ internal class DummyServiceTest : FunSpec({
 
 ## application-test.conf
 
-Struktur for testkonfig (`src/test/resources/application-test.conf`):
+Konfig-filen ligger i `src/main/resources/application-test.conf` og refereres via `TestUtil.APPLICATION_TEST_CONFIG`:
 
 ```hocon
-ktor {
-    environment = test
-}
+include "application.conf"
 
 application {
     profile = TEST
-    appName = "sokos-ktor-template"
-    namespace = "okonomi-test"
-    useAuthentication = false
 }
 
 azureAd {
-    clientId = "test-client-id"
-    wellKnownUrl = "test-well-known-url"
+    clientId = "default"
+    wellKnownUrl = ""
 }
 ```
 
