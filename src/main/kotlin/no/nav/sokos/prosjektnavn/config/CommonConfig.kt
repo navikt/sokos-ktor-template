@@ -9,6 +9,7 @@ import io.ktor.server.application.install
 import io.ktor.server.metrics.micrometer.MicrometerMetrics
 import io.ktor.server.plugins.calllogging.CallLogging
 import io.ktor.server.plugins.contentnegotiation.ContentNegotiation
+import io.ktor.server.plugins.statuspages.StatusPages
 import io.ktor.server.request.path
 import io.ktor.server.response.respondText
 import io.ktor.server.routing.Routing
@@ -47,6 +48,9 @@ fun Application.commonConfig() {
     }
     install(ContentNegotiation) {
         json(jsonConfig)
+    }
+    install(StatusPages) {
+        statusPageConfig()
     }
     install(MicrometerMetrics) {
         registry = Metrics.prometheusMeterRegistry

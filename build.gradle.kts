@@ -27,6 +27,7 @@ val kotestVersion = "6.1.11"
 val kotlinxSerializationVersion = "1.11.0"
 val mockOAuth2ServerVersion = "3.0.1"
 val mockkVersion = "1.14.9"
+val swaggerRequestValidatorVersion = "2.46.1"
 
 dependencies {
 
@@ -35,6 +36,7 @@ dependencies {
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-swagger:$ktorVersion")
+    implementation("io.ktor:ktor-server-status-pages-jvm:$ktorVersion")
 
     // Ktor client
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
@@ -64,6 +66,7 @@ dependencies {
     testImplementation("io.kotest:kotest-runner-junit5:$kotestVersion")
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
+    testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
 }
 
 configurations.all {

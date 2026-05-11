@@ -17,6 +17,7 @@ import io.mockk.mockk
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
+import no.nav.sokos.prosjektnavn.TestUtil
 import no.nav.sokos.prosjektnavn.api.API_BASE_PATH
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
@@ -28,29 +29,22 @@ import no.nav.sokos.prosjektnavn.config.securityConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
 
-/**
- * Test for å sjekke at sikkerhetsmekanismen fungerer som forventet. Bruker
- * DummyApi som utgangspunkt, fordi alle endepunktene i applikasjonen
- * er sikret under samme konfigurasjon. Endepunktene er wrappet i
- * en authenticate() funksjon som sjekker om bruker er autentisert.
- */
-
-val dummyService: DummyService = mockk()
+private val dummyService: DummyService = mockk()
 
 internal class SecurityTest :
     FunSpec({
 
         beforeSpec {
-            PropertiesConfig.load(ApplicationConfig("application-test.conf"))
+            PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
         }
 
         test("forespørsel uten token skal returnere 401") {
             withMockOAuth2Server {
                 testApplication {
                     application {
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(true, AUTHENTICATION_NAME) {
+                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -66,9 +60,9 @@ internal class SecurityTest :
                 testApplication {
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(true, AUTHENTICATION_NAME) {
+                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -89,9 +83,9 @@ internal class SecurityTest :
                 testApplication {
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(true, AUTHENTICATION_NAME) {
+                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -114,9 +108,9 @@ internal class SecurityTest :
                 testApplication {
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(true, AUTHENTICATION_NAME) {
+                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -141,9 +135,9 @@ internal class SecurityTest :
                 testApplication {
                     application {
                         commonConfig()
-                        securityConfig(true, mockAuthConfig())
+                        securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(true, AUTHENTICATION_NAME) {
+                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -164,11 +158,11 @@ internal class SecurityTest :
 private fun MockOAuth2Server.validToken() =
     issueToken(
         issuerId = "default",
-        clientId = "default",
+        clientId = PropertiesConfig.azureAdProperties.clientId,
         tokenCallback =
             DefaultOAuth2TokenCallback(
                 issuerId = "default",
-                audience = listOf("default"),
+                audience = listOf(PropertiesConfig.azureAdProperties.clientId),
                 claims =
                     mapOf(
                         "NAVident" to "Z123456",
@@ -180,11 +174,11 @@ private fun MockOAuth2Server.validToken() =
 private fun MockOAuth2Server.expiredToken() =
     issueToken(
         issuerId = "default",
-        clientId = "default",
+        clientId = PropertiesConfig.azureAdProperties.clientId,
         tokenCallback =
             DefaultOAuth2TokenCallback(
                 issuerId = "default",
-                audience = listOf("default"),
+                audience = listOf(PropertiesConfig.azureAdProperties.clientId),
                 claims =
                     mapOf(
                         "NAVident" to "Z123456",
@@ -197,7 +191,7 @@ private fun MockOAuth2Server.expiredToken() =
 private fun MockOAuth2Server.tokenWithoutAudience() =
     issueToken(
         issuerId = "default",
-        clientId = "default",
+        clientId = PropertiesConfig.azureAdProperties.clientId,
         tokenCallback =
             DefaultOAuth2TokenCallback(
                 issuerId = "default",
@@ -211,5 +205,5 @@ private fun MockOAuth2Server.tokenWithoutAudience() =
 private fun MockOAuth2Server.mockAuthConfig() =
     AzureAdProperties(
         wellKnownUrl = wellKnownUrl("default").toString(),
-        clientId = "default",
+        clientId = PropertiesConfig.azureAdProperties.clientId,
     )

@@ -6,6 +6,7 @@ import io.ktor.server.routing.Route
 import io.ktor.server.routing.routing
 
 import no.nav.sokos.prosjektnavn.api.dummyApi
+import no.nav.sokos.prosjektnavn.api.dummySwaggerApi
 
 fun Application.routingConfig(
     useAuthentication: Boolean,
@@ -13,6 +14,7 @@ fun Application.routingConfig(
 ) {
     routing {
         internalNaisRoutes(applicationState)
+        dummySwaggerApi()
         authenticate(useAuthentication, AUTHENTICATION_NAME) {
             dummyApi()
         }

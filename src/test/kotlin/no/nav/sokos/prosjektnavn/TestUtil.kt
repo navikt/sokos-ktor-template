@@ -1,5 +1,5 @@
 package no.nav.sokos.prosjektnavn
 
 object TestUtil {
-    // Her ligger alt verktøy metoder som brukes i testene
+    const val APPLICATION_TEST_CONFIG = "application-test.conf"
 }

@@ -8,20 +8,20 @@ import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.config.getAs
 import io.ktor.server.config.withFallback
 
+private const val APPLICATION_CONF = "application"
+private const val AZUREAD_CONF = "azureAd"
+
 object PropertiesConfig {
     lateinit var config: ApplicationConfig
         private set
 
     val applicationProperties by lazy {
-        config.property("application").getAs<ApplicationProperties>()
+        config.property(APPLICATION_CONF).getAs<ApplicationProperties>()
     }
 
     val azureAdProperties by lazy {
-        config.property("azureAd").getAs<AzureAdProperties>()
+        config.property(AZUREAD_CONF).getAs<AzureAdProperties>()
     }
-
-    val isLocal: Boolean
-        get() = applicationProperties.isLocal
 
     fun load(applicationConfig: ApplicationConfig) {
         if (!::config.isInitialized) {
@@ -56,10 +56,8 @@ data class ApplicationProperties(
     val profile: Profile,
     val appName: String,
     val namespace: String,
-    val useAuthentication: Boolean,
-) {
-    val isLocal = profile == Profile.LOCAL
-}
+    val useAuthentication: Boolean = true, // DO NOT CHANGE!
+)
 
 @Serializable
 data class AzureAdProperties(
