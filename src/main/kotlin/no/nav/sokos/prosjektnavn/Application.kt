@@ -9,7 +9,7 @@ import no.nav.sokos.prosjektnavn.config.ApplicationState
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.applicationLifecycleConfig
 import no.nav.sokos.prosjektnavn.config.commonConfig
-import no.nav.sokos.prosjektnavn.config.mergeWithEnv
+import no.nav.sokos.prosjektnavn.config.loadEnv
 import no.nav.sokos.prosjektnavn.config.routingConfig
 import no.nav.sokos.prosjektnavn.config.securityConfig
 
@@ -20,8 +20,7 @@ fun main() {
 }
 
 private fun Application.module() {
-    PropertiesConfig.load(environment.config.mergeWithEnv())
-    logger.info { "Application started with profile: ${PropertiesConfig.applicationProperties.profile}" }
+    PropertiesConfig.load(loadEnv())
 
     val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
     val applicationState = ApplicationState()
@@ -30,4 +29,6 @@ private fun Application.module() {
     commonConfig()
     securityConfig()
     routingConfig(useAuthentication, applicationState)
+
+    logger.info { "Application started with profile: ${PropertiesConfig.applicationProperties.profile}" }
 }

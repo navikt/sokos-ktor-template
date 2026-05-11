@@ -49,6 +49,8 @@ internal class SecurityTest :
                             }
                         }
                     }
+                    println("PropertiesConfig: ${PropertiesConfig.applicationProperties.appName}")
+
                     val response = client.get("$API_BASE_PATH/hello")
                     response.status shouldBe HttpStatusCode.Unauthorized
                 }

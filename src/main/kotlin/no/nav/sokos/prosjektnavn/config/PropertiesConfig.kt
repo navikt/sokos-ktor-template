@@ -1,12 +1,13 @@
 package no.nav.sokos.prosjektnavn.config
 
+import java.io.File
+
 import kotlinx.serialization.Serializable
 
 import com.typesafe.config.ConfigFactory
 import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.config.HoconApplicationConfig
 import io.ktor.server.config.getAs
-import io.ktor.server.config.withFallback
 
 private const val APPLICATION_CONF = "application"
 private const val AZUREAD_CONF = "azureAd"
@@ -30,24 +31,37 @@ object PropertiesConfig {
     }
 }
 
-fun ApplicationConfig.mergeWithEnv(): ApplicationConfig {
-    val hoconConfig = HoconApplicationConfig(ConfigFactory.load())
+fun loadEnv(): ApplicationConfig {
     val environment =
         (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME"))
             ?.lowercase()
-            ?.substringBefore("-")
-            ?: propertyOrNull("ktor.environment")?.getString()
-            ?: "local"
-    val environmentConfig = ApplicationConfig("application-$environment.conf")
-    return this overriding environmentConfig overriding hoconConfig
-}
+            ?.substringBefore("-") ?: "local"
 
-infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)
+    val fileConfig =
+        when {
+            environment == "local" -> {
+                val defaultPropertiesConfig = ConfigFactory.parseFile(File("defaults.properties"))
+                ConfigFactory.parseResources("application-local.conf").withFallback(defaultPropertiesConfig)
+            }
+
+            else -> {
+                ConfigFactory.parseResources("application-$environment.conf")
+            }
+        }
+
+    val base =
+        ConfigFactory
+            .systemEnvironment()
+            .withFallback(ConfigFactory.systemProperties())
+            .withFallback(fileConfig)
+
+    return HoconApplicationConfig(base.resolve())
+}
 
 enum class Profile {
     LOCAL,
-    DEV,
     TEST,
+    DEV,
     PROD,
 }
 
