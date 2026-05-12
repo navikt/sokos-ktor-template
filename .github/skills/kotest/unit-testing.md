@@ -2,24 +2,23 @@
 
 ## PropertiesConfig-tester
 
-Test at HOCON-konfig lastes korrekt via `TestUtil.APPLICATION_TEST_CONFIG`:
+`PropertiesConfig` lastes globalt av `ProjectConfig : AbstractProjectConfig` — ingen `beforeSpec` nødvendig i testklassen:
 
 ```kotlin
 internal class PropertiesConfigTest : FunSpec({
 
-    beforeSpec {
-        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
-    }
-
-    test("applicationProperties skal lastes fra application-test.conf via TestUtil") {
+    test("applicationProperties skal lastes fra application-test.conf") {
         val props = PropertiesConfig.applicationProperties
         props.profile shouldBe Profile.TEST
         props.appName shouldBe "sokos-ktor-template"
         props.namespace shouldBe "okonomi"
         props.useAuthentication shouldBe true
+        props.isTest shouldBe true
+        props.isLocal shouldBe false
+        props.isProd shouldBe false
     }
 
-    test("azureAdProperties skal lastes fra application-test.conf via TestUtil") {
+    test("azureAdProperties skal lastes fra application-test.conf") {
         val props = PropertiesConfig.azureAdProperties
         props.clientId shouldBe "default"
         props.wellKnownUrl shouldBe ""
@@ -52,7 +51,7 @@ internal class DummyServiceTest : FunSpec({
 
 ## application-test.conf
 
-Konfig-filen ligger i `src/main/resources/application-test.conf` og refereres via `TestUtil.APPLICATION_TEST_CONFIG`:
+Konfig-filen ligger i `src/main/resources/application-test.conf`:
 
 ```hocon
 include "application.conf"
@@ -69,25 +68,12 @@ azureAd {
 
 > Legg til seksjoner for nye konfig-blokker (f.eks. `postgres`, `kafka`) etter samme mønster.
 
-## TestUtil
-
-Felles hjelpemetoder legges i `TestUtil.kt`:
-
-```kotlin
-object TestUtil {
-    // Legg til felles testhjelpere her, f.eks.:
-    // fun lagTestToken(...): String = ...
-    // fun lagTestRequest(...): HttpRequestBuilder = ...
-}
-```
-
 ## Nødvendige imports
 
 ```kotlin
 import io.kotest.core.spec.style.FunSpec
 import io.kotest.matchers.shouldBe
 import io.kotest.assertions.throwables.shouldThrow
-import io.ktor.server.config.ApplicationConfig
 import io.mockk.every
 import io.mockk.mockk
 import no.nav.sokos.prosjektnavn.config.Profile

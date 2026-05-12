@@ -27,11 +27,6 @@ internal class SecurityTest : FunSpec({
 
     val myService = mockk<MyService>()
 
-    beforeSpec {
-        // Last Ktor-konfig manuelt — skjer ikke automatisk i testmiljøet
-        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
-    }
-
     context("Authentication - Token Validation (401 Unauthorized)") {
 
         test("GET endpoint uten token skal returnere 401") {

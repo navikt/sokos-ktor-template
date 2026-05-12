@@ -23,7 +23,7 @@ For API tests: start/stop server in `beforeTest`/`afterTest`, deactivate auth ha
 
 - Mock HTTP clients for external service calls — never make real HTTP calls in tests.
 - For suspend functions use `coEvery` / `coVerify`; never `runBlocking` inside test blocks.
-- Load `PropertiesConfig` in `beforeSpec` when tests need config: `PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))`
+- `PropertiesConfig` is loaded globally once for the entire test suite via `ProjectConfig : AbstractProjectConfig` — no manual `beforeSpec` needed in individual test classes.
 
 ## Supplementary patterns (add when needed)
 
@@ -50,7 +50,7 @@ find src/test -type f -name "*.kt" | sort
 
 ### ✅ Always
 - `FunSpec` som standard; bruk `BehaviorSpec` for komplekse integrasjonstester
-- Last `PropertiesConfig` i `beforeSpec` for sikkerhetstester som trenger konfig
+- `ProjectConfig : AbstractProjectConfig` laster `PropertiesConfig` globalt — ikke manuelt `beforeSpec` i testklasser
 - Kotest matchers (`shouldBe`, `shouldHaveSize`, `shouldBeEmpty`, `with { ... }`)
 - Bruk `OpenApiValidationFilter` i RestAssured-baserte API-tester for automatisk schema-validering
 

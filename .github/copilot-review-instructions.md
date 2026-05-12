@@ -27,7 +27,7 @@ Instruksjoner for hva Copilot skal fokusere på ved gjennomgang av pull requests
 
 ### Konfig
 - `PropertiesConfig` brukt riktig? Nye seksjoner bør følge `lazy`-property + `@Serializable data class`-mønsteret
-- Ny HOCON-konfig lastes via `loadEnv()` i `Application.module()` — ikke via `environment.config` eller `System.getenv()` direkte
+- Ny HOCON-konfig lastes via `environment.config.loadEnv()` i `Application.module()` — ikke via `System.getenv()` direkte
 - Nye HOCON-felter uten tilhørende `@Serializable data class` — konfig bør være typesikker
 
 ### Testing

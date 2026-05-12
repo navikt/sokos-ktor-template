@@ -20,7 +20,7 @@ fun main() {
 }
 
 private fun Application.module() {
-    PropertiesConfig.load(loadEnv())
+    PropertiesConfig.load(environment.config.loadEnv())
 
     val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
     val applicationState = ApplicationState()
