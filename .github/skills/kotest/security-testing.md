@@ -8,10 +8,6 @@ Sikkerhetstester bruker `withMockOAuth2Server { testApplication { ... } }` for √
 ```kotlin
 internal class SecurityTest : FunSpec({
 
-    beforeSpec {
-        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
-    }
-
     test("foresp√∏rsel uten token skal returnere 401") {
         withMockOAuth2Server {
             testApplication {
@@ -186,7 +182,6 @@ import io.mockk.mockk
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.TestUtil
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.AzureAdProperties
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig

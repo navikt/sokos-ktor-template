@@ -58,7 +58,7 @@ src/test/kotlin/no/nav/sokos/prosjektnavn/
 ├── api/                    # API-tester (FunSpec + embeddedServer + RestAssured + OpenApiValidationFilter)
 ├── security/               # Auth-tester (FunSpec + testApplication + withMockOAuth2Server)
 ├── service/unit/           # Enhetstester — legg til ved behov
-└── TestUtil.kt             # Felles testhjelpere
+└── ProjectConfig.kt        # Kotest AbstractProjectConfig — laster PropertiesConfig globalt
 ```
 
 ## Detaljerte kodekonvensjoner

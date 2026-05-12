@@ -2,46 +2,34 @@
 
 ## Layered HOCON Pattern
 
-Config files are layered at startup via the top-level `loadEnv()` function in `PropertiesConfig.kt`:
+Config files are layered at startup via `ApplicationConfig.loadEnv()` — an extension function defined in `PropertiesConfig.kt`:
 1. `application.conf` – base defaults (shared across all environments)
 2. `application-{local|dev|prod}.conf` – environment overrides (include `application.conf`)
-3. `defaults.properties` – local secrets for the LOCAL profile (**never commit this file**)
+3. `defaults.properties` – local secrets for the LOCAL profile, loaded via `include file(...)` in `application-local.conf` (**never commit this file**)
 
-Environment is detected via `NAIS_CLUSTER_NAME`. Use `loadEnv()` — not `environment.config`:
+Environment is detected via `NAIS_CLUSTER_NAME`. Call via `environment.config.loadEnv()` at startup — never use `environment.config` directly or `System.getenv()` in business logic:
 
 ```kotlin
-fun loadEnv(): ApplicationConfig {
-    val environment =
-        (System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME"))
-            ?.lowercase()
-            ?.substringBefore("-") ?: "local"
+fun ApplicationConfig.loadEnv(): ApplicationConfig {
+    val hoconConfig = HoconApplicationConfig(ConfigFactory.load())
+    val environmentName = System.getenv("NAIS_CLUSTER_NAME") ?: System.getProperty("NAIS_CLUSTER_NAME")
+    val environment = environmentName?.lowercase()?.substringBefore("-") ?: "local"
 
-    val fileConfig =
-        when {
-            environment == "local" -> {
-                val defaultPropertiesConfig = ConfigFactory.parseFile(File("defaults.properties"))
-                ConfigFactory.parseResources("application-local.conf").withFallback(defaultPropertiesConfig)
-            }
-            else -> {
-                ConfigFactory.parseResources("application-$environment.conf")
-            }
-        }
-
-    val base =
-        ConfigFactory
-            .systemEnvironment()
-            .withFallback(ConfigFactory.systemProperties())
-            .withFallback(fileConfig)
-
-    return HoconApplicationConfig(base.resolve())
+    val environmentConfig = ApplicationConfig("application-$environment.conf")
+    return environmentConfig overriding this overriding hoconConfig
 }
+
+infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)
 ```
+
+The three-way merge `environmentConfig overriding this overriding hoconConfig` means:
+- `environmentConfig` wins over `this` (Ktor's default config) which wins over `hoconConfig` (base)
 
 Call once at startup — never in business logic:
 
 ```kotlin
 private fun Application.module() {
-    PropertiesConfig.load(loadEnv())
+    PropertiesConfig.load(environment.config.loadEnv())
     // ...
 }
 ```
@@ -75,9 +63,10 @@ application {
 }
 ```
 
-**`application-local.conf`** (local development — includes dev, overrides profile and auth):
+**`application-local.conf`** (local development — includes dev, overrides profile and auth, loads secrets via `include file(...)`):
 ```hocon
 include "application-dev.conf"
+include file("defaults.properties")
 
 application {
   profile = LOCAL
