@@ -35,6 +35,7 @@ internal class SecurityTest : FunSpec({
         withMockOAuth2Server {
             testApplication {
                 application {
+                    commonConfig()
                     securityConfig(mockAuthConfig())
                     routing {
                         authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {

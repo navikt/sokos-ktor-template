@@ -19,7 +19,6 @@ import no.nav.security.mock.oauth2.withMockOAuth2Server
 import no.nav.sokos.prosjektnavn.api.API_BASE_PATH
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
-import no.nav.sokos.prosjektnavn.config.AzureAdProperties
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.config.commonConfig
@@ -36,6 +35,7 @@ internal class SecurityTest :
             withMockOAuth2Server {
                 testApplication {
                     application {
+                        commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
                             authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
@@ -199,7 +199,7 @@ private fun MockOAuth2Server.tokenWithoutAudience() =
     ).serialize()
 
 private fun MockOAuth2Server.mockAuthConfig() =
-    AzureAdProperties(
+    PropertiesConfig.AzureAdProperties(
         wellKnownUrl = wellKnownUrl("default").toString(),
         clientId = PropertiesConfig.azureAdProperties.clientId,
     )
