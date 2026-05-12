@@ -31,14 +31,11 @@ Bruk `testApplication { }` fra `ktor-server-test-host-jvm` for å teste JWT-aute
 ```kotlin
 internal class SecurityTest : FunSpec({
 
-    beforeSpec {
-        PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
-    }
-
     test("forespørsel uten token skal returnere 401") {
         withMockOAuth2Server {
             testApplication {
                 application {
+                    commonConfig()
                     securityConfig(mockAuthConfig())
                     routing {
                         authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
@@ -132,4 +129,4 @@ private fun Application.applicationTestModule() {
 ### 🚫 Never
 - Hard-kode tokens eller secrets i tester
 - Bruk `@Autowired` eller Spring-annotasjoner (dette er Ktor, ikke Spring)
-- Last `PropertiesConfig` i `beforeSpec` for API-tester (DummyApiTest) — auth styres via `applicationTestModule()`
+- Ikke last `PropertiesConfig` manuelt i `beforeSpec` — dette håndteres globalt av `ProjectConfig : AbstractProjectConfig`

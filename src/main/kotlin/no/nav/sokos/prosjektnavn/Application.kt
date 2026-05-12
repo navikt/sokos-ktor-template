@@ -20,15 +20,14 @@ fun main() {
 }
 
 private fun Application.module() {
-    PropertiesConfig.load(loadEnv())
+    PropertiesConfig.load(environment.config.loadEnv())
 
-    val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
     val applicationState = ApplicationState()
 
     applicationLifecycleConfig(applicationState)
     commonConfig()
-    securityConfig()
-    routingConfig(useAuthentication, applicationState)
+    securityConfig(PropertiesConfig.azureAdProperties)
+    routingConfig(PropertiesConfig.applicationProperties.useAuthentication, applicationState)
 
     logger.info { "Application started with profile: ${PropertiesConfig.applicationProperties.profile}" }
 }

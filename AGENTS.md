@@ -35,15 +35,16 @@ src/main/kotlin/no/nav/sokos/prosjektnavn/
 │   ├── DummyApi.kt
 │   └── SwaggerApi.kt       # Swagger UI (uautentisert, registrert i RoutingConfig)
 ├── config/
-│   ├── PropertiesConfig.kt # Singleton for all konfig + loadEnv()
-│   ├── SecurityConfig.kt   # JWT/Azure AD
-│   ├── RoutingConfig.kt    # Route-registrering
-│   ├── CommonConfig.kt     # Serialization, call-logging
-│   └── HttpClientConfig.kt # Ktor HTTP-klient
+│   ├── PropertiesConfig.kt          # Singleton for all konfig + loadEnv()
+│   ├── SecurityConfig.kt            # JWT/Azure AD
+│   ├── RoutingConfig.kt             # Route-registrering
+│   ├── CommonConfig.kt              # Serialization, call-logging, TEAM_LOGS_MARKER
+│   ├── StatusPageConfig.kt          # Feilhåndtering og ApiError
+│   ├── ApplicationLifecycleConfig.kt # ApplicationState + lifecycle hooks
+│   └── HttpClientConfig.kt          # Ktor HTTP-klient
 ├── domain/                 # Domenemodeller
 ├── metrics/                # Micrometer-metrikker
-├── service/                # Forretningslogikk
-└── util/                   # Hjelpefunksjoner
+└── service/                # Forretningslogikk
 
 src/main/resources/
 ├── application.conf        # Base-konfig (delt på tvers av miljøer)
@@ -58,7 +59,7 @@ src/test/kotlin/no/nav/sokos/prosjektnavn/
 ├── api/                    # API-tester (FunSpec + embeddedServer + RestAssured + OpenApiValidationFilter)
 ├── security/               # Auth-tester (FunSpec + testApplication + withMockOAuth2Server)
 ├── service/unit/           # Enhetstester — legg til ved behov
-└── TestUtil.kt             # Felles testhjelpere
+└── ProjectConfig.kt        # Kotest AbstractProjectConfig — laster PropertiesConfig globalt
 ```
 
 ## Detaljerte kodekonvensjoner

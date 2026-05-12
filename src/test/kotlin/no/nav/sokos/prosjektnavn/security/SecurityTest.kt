@@ -8,7 +8,6 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
-import io.ktor.server.config.ApplicationConfig
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
 import io.mockk.every
@@ -17,11 +16,9 @@ import io.mockk.mockk
 import no.nav.security.mock.oauth2.MockOAuth2Server
 import no.nav.security.mock.oauth2.token.DefaultOAuth2TokenCallback
 import no.nav.security.mock.oauth2.withMockOAuth2Server
-import no.nav.sokos.prosjektnavn.TestUtil
 import no.nav.sokos.prosjektnavn.api.API_BASE_PATH
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
-import no.nav.sokos.prosjektnavn.config.AzureAdProperties
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
 import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.config.commonConfig
@@ -34,14 +31,11 @@ private val dummyService: DummyService = mockk()
 internal class SecurityTest :
     FunSpec({
 
-        beforeSpec {
-            PropertiesConfig.load(ApplicationConfig(TestUtil.APPLICATION_TEST_CONFIG))
-        }
-
         test("forespørsel uten token skal returnere 401") {
             withMockOAuth2Server {
                 testApplication {
                     application {
+                        commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
                             authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
@@ -205,7 +199,7 @@ private fun MockOAuth2Server.tokenWithoutAudience() =
     ).serialize()
 
 private fun MockOAuth2Server.mockAuthConfig() =
-    AzureAdProperties(
+    PropertiesConfig.AzureAdProperties(
         wellKnownUrl = wellKnownUrl("default").toString(),
         clientId = PropertiesConfig.azureAdProperties.clientId,
     )

@@ -14,16 +14,19 @@ Config is loaded from layered HOCON files via Ktor's `ApplicationConfig` API.
 Call `PropertiesConfig.load(config)` once at startup; never re-initialize.
 
 ```kotlin
+private const val APPLICATION_CONF = "application"
+private const val AZUREAD_CONF = "azureAd"
+
 object PropertiesConfig {
     lateinit var config: ApplicationConfig
         private set
 
     val applicationProperties by lazy {
-        config.property("application").getAs<ApplicationProperties>()
+        config.property(APPLICATION_CONF).getAs<ApplicationProperties>()
     }
 
     val azureAdProperties by lazy {
-        config.property("azureAd").getAs<AzureAdProperties>()
+        config.property(AZUREAD_CONF).getAs<AzureAdProperties>()
     }
 
     // Add new config sections here as lazy properties
@@ -37,14 +40,35 @@ object PropertiesConfig {
             config = applicationConfig
         }
     }
+
+    @Serializable
+    data class ApplicationProperties(
+        val profile: Profile,
+        val appName: String,
+        val namespace: String,
+        val useAuthentication: Boolean = true, // DO NOT CHANGE!
+    ) {
+        val isLocal = profile == Profile.LOCAL
+        val isTest = profile == Profile.TEST
+        val isProd = profile == Profile.PROD
+    }
+
+    @Serializable
+    data class AzureAdProperties(
+        val clientId: String,
+        val wellKnownUrl: String,
+    )
 }
+
+// overriding infix — brukes i loadEnv() for lesbar konfig-lagdeling
+infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationConfig = this.withFallback(other)
 ```
 
 ## Usage at Startup
 
 ```kotlin
 private fun Application.module() {
-    PropertiesConfig.load(loadEnv())
+    PropertiesConfig.load(environment.config.loadEnv())
 
     val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
 
@@ -54,7 +78,7 @@ private fun Application.module() {
 
 ## Sub-files
 
-- See [hocon-layering.md](hocon-layering.md) for the layered HOCON pattern (`loadEnv()`) and example HOCON config files.
+- See [hocon-layering.md](hocon-layering.md) for the layered HOCON pattern (`ApplicationConfig.loadEnv()` extension function) and example HOCON config files.
 - See [config-classes.md](config-classes.md) for typed config section data classes (`@Serializable`) and testing configuration with MockK.
 
 ## Benefits
