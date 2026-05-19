@@ -84,10 +84,6 @@ configurations.all {
                 useVersion("2.21.1")
                 because("jackson-core: Number Length Constraint Bypass in Async Parser Leads to Potential DoS Condition. Affected version >= 2.19.0, < 2.21.1")
             }
-            if (requested.group == "org.bouncycastle" && requested.name == "bcprov-jdk18on") {
-                useVersion("1.84")
-                because("Bouncy Castle Has Covert Timing Channel Vulnerability. Affected version >= 1.71, < 1.84")
-            }
         }
     }
 }
