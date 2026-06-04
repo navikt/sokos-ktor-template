@@ -104,9 +104,8 @@ Manifestene ligger i `.nais/dev/` og `.nais/prod/`.
 
 | Skill | Bruk når |
 |-------|----------|
-| `backend-vulnerabilities` | GitHub Security-varsel, Trivy/CodeQL-funn, Dependabot-PR |
+| `backend-vulnerabilities` | GitHub Security-varsel, CodeQL-funn, Dependabot-PR |
 | `azure-rbac-ktor` | Legge til RBAC (roller/scopes) på endepunkter |
 | `kotest` | Skrive eller endre tester |
 | `kotlin-app-config` | Legge til ny konfig-seksjon |
 | `kotlin-patterns` | Usikker på idiomatisk Kotlin |
-

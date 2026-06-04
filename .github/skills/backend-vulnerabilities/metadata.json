@@ -1,7 +1,7 @@
 {
 	"description": "Lukk backend-sårbarheter i Gradle-prosjekter på Nais. Bruk ved GitHub Security-varsler eller for å sjekke om resolutionStrategy-pakker kan fjernes.",
 	"domain": "backend",
-	"tags": ["sårbarheter", "gradle", "dependabot", "cve", "trivy", "security"],
+	"tags": ["sårbarheter", "gradle", "dependabot", "cve", "security"],
 	"examples": [
 		{
 			"prompt": "Dependabot melder om sårbarhet i jackson-core — hva gjør jeg?",

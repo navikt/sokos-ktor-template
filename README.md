@@ -17,7 +17,7 @@ Kan brukes som utgangspunkt for å opprette nye Ktor-backend applikasjoner for T
     1. Denne workflow trigges når kode pushes i `main` branch
 2. [Build/test PR](.github/workflows/build-pr.yaml) -> Kjører tester og bygger (assembler) distribution alle PR som blir opprettet
     1. Denne workflow kjøres kun når det opprettes pull requester
-3. [Security](.github/workflows/codeql-trivy-scan.yaml) -> For å skanne kode og docker image for sårbarheter. Kjøres hver morgen kl 06:00
+3. [Security](.github/workflows/codeql-scan.yaml) -> For å skanne kode for sårbarheter. Kjøres hver morgen kl 06:00
     1. Denne kjøres hver mandag klokka 06.00
 4. [Deploy application manual](.github/workflows/manual-deploy.yaml) -> For å deploye applikasjonen manuelt til ulike miljøer
     1. Denne workflow trigges manuelt basert på branch og miljø
@@ -94,7 +94,7 @@ Applikasjonen bruker [AzureAD](https://docs.nais.io/security/auth/azure-ad/) aut
 
 ### Logging
 
-Feilmeldinger og infomeldinger som ikke innheholder sensitive data logges til [Grafana Loki](https://docs.nais.io/observability/logging/#grafana-loki).  
+Feilmeldinger og infomeldinger som ikke innheholder sensitive data logges til [Grafana Loki](https://docs.nais.io/observability/logging/#grafana-loki).
 Sensitive meldinger logges til [Team Logs](https://doc.nais.io/observability/logging/how-to/team-logs/).
 
 ### Kubectl
@@ -138,11 +138,10 @@ Varsler blir sendt til følgende Slack-kanaler:
 # 8. Swagger
 
 - Url Lokal
-- Url Dev 
+- Url Dev
 - Url Prod
 
 # 9. Henvendelser og tilgang
 
 Spørsmål knyttet til koden eller prosjektet kan stilles som issues her på Github.
 Interne henvendelser kan sendes via Slack i kanalen [#utbetaling](https://nav-it.slack.com/archives/CKZADNFBP)
-
