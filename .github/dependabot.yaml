@@ -16,7 +16,7 @@ updates:
           - "plugin.serialization"
       ktor:
         patterns:
-          - "io.ktor"
+          - "io.ktor:*"
         update-types:
           - minor
           - patch
@@ -27,4 +27,4 @@ updates:
         exclude-patterns:
           - "jvm"
           - "plugin.serialization"
-          - "io.ktor"
+          - "io.ktor:*"
