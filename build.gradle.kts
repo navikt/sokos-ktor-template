@@ -73,8 +73,8 @@ configurations.all {
     resolutionStrategy {
         eachDependency {
             if (requested.group == "io.netty") {
-                useVersion("4.2.13.Final")
-                because("Align Netty to 4.2.13.Final due to CVE-2026-42579")
+                useVersion("4.2.15.Final")
+                because("Multiple versions of netty has vulnerable dependencies. Affected version < 4.2.15.Final")
             }
             if (requested.group == "tools.jackson.core" && requested.name == "jackson-core") {
                 useVersion("3.1.1")
