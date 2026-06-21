@@ -27,7 +27,7 @@ val kotestVersion = "6.1.11"
 val kotlinxSerializationVersion = "1.11.0"
 val mockOAuth2ServerVersion = "4.0.0"
 val mockkVersion = "1.14.11"
-val swaggerRequestValidatorVersion = "2.46.1"
+val swaggerRequestValidatorVersion = "3.0.0"
 
 dependencies {
 
