@@ -76,13 +76,21 @@ configurations.all {
                 useVersion("4.2.15.Final")
                 because("Multiple versions of netty has vulnerable dependencies. Affected version < 4.2.15.Final")
             }
+            if (requested.group == "tools.jackson.core" && requested.name == "jackson-databind") {
+                useVersion("3.2.0")
+                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.4")
+            }
             if (requested.group == "tools.jackson.core" && requested.name == "jackson-core") {
-                useVersion("3.1.1")
-                because("Jackson Core: Document length constraint bypass in blocking, async, and DataInput parsers. Affected version >= 3.0.0, <= 3.1.0")
+                useVersion("3.2.0")
+                because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.4")
+            }
+            if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-databind") {
+                useTarget("tools.jackson.core:jackson-databind:3.2.0")
+                because("Multiple versions of jackson-databind has vulnerable dependencies. com.fasterxml.jackson.core has been relocated to tools.jackson.core.")
             }
             if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-core") {
-                useVersion("2.21.1")
-                because("jackson-core: Number Length Constraint Bypass in Async Parser Leads to Potential DoS Condition. Affected version >= 2.19.0, < 2.21.1")
+                useTarget("tools.jackson.core:jackson-core:3.2.0")
+                because("Multiple versions of jackson-core has vulnerable dependencies. com.fasterxml.jackson.core has been relocated to tools.jackson.core.")
             }
         }
     }
