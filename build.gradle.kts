@@ -78,19 +78,19 @@ configurations.all {
             }
             if (requested.group == "tools.jackson.core" && requested.name == "jackson-databind") {
                 useVersion("3.2.0")
-                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.4")
+                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.3")
             }
             if (requested.group == "tools.jackson.core" && requested.name == "jackson-core") {
                 useVersion("3.2.0")
-                because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.4")
+                because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.0")
             }
             if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-databind") {
-                useTarget("tools.jackson.core:jackson-databind:3.2.0")
-                because("Multiple versions of jackson-databind has vulnerable dependencies. com.fasterxml.jackson.core has been relocated to tools.jackson.core.")
+                useVersion("2.21.4")
+                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version >= 2.19.0, <= 2.21.3")
             }
             if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-core") {
-                useTarget("tools.jackson.core:jackson-core:3.2.0")
-                because("Multiple versions of jackson-core has vulnerable dependencies. com.fasterxml.jackson.core has been relocated to tools.jackson.core.")
+                useVersion("2.21.4")
+                because("Multiple versions of jackson-core has vulnerable dependencies.. Affected version >= 2.19.0, <= 2.21.1")
             }
         }
     }
