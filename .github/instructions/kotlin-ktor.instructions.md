@@ -44,7 +44,7 @@ Swagger-routes registreres **utenfor** `authenticate`-blokken i `RoutingConfig.k
 ## Ktor-routes og auth
 
 - Interne endepunkter (`/internal/isAlive`, `/internal/isReady`, `/internal/metrics`): **uautentiserte**
-- Alle domene-routes: `authenticate(useAuthentication, AUTHENTICATION_NAME)`
+- Alle domene-routes: `authenticate(AUTHENTICATION_NAME)`
 - RBAC med roller/scopes: bruk `azure-rbac-ktor`-skillen
 
 ## Metrics
@@ -79,5 +79,5 @@ Bruk `Metrics`-objektet (`PrometheusMeterRegistry`). Definer namespace som match
 - `runBlocking` eller `GlobalScope.launch`
 - ORM-rammeverk eller DI-rammeverk
 - PII i logger uten `TEAM_LOGS_MARKER`
-- Hardkodede hemmeligheter eller `defaults.properties` i commits
+- Hardkodede hemmeligheter i commits
 

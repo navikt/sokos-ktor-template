@@ -71,7 +71,27 @@ Hva er oppgaven til denne applikasjonen
 
 ### Lokal utvikling
 
-Hvordan kan jeg kjøre lokalt og hva trenger jeg?
+Lokal kjøring bruker en [mock-oauth2-server](https://github.com/navikt/mock-oauth2-server)
+til auth (definert i `docker-compose.yaml`). Slik gjør du:
+
+1. Start avhengighetene med Docker Compose:
+   ```shell
+   docker compose up -d
+   ```
+   Har du behov for database, ta med PostgreSQL:
+   ```shell
+   docker compose --profile db up -d
+   ```
+2. Start appen ved å kjøre main-metoden i **Application.kt** (profil `LOCAL`).
+   Appen validerer tokens mot mock-oauth2-server på `http://localhost:8081/default`.
+3. Auth er alltid på. Hent et M2M-token fra token-endepunktet:
+   ```shell
+   curl -s -X POST http://localhost:8081/default/token \
+     -d "grant_type=client_credentials&client_id=local-client-id&client_secret=secret"
+   ```
+   og bruk det som `Authorization: Bearer <token>`.
+
+Stopp avhengighetene med `docker compose down` (legg til `-v` for å slette postgres-data).
 
 # 4. Programvarearkitektur
 

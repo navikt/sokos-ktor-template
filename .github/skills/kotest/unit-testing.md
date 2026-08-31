@@ -12,7 +12,6 @@ internal class PropertiesConfigTest : FunSpec({
         props.profile shouldBe Profile.TEST
         props.appName shouldBe "sokos-ktor-template"
         props.namespace shouldBe "okonomi"
-        props.useAuthentication shouldBe true
         props.isTest shouldBe true
         props.isLocal shouldBe false
         props.isProd shouldBe false

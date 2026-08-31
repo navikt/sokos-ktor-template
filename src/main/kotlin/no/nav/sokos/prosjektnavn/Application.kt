@@ -27,7 +27,7 @@ private fun Application.module() {
     applicationLifecycleConfig(applicationState)
     commonConfig()
     securityConfig(PropertiesConfig.azureAdProperties)
-    routingConfig(PropertiesConfig.applicationProperties.useAuthentication, applicationState)
+    routingConfig(applicationState)
 
     logger.info { "Application started with profile: ${PropertiesConfig.applicationProperties.profile}" }
 }

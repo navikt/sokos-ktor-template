@@ -98,7 +98,7 @@ Manifestene ligger i `.nais/dev/` og `.nais/prod/`.
 - CPU-limit i Nais-manifest
 - ORM-rammeverk (Exposed, Hibernate) — bruk navikt/kotliquery
 - DI-rammeverk (Koin, Spring) — bruk manuell konstruktørinjektion
-- Commit `defaults.properties` eller hemmeligheter
+- Commit hemmeligheter
 
 ## Relevante skills
 

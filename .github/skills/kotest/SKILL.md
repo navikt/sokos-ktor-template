@@ -38,7 +38,7 @@ internal class SecurityTest : FunSpec({
                     commonConfig()
                     securityConfig(mockAuthConfig())
                     routing {
-                        authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                        authenticate(AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
                         }
                     }

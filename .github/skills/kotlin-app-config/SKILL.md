@@ -46,7 +46,6 @@ object PropertiesConfig {
         val profile: Profile,
         val appName: String,
         val namespace: String,
-        val useAuthentication: Boolean = true, // DO NOT CHANGE!
     ) {
         val isLocal = profile == Profile.LOCAL
         val isTest = profile == Profile.TEST
@@ -69,8 +68,6 @@ infix fun ApplicationConfig.overriding(other: ApplicationConfig): ApplicationCon
 ```kotlin
 private fun Application.module() {
     PropertiesConfig.load(environment.config.loadEnv())
-
-    val useAuthentication = PropertiesConfig.applicationProperties.useAuthentication
 
     // ...
 }

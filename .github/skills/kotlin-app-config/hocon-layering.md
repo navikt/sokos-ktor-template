@@ -5,7 +5,8 @@
 Config files are layered at startup via `ApplicationConfig.loadEnv()` — an extension function defined in `PropertiesConfig.kt`:
 1. `application.conf` – base defaults (shared across all environments)
 2. `application-{local|dev|prod}.conf` – environment overrides (include `application.conf`)
-3. `defaults.properties` – local secrets for the LOCAL profile, loaded via `include file(...)` in `application-local.conf` (**never commit this file**)
+
+For local development, auth runs against a `mock-oauth2-server` defined in `docker-compose.yaml`; `application-local.conf` points `azureAd.wellKnownUrl` at it.
 
 Environment is detected via `NAIS_CLUSTER_NAME`. Call via `environment.config.loadEnv()` at startup — never use `environment.config` directly or `System.getenv()` in business logic:
 
@@ -43,7 +44,6 @@ application {
   appName = ${?NAIS_APP_NAME}
   namespace = "okonomi"
   namespace = ${?NAIS_NAMESPACE}
-  useAuthentication = true
 }
 
 azureAd {
@@ -63,14 +63,17 @@ application {
 }
 ```
 
-**`application-local.conf`** (local development — includes dev, overrides profile and auth, loads secrets via `include file(...)`):
+**`application-local.conf`** (local development — includes base, overrides profile, points auth at mock-oauth2-server):
 ```hocon
-include "application-dev.conf"
-include file("defaults.properties")
+include "application.conf"
 
 application {
   profile = LOCAL
-  useAuthentication = false
+}
+
+azureAd {
+  clientId = "local-client-id"
+  wellKnownUrl = "http://localhost:8081/default/.well-known/openid-configuration"
 }
 ```
 
