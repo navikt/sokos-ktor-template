@@ -18,24 +18,6 @@ center "Running git pre-commit hook.."
 echo -e "${GREEN}$(printf '%*s' "$LINE_WIDTH" '' | tr ' ' '*')${NC}"
 echo ""
 
-# Check if defaults.properties is in .gitignore
-if ! grep -qxF 'defaults.properties' .gitignore; then
-    echo -e "${RED}$(printf '%*s' "$LINE_WIDTH" '' | tr ' ' '*')${NC}"
-    center "ERROR: 'defaults.properties' is NOT in .gitignore!"
-    center "Please add it to .gitignore before committing."
-    echo -e "${RED}$(printf '%*s' "$LINE_WIDTH" '' | tr ' ' '*')${NC}"
-    exit 1
-fi
-
-# Prevent committing defaults.properties (add/modify only)
-if git diff --cached --name-status | grep -E '^[AM]\s+defaults\.properties$'; then
-    echo -e "${RED}$(printf '%*s' "$LINE_WIDTH" '' | tr ' ' '*')${NC}"
-    center "ERROR: 'defaults.properties' must NOT be committed!"
-    echo -e "${RED}$(printf '%*s' "$LINE_WIDTH" '' | tr ' ' '*')${NC}"
-    git reset HEAD defaults.properties
-    exit 1
-fi
-
 stagedFiles=$(git diff --staged --name-only)
 
 # Run ktlintCheck

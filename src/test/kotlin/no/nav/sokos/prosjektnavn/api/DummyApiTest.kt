@@ -19,9 +19,7 @@ import io.mockk.every
 import io.mockk.mockk
 import io.restassured.RestAssured
 
-import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.ApiError
-import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
 import no.nav.sokos.prosjektnavn.service.DummyService
@@ -96,8 +94,6 @@ internal class DummyApiTest :
 private fun Application.applicationTestModule() {
     commonConfig()
     routing {
-        authenticate(false, AUTHENTICATION_NAME) {
-            dummyApi(dummyService)
-        }
+        dummyApi(dummyService)
     }
 }

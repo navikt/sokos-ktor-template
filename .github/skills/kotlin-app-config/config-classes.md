@@ -14,7 +14,6 @@ data class ApplicationProperties(
     val profile: Profile,
     val appName: String,
     val namespace: String,
-    val useAuthentication: Boolean = true, // DO NOT CHANGE!
 ) {
     val isLocal = profile == Profile.LOCAL
     val isTest = profile == Profile.TEST

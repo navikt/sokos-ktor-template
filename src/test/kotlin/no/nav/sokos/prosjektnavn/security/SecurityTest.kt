@@ -8,6 +8,7 @@ import io.ktor.client.request.header
 import io.ktor.client.statement.bodyAsText
 import io.ktor.http.HttpHeaders
 import io.ktor.http.HttpStatusCode
+import io.ktor.server.auth.authenticate
 import io.ktor.server.routing.routing
 import io.ktor.server.testing.testApplication
 import io.mockk.every
@@ -20,7 +21,6 @@ import no.nav.sokos.prosjektnavn.api.API_BASE_PATH
 import no.nav.sokos.prosjektnavn.api.dummyApi
 import no.nav.sokos.prosjektnavn.config.AUTHENTICATION_NAME
 import no.nav.sokos.prosjektnavn.config.PropertiesConfig
-import no.nav.sokos.prosjektnavn.config.authenticate
 import no.nav.sokos.prosjektnavn.config.commonConfig
 import no.nav.sokos.prosjektnavn.config.securityConfig
 import no.nav.sokos.prosjektnavn.domain.DummyDomain
@@ -38,12 +38,11 @@ internal class SecurityTest :
                         commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                            authenticate(AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
                     }
-                    println("PropertiesConfig: ${PropertiesConfig.applicationProperties.appName}")
 
                     val response = client.get("$API_BASE_PATH/hello")
                     response.status shouldBe HttpStatusCode.Unauthorized
@@ -58,7 +57,7 @@ internal class SecurityTest :
                         commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                            authenticate(AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -81,7 +80,7 @@ internal class SecurityTest :
                         commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                            authenticate(AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -106,7 +105,7 @@ internal class SecurityTest :
                         commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                            authenticate(AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }
@@ -133,7 +132,7 @@ internal class SecurityTest :
                         commonConfig()
                         securityConfig(mockAuthConfig())
                         routing {
-                            authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                            authenticate(AUTHENTICATION_NAME) {
                                 dummyApi(dummyService)
                             }
                         }

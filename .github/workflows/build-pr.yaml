@@ -8,7 +8,6 @@ on:
       - 'CODEOWNERS'
       - '.gitignore'
       - '.editorconfig'
-      - 'setupLocalEnvironment.sh'
       - '.scripts'
       - 'dokumentasjon/**'
       - '.github/workflows/codeql-scan.yaml'
@@ -28,4 +27,4 @@ jobs:
   build-and-test:
     permissions:
       contents: read
-    uses: navikt/mob-gha-workflows/.github/workflows/gradle-build-test-app.yaml@e80242212870d8674570d82f812590617942930c # ratchet:navikt/mob-gha-workflows/.github/workflows/gradle-build-test-app.yaml@v1.0.1
+    uses: navikt/mob-gha-workflows/.github/workflows/gradle-build-test-app.yaml@7fc3c6ff7c787dd0bc5b89f4f1a588f670764d75 # ratchet:navikt/mob-gha-workflows/.github/workflows/gradle-build-test-app.yaml@v1.1.1

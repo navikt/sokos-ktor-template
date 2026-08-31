@@ -1,0 +1,69 @@
+services:
+  # Lokal auth for M2M-token.
+  # Hent token:
+  #   curl -s -X POST http://localhost:8081/default/token \
+  #     -d "grant_type=client_credentials&client_id=local-client-id&client_secret=secret"
+  mock-oauth2-server:
+    image: ghcr.io/navikt/mock-oauth2-server:latest
+    ports:
+      - "8081:8080"
+    environment:
+      SERVER_PORT: 8080
+      JSON_CONFIG: |
+        {
+          "tokenCallbacks": [
+            {
+              "issuerId": "default",
+              "tokenExpiry": 3600,
+              "requestMappings": [
+                {
+                  "requestParam": "grant_type",
+                  "match": "*",
+                  "claims": {
+                    "aud": "local-client-id",
+                    "aio": "AXQAi/8local",
+                    "azp": "local-client-id",
+                    "azpacr": "1",
+                    "idtyp": "app",
+                    "oid": "00000000-0000-0000-0000-000000000001",
+                    "rh": "0.local",
+                    "roles": ["access_as_application"],
+                    "sub": "00000000-0000-0000-0000-000000000001",
+                    "tid": "966ac572-f5b7-4bbe-aa88-c76419c0f851",
+                    "uti": "local-uti-0000000000",
+                    "ver": "2.0",
+                    "xms_ftd": "local-xms-ftd",
+                    "azp_name": "dev-gcp:okonomi:local-consumer"
+                  }
+                }
+              ]
+            }
+          ]
+        }
+    healthcheck:
+      test: ["CMD", "wget", "--spider", "-q", "http://localhost:8080/default/.well-known/openid-configuration"]
+      interval: 5s
+      timeout: 3s
+      retries: 10
+
+  # Valgfri PostgreSQL for lokal utvikling. Startes kun med profilen "db":
+  #   docker compose --profile db up
+  # postgres:
+  #   image: postgres:16-alpine
+  #   profiles: ["db"]
+  #   ports:
+  #     - "5432:5432"
+  #   environment:
+  #     POSTGRES_USER: admin
+  #     POSTGRES_PASSWORD: admin
+  #     POSTGRES_DB: sokos-ktor-template
+  #   volumes:
+  #     - postgres-data:/var/lib/postgresql/data
+  #   healthcheck:
+  #     test: ["CMD-SHELL", "pg_isready -U admin -d sokos-ktor-template"]
+  #     interval: 5s
+  #     timeout: 3s
+  #     retries: 10
+
+# volumes:
+#   postgres-data:

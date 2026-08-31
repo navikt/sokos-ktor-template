@@ -1,6 +1,6 @@
 # Sikkerhetstesting med MockOAuth2Server
 
-Alle domene-endepunkter er sikret via `authenticate(useAuthentication, AUTHENTICATION_NAME)`.
+Alle domene-endepunkter er sikret via `authenticate(AUTHENTICATION_NAME)`.
 Sikkerhetstester bruker `withMockOAuth2Server { testApplication { ... } }` for å verifisere JWT-validering — **ikke** RestAssured eller ekte HTTP-port.
 
 ## Grunnmønster
@@ -15,7 +15,7 @@ internal class SecurityTest : FunSpec({
                     commonConfig()
                     securityConfig(mockAuthConfig())
                     routing {
-                        authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) {
+                        authenticate(AUTHENTICATION_NAME) {
                             dummyApi(dummyService)
                         }
                     }
@@ -94,7 +94,7 @@ test("forespørsel med ugyldig token skal returnere 401") {
                 commonConfig()
                 securityConfig(mockAuthConfig())
                 routing {
-                    authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) { dummyApi(dummyService) }
+                    authenticate(AUTHENTICATION_NAME) { dummyApi(dummyService) }
                 }
             }
             val response = client.get("$API_BASE_PATH/hello") {
@@ -112,7 +112,7 @@ test("forespørsel med gyldig token skal returnere 200") {
                 commonConfig()
                 securityConfig(mockAuthConfig())
                 routing {
-                    authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) { dummyApi(dummyService) }
+                    authenticate(AUTHENTICATION_NAME) { dummyApi(dummyService) }
                 }
             }
             every { dummyService.sayHello() } returns DummyDomain("Hello")
@@ -132,7 +132,7 @@ test("forespørsel med utgått token skal returnere 401") {
                 commonConfig()
                 securityConfig(mockAuthConfig())
                 routing {
-                    authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) { dummyApi(dummyService) }
+                    authenticate(AUTHENTICATION_NAME) { dummyApi(dummyService) }
                 }
             }
             val response = client.get("$API_BASE_PATH/hello") {
@@ -152,7 +152,7 @@ test("forespørsel med token uten audience skal returnere 500") {
                 commonConfig()
                 securityConfig(mockAuthConfig())
                 routing {
-                    authenticate(PropertiesConfig.applicationProperties.useAuthentication, AUTHENTICATION_NAME) { dummyApi(dummyService) }
+                    authenticate(AUTHENTICATION_NAME) { dummyApi(dummyService) }
                 }
             }
             val response = client.get("$API_BASE_PATH/hello") {
