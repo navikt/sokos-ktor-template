@@ -73,7 +73,7 @@ dependencies {
     }
 
     constraints {
-        implementation("com.google.guava:guava:33.6.0-jre") {
+        implementation("com.google.guava:guava:33.7.1-jre") {
             because("Temporarily retain the current version to test Dependabot updates; affected versions <= 33.7.1")
         }
         implementation("tools.jackson.core:jackson-databind:3.2.3") {
