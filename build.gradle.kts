@@ -18,13 +18,13 @@ repositories {
 }
 
 val ktorVersion = "3.6.0"
-val logbackVersion = "1.6.5"
+val logbackVersion = "1.6.6"
 val logstashVersion = "9.0"
-val micrometerVersion = "1.17.1"
+val micrometerVersion = "1.17.2"
 val kotlinLoggingVersion = "3.0.5"
-val kotestVersion = "6.2.5"
-val kotlinxSerializationVersion = "1.11.0"
-val mockOAuth2ServerVersion = "6.0.6"
+val kotestVersion = "6.2.6"
+val kotlinxSerializationVersion = "1.12.0"
+val mockOAuth2ServerVersion = "6.1.3"
 val mockkVersion = "1.14.11"
 val swaggerRequestValidatorVersion = "3.0.0"
 
@@ -65,35 +65,31 @@ dependencies {
     testImplementation("io.mockk:mockk:$mockkVersion")
     testImplementation("no.nav.security:mock-oauth2-server:$mockOAuth2ServerVersion")
     testImplementation("com.atlassian.oai:swagger-request-validator-restassured:$swaggerRequestValidatorVersion")
-}
 
-configurations.all {
-    resolutionStrategy {
-        eachDependency {
-            if (requested.group == "io.netty") {
-                useVersion("4.2.17.Final")
-                because("Multiple versions of netty has vulnerable dependencies. Affected version < 4.2.15.Final")
-            }
-            if (requested.group == "tools.jackson.core" && requested.name == "jackson-databind") {
-                useVersion("3.2.3")
-                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.3")
-            }
-            if (requested.group == "tools.jackson.core" && requested.name == "jackson-core") {
-                useVersion("3.2.3")
-                because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.0")
-            }
-            if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-databind") {
-                useVersion("2.22.3")
-                because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version >= 2.19.0, <= 2.21.3")
-            }
-            if (requested.group == "com.fasterxml.jackson.core" && requested.name == "jackson-core") {
-                useVersion("2.22.3")
-                because("Multiple versions of jackson-core has vulnerable dependencies.. Affected version >= 2.19.0, <= 2.21.1")
-            }
-            if (requested.group == "org.apache.httpcomponents.client5" && requested.name == "httpclient5") {
-                useVersion("5.6.3")
-                because("Multiple versions of httpclient5 has vulnerable dependencies. Affected version >= 5.0-alpha1, < 5.6.3")
-            }
+    // Sårbarhet i avhengigheter
+
+    implementation(platform("io.netty:netty-bom:4.2.19.Final")) {
+        because("Multiple versions of netty has vulnerable dependencies. Affected version < 4.2.15.Final")
+    }
+
+    constraints {
+        implementation("com.google.guava:guava:33.7.2-jre") {
+            because("Temporarily retain the current version to test Dependabot updates; affected versions <= 33.7.1")
+        }
+        implementation("tools.jackson.core:jackson-databind:3.2.4") {
+            because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.3")
+        }
+        implementation("tools.jackson.core:jackson-core:3.2.4") {
+            because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.0")
+        }
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4") {
+            because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version >= 2.19.0, <= 2.21.3")
+        }
+        implementation("com.fasterxml.jackson.core:jackson-core:2.22.4") {
+            because("Multiple versions of jackson-core has vulnerable dependencies.. Affected version >= 2.19.0, <= 2.21.1")
+        }
+        implementation("org.apache.httpcomponents.client5:httpclient5:5.6.5") {
+            because("Multiple versions of httpclient5 has vulnerable dependencies. Affected version >= 5.0-alpha1, < 5.6.5")
         }
     }
 }
