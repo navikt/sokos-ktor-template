@@ -69,21 +69,21 @@ dependencies {
     // Sårbarhet i avhengigheter
 
     implementation(platform("io.netty:netty-bom:4.2.19.Final")) {
-        because("Multiple versions of netty has vulnerable dependencies. Affected version < 4.2.15.Final")
+        because("Multiple versions of netty has vulnerable dependencies")
     }
 
     constraints {
         implementation("com.google.guava:guava:33.7.2-jre") {
-            because("Temporarily retain the current version to test Dependabot updates; affected versions <= 33.7.1")
+            because("Multiple versions of guava has vulnerable dependencies")
         }
         implementation("tools.jackson.core:jackson-databind:3.2.4") {
-            because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.3")
+            because("Multiple versions of jackson-databind has vulnerable dependencies")
         }
         implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4") {
-            because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version >= 2.19.0, <= 2.21.3")
+            because("Multiple versions of jackson-databind has vulnerable dependencies")
         }
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6.5") {
-            because("Multiple versions of httpclient5 has vulnerable dependencies. Affected version >= 5.0-alpha1, < 5.6.5")
+            because("Multiple versions of httpclient5 has vulnerable dependencies")
         }
     }
 }
