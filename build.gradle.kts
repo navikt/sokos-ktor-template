@@ -79,14 +79,8 @@ dependencies {
         implementation("tools.jackson.core:jackson-databind:3.2.4") {
             because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version < >= 3.0.0, <= 3.1.3")
         }
-        implementation("tools.jackson.core:jackson-core:3.2.4") {
-            because("Multiple versions of jackson-core has vulnerable dependencies. Affected version >= 3.0.0, <= 3.1.0")
-        }
         implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4") {
             because("Multiple versions of jackson-databind has vulnerable dependencies. Affected version >= 2.19.0, <= 2.21.3")
-        }
-        implementation("com.fasterxml.jackson.core:jackson-core:2.22.4") {
-            because("Multiple versions of jackson-core has vulnerable dependencies.. Affected version >= 2.19.0, <= 2.21.1")
         }
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6.5") {
             because("Multiple versions of httpclient5 has vulnerable dependencies. Affected version >= 5.0-alpha1, < 5.6.5")
