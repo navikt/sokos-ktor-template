@@ -24,8 +24,8 @@ val micrometerVersion = "1.17.2"
 val kotlinLoggingVersion = "3.0.5"
 val kotestVersion = "6.2.6"
 val kotlinxSerializationVersion = "1.12.0"
-val mockOAuth2ServerVersion = "6.1.3"
-val mockkVersion = "1.14.11"
+val mockOAuth2ServerVersion = "6.1.5"
+val mockkVersion = "1.14.12"
 val swaggerRequestValidatorVersion = "3.0.0"
 
 dependencies {
@@ -68,18 +68,18 @@ dependencies {
 
     // Sårbarhet i avhengigheter
 
-    implementation(platform("io.netty:netty-bom:4.2.19.Final")) {
+    implementation(platform("io.netty:netty-bom:4.2.20.Final")) {
         because("Multiple versions of netty has vulnerable dependencies")
     }
 
     constraints {
-        implementation("com.google.guava:guava:33.7.2-jre") {
+        implementation("com.google.guava:guava:33.8.0-jre") {
             because("Multiple versions of guava has vulnerable dependencies")
         }
-        implementation("tools.jackson.core:jackson-databind:3.2.4") {
+        implementation("tools.jackson.core:jackson-databind:3.3.0") {
             because("Multiple versions of jackson-databind has vulnerable dependencies")
         }
-        implementation("com.fasterxml.jackson.core:jackson-databind:2.22.4") {
+        implementation("com.fasterxml.jackson.core:jackson-databind:2.23.0") {
             because("Multiple versions of jackson-databind has vulnerable dependencies")
         }
         implementation("org.apache.httpcomponents.client5:httpclient5:5.6.5") {
