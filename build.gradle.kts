@@ -24,7 +24,7 @@ val micrometerVersion = "1.17.2"
 val kotlinLoggingVersion = "3.0.5"
 val kotestVersion = "6.2.6"
 val kotlinxSerializationVersion = "1.12.0"
-val mockOAuth2ServerVersion = "6.1.5"
+val mockOAuth2ServerVersion = "7.0.1"
 val mockkVersion = "1.14.12"
 val swaggerRequestValidatorVersion = "3.0.0"
 
